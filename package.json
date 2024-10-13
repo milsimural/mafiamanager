@@ -7,5 +7,19 @@
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "keywords": [],
+  "description": "",
+  "devDependencies": {
+    "@elbrus/eslint-config": "^1.0.0",
+    "@eslint/js": "^9.12.0",
+    "eslint": "^9.12.0",
+    "globals": "^15.11.0",
+    "sequelize-cli": "^6.6.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "pg": "^8.13.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.4"
+  }
 }
