@@ -1,10 +1,13 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function NavigationComp() {
   return (
     <nav className="navigation">
-        <a href="">Home</a>
-        <a href="">Notes</a>
+      <p>NavigationCom</p>
+      <Link to="/">Home</Link>
+      <br />
+      <Link to="/notes">Notes</Link>
     </nav>
-  )
+  );
 }

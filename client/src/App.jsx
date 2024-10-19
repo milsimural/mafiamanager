@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./components/pages/HomePage";
 import Layout from "./components/Layout";
 import NotesPage from "./components/pages/NotesPage";
@@ -21,11 +21,7 @@ function App() {
       ],
     },
   ]);
-  return (
-    <>
-      <HomePage />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
