@@ -15,14 +15,17 @@ export default function LoginPage({ setUser }) {
   };
 
   const loginHandler = async (event, formData) => {
+    event.preventDefault();
     try {
       const res = await axios.post("/api/auth/login", formData);
       setUser(res.data.user);
-      alert(res.data.user.name);
     } catch (error) {
       if (error.response) {
         console.error("Ошибка ответа сервера:", error.response.data);
-        alert("Ошибка при входе: " + error.response.data.message || 'Неизвестная ошибка сервера.');
+        alert(
+          "Ошибка при входе: " + error.response.data.message ||
+            "Неизвестная ошибка сервера."
+        );
       } else if (error.request) {
         console.error("Сервер не ответил:", error.request);
         alert("Сервер не отвечает. Пожалуйста, попробуйте позже.");
@@ -33,14 +36,26 @@ export default function LoginPage({ setUser }) {
     }
   };
 
-  return <div>
-    <h1>Войти</h1>
-    <form onSubmit={(e) => loginHandler(e, formData)}>
+  return (
+    <div>
+      <h1>Войти</h1>
+      <form onSubmit={(e) => loginHandler(e, formData)}>
         <label htmlFor="email">Введите email</label>
-        <input name="email" type="email" value={formData.email} onChange={handleChange} />
+        <input
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+        />
         <label htmlFor="password">Введите пароль</label>
-        <input name="password" type="password" value={formData.password} onChange={handleChange} />
+        <input
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+        />
         <button type="submit">Войти</button>
-    </form>
-  </div>;
+      </form>
+    </div>
+  );
 }

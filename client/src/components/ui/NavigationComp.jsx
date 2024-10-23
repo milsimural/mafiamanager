@@ -5,7 +5,7 @@ export default function NavigationComp({ user }) {
   return (
     <nav className="navigation">
       <p>Навигация</p>
-      <p>Здравствуйте {user?.name}</p>
+      <p>Здравствуйте {user ? user.name : 'Пользователь не передан'}</p>
       <Link to="/">Home</Link>
       <br />
       <Link to="/registration">Регистрация</Link>
