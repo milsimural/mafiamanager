@@ -2,22 +2,28 @@ import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./components/pages/HomePage";
 import Layout from "./components/Layout";
-import NotesPage from "./components/pages/NotesPage";
+import RegistrationPage from "./components/pages/RegistrationPage";
+import LoginPage from "./components/pages/LoginPage";
 
 function App() {
+  const [user, setUser] = useState();
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout />,
+      element: <Layout user={user}/>,
       children: [
         {
           path: "/",
           element: <HomePage />,
         },
         {
-          path: "/notes",
-          element: <NotesPage />,
+          path: "/registration",
+          element: <RegistrationPage setUser={setUser} />,
         },
+        {
+          path: "/login",
+          element: <LoginPage setUser={setUser} />
+        }
       ],
     },
   ]);
