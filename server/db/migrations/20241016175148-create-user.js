@@ -33,7 +33,18 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
       },
+      gomafiaId: {
+        type: Sequelize.INTEGER,
+        unique: true,
+      },
+      isAdmin: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      }
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

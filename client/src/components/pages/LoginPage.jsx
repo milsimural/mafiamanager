@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 
 export default function LoginPage({ setUser }) {
   const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ export default function LoginPage({ setUser }) {
   const loginHandler = async (event, formData) => {
     event.preventDefault();
     try {
-      const res = await axios.post("/api/auth/login", formData);
+      const res = await axiosInstance.post("/api/auth/login", formData);
       setUser(res.data.user);
     } catch (error) {
       if (error.response) {

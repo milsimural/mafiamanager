@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 
 export default function RegistrationPage({ setUser }) {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ export default function RegistrationPage({ setUser }) {
   const registrationHandler = async (event, formData) => {
     event.preventDefault();
     try {
-      const res = await axios.post("/api/auth/registration", formData);
+      const res = await axiosInstance.post("/api/auth/registration", formData);
       setUser(res.data.user);
     } catch (error) {
       if (error.response) {
