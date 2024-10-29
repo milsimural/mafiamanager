@@ -1,10 +1,10 @@
 const {Router} = require('express')
 
-const { Tournament } = require('../../db/models');
+const { Tournament, City } = require('../../db/models');
 
 const tournamentRouter = Router();
 
-tournamentRouter.get('', async (req, res) => {
+tournamentRouter.get('/', async (req, res) => {
   try {
     const tournaments = await Tournament.findAll();
     res.json(tournaments);
@@ -15,7 +15,7 @@ tournamentRouter.get('', async (req, res) => {
   }
 });
 
-tournamentRouter.get('/:id', async (req, res) => {
+tournamentRouter.get('/tournament/:id', async (req, res) => {
     try {
         const tournamentId = req.params.id;
         const tournamentData = await Tournament.findByPk(tournamentId);
@@ -55,6 +55,28 @@ tournamentRouter.patch('/update/:id', async (req, res) => {
     }
 })
 
+tournamentRouter.delete('/delete/:id', async (req, res) => {
+    try {
+        const tournamentId = req.params.id;
+        const deletedRowsCount = await Tournament.destroy({
+            where: { id: tournamentId },
+        });
+        if (deletedRowsCount === 0) {
+            return res.status(404).json({ error: 'Турнир не найден' });
+          }
+        res.sendStatus(204);
+    } catch (error) {
+        res.status(500).json({ error: `Ошибка при удалении турнира: ${error.message}` });
+    }
+})
 
+tournamentRouter.get('/cities', async (req, res) => {
+    try {
+        const cities = await City.findAll();
+        res.json(cities);
+    } catch (error) {    
+        res.status(500).json({ error: `Ошибка при получении списка городов: ${error.message}` });
+    }
+})
 
 module.exports = tournamentRouter;

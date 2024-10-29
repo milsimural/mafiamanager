@@ -22,6 +22,14 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       gomafiaId: DataTypes.INTEGER,
       isAdmin: DataTypes.BOOLEAN,
+      paidAccountGoMafia: DataTypes.BOOLEAN,
+      pass: DataTypes.BOOLEAN,
+      passStart: DataTypes.DATE,
+      passEnd: DataTypes.DATE,
+      constructLeague: DataTypes.INTEGER,
+      accountPower: DataTypes.FLOAT,
+      draftLeague: DataTypes.INTEGER,
+      lastLogin: DataTypes.DATE
     },
     {
       sequelize,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
-import axiosInstance from "../../axiosInstance";
+import { TextField, Button, Typography, Container, Box } from "@mui/material";
+import axiosInstance, { setAccessToken } from "../../axiosInstance";
 
 export default function RegistrationPage({ setUser }) {
   const [formData, setFormData] = useState({
@@ -17,63 +17,88 @@ export default function RegistrationPage({ setUser }) {
     });
   };
 
-  const registrationHandler = async (event, formData) => {
+  const registrationHandler = async (event) => {
     event.preventDefault();
     try {
-      const res = await axiosInstance.post("/api/auth/registration", formData);
+      const res = await axiosInstance.post("/auth/registration", formData);
       setUser(res.data.user);
+      setAccessToken(res.data.accessToken);
     } catch (error) {
       if (error.response) {
         console.error("Ошибка ответа сервера:", error.response.data);
-        alert("Произошла ошибка: " + error.response.data.message);
       } else if (error.request) {
         console.error("Сервер не ответил:", error.request);
-        alert("Сервер не отвечает. Пожалуйста, попробуйте позже.");
       } else {
         console.error("Ошибка при настройке запроса:", error.message);
-        alert("Произошла ошибка: " + error.message);
       }
     }
   };
 
   return (
-    <div>
-      <h1>Регистрация</h1>
-      <form onSubmit={(e) => registrationHandler(e, formData)}>
-        <label htmlFor="name">Введите login</label>
-        <input
-          name="name"
-          type="text"
-          value={formData.name}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="email">Введите email</label>
-        <input
-          name="email"
-          type="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="password">Введите password</label>
-        <input
-          name="password"
-          type="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="confirmPassword">Повторите password</label>
-        <input
-          name="confirmPassword"
-          type="password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-        />
-
-        <button type="submit">Зарегистрироваться</button>
-      </form>
-    </div>
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Регистрация
+        </Typography>
+        <form onSubmit={registrationHandler} noValidate>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Логин"
+            name="name"
+            type="text"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Пароль"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Повторите пароль"
+            name="confirmPassword"
+            type="password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Зарегистрироваться
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 }

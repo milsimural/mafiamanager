@@ -20,6 +20,12 @@ module.exports = {
       logo: {
         type: Sequelize.STRING,
       },
+      playerCount: {
+        type: Sequelize.INTEGER,
+      },
+      avrElo: {
+        type: Sequelize.FLOAT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

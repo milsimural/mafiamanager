@@ -44,6 +44,18 @@ module.exports = {
       skills: {
         type: Sequelize.STRING,
       },
+      elo: {
+        type: Sequelize.INTEGER,
+      },
+      transfers: {
+        type: Sequelize.INTEGER,
+      },
+      dismissals: {
+        type: Sequelize.INTEGER,
+      },
+      marketingPack: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -20,7 +20,7 @@ authRouter.post('/registration', async (req, res) => {
   }
 
   const user = newUser.get();
-  delete user.hashpass;
+  delete user.password;
   const { refreshToken, accessToken } = generateTokens({ user });
   res
     .status(200)
@@ -41,7 +41,7 @@ authRouter.post('/login', async (req, res) => {
   }
 
   const user = targetUser.get();
-  delete user.hashpass;
+  delete user.password;
   const { refreshToken, accessToken } = generateTokens({ user });
   res
     .status(200)
