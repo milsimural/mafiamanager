@@ -8,25 +8,25 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
+    static associate({ Club }) {
+      this.belongsTo(Club, { foreignKey: 'clubId' });
     }
   }
   Player.init(
     {
       nickname: DataTypes.STRING,
       picture: DataTypes.STRING,
-      rating: DataTypes.INTEGER,
+      stars: DataTypes.INTEGER,
       costcoins: DataTypes.INTEGER,
       costgems: DataTypes.INTEGER,
       bio: DataTypes.TEXT,
       ismarket: DataTypes.BOOLEAN,
-      clubid: DataTypes.INTEGER,
+      clubId: DataTypes.INTEGER,
       skills: DataTypes.STRING,
       elo: DataTypes.INTEGER,
       transfers: DataTypes.INTEGER,
       dismissals: DataTypes.INTEGER,
-      marketingPack: DataTypes.STRING,
+      gomafiaId: DataTypes.INTEGER,
     },
     {
       sequelize,

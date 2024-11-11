@@ -14,17 +14,23 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      city: {
+        type: Sequelize.STRING,
+      },
+      country: {
+        type: Sequelize.STRING,
+      },
       borndate: {
         type: Sequelize.DATEONLY,
       },
       logo: {
         type: Sequelize.STRING,
       },
-      playerCount: {
+      playersCount: {
         type: Sequelize.INTEGER,
       },
       avrElo: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,

@@ -26,7 +26,7 @@ export default function LoginPage({ setUser }) {
         console.error("Ошибка ответа сервера:", error.response.data);
         alert(
           "Ошибка при входе: " +
-            (error.response.data.message || "Неизвестная ошибка сервера.")
+            (error.response.data.text || "Неизвестная ошибка сервера.")
         );
       } else if (error.request) {
         console.error("Сервер не ответил:", error.request);

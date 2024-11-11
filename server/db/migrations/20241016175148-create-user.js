@@ -50,34 +50,13 @@ module.exports = {
         allowNull: false,
         defaultValue: false,
       },
-      pass: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-        },
-      passStart: {
-        type: Sequelize.DATE,
-      },
       passEnd: {
         type: Sequelize.DATE,
-      },
-      constructLeague: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
       },
       accountPower: {
         type: Sequelize.FLOAT,
         allowNull: false,
         defaultValue: 0,
-      },
-      draftLeague: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-      },
-      lastLogin: {
-        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,

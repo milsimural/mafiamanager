@@ -17,7 +17,7 @@ module.exports = {
       picture: {
         type: Sequelize.STRING,
       },
-      rating: {
+      stars: {
         type: Sequelize.INTEGER,
       },
       costcoins: {
@@ -34,12 +34,14 @@ module.exports = {
         allowNull: false,
         defaultValue: true,
       },
-      clubid: {
+      clubId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Clubs',
           key: 'id',
         },
+        allowNull: true,
+        onDelete: 'SET NULL',
       },
       skills: {
         type: Sequelize.STRING,
@@ -53,8 +55,8 @@ module.exports = {
       dismissals: {
         type: Sequelize.INTEGER,
       },
-      marketingPack: {
-        type: Sequelize.STRING,
+      gomafiaId: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
