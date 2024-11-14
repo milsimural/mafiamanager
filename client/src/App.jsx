@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./components/pages/HomePage";
+import HomePage from "./components/pages/HomePage/HomePage";
 import Layout from "./components/Layout";
 import RegistrationPage from "./components/pages/RegistrationPage";
-import LoginPage from "./components/pages/LoginPage";
+import LoginPage from "./components/pages/LoginPage/LoginPage";
 import axiosInstance from "./axiosInstance";
 import { setAccessToken } from "./axiosInstance";
 import UsersPage from "./components/pages/admin/UsersPage";

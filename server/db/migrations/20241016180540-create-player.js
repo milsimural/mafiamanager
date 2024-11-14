@@ -20,6 +20,9 @@ module.exports = {
       stars: {
         type: Sequelize.INTEGER,
       },
+      power: {
+        type: Sequelize.INTEGER,
+      },
       costcoins: {
         type: Sequelize.INTEGER,
       },
@@ -58,6 +61,24 @@ module.exports = {
       gomafiaId: {
         type: Sequelize.INTEGER,
       },
+      countryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Countries',
+          key: 'id',
+        },
+        onDelete: 'SET NULL',
+        allowNull: true,
+      },
+      cityId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Cities',
+          key: 'id',
+        },
+        onDelete: 'SET NULL',
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -70,7 +91,7 @@ module.exports = {
       },
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Players');
   },
 };

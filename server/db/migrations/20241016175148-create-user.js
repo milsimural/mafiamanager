@@ -45,6 +45,16 @@ module.exports = {
         allowNull: false,
         defaultValue: false,
       },
+      isModerator: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      isBanned: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       paidAccountGoMafia: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
@@ -70,7 +80,7 @@ module.exports = {
       },
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Users');
   },
 };
