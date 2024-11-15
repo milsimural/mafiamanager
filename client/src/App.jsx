@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./components/pages/HomePage/HomePage";
 import Layout from "./components/Layout";
-import RegistrationPage from "./components/pages/RegistrationPage";
-import LoginPage from "./components/pages/LoginPage/LoginPage";
+import RegistrationPage from "./components/pages/Auth/RegistrationPage";
+import LoginPage from "./components/pages/Auth/LoginPage";
 import axiosInstance from "./axiosInstance";
 import { setAccessToken } from "./axiosInstance";
 import UsersPage from "./components/pages/admin/UsersPage";
 import TournamentsPage from "./components/pages/TournamentsPage";
-import AccountPage from "./components/pages/AccountPage";
+import AccountPage from "./components/pages/Account/AccountPage";
 import MinicupPage from "./components/pages/MinicupPage";
 
 function App() {
@@ -56,7 +56,7 @@ function App() {
         },
         {
           path: "/account",
-          element: <AccountPage user={user} />,
+          element: <AccountPage user={user} logoutHandler={logoutHandler}/>,
         },
         {
           path: "/minicup/manage/:id",

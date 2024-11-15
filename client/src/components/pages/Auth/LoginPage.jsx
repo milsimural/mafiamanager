@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance, { setAccessToken } from "../../../axiosInstance";
-import styles from "src/components/pages/LoginPage/LoginPage.module.css";
-import backgroundImage from "src/components/pages/LoginPage/fon-green-red-2x.png";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import styles from "src/components/pages/Auth/LoginPage.module.css";
+import backgroundImage from "src/components/pages/Auth/fon-green-red-2x.png";
+import buttonImage from "src/components/pages/Auth/button-login.png";
+import regImage from "src/components/pages/Auth/reg.png";
 
 export default function LoginPage({ setUser }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [allowLogin, setAllowLogin] = useState(false);
+
+  useEffect(() => {
+    setAllowLogin(formData.email.length > 0 && formData.password.length > 0);
+  }, [formData]);
 
   const handleChange = (e) => {
     setFormData({
@@ -50,18 +59,16 @@ export default function LoginPage({ setUser }) {
         </div>
         <form onSubmit={loginHandler} noValidate>
           <div className={styles.formGroup}>
-            <div className={styles.forInputWrapper}>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className={styles.formInput}
-                placeholder="Email*"
-              />
-            </div>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className={styles.formInput}
+              placeholder="Email*"
+            />
           </div>
           <div className={styles.formGroup}>
             <input
@@ -75,7 +82,20 @@ export default function LoginPage({ setUser }) {
               placeholder="Пароль*"
             />
           </div>
-          <button type="submit" className={styles.submitButton}>
+          <div className={styles.register}>
+            <div>
+              <Link to="/registration">Регистрация</Link>
+            </div>
+            <Link to="/registration">
+              <img src={regImage} alt="registration" />
+            </Link>
+          </div>
+          <button
+            type="submit"
+            style={{ backgroundImage: `url(${buttonImage})` }}
+            className={styles.submitButton}
+            disabled={!allowLogin}
+          >
             Войти
           </button>
         </form>
@@ -83,3 +103,7 @@ export default function LoginPage({ setUser }) {
     </div>
   );
 }
+
+LoginPage.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};
