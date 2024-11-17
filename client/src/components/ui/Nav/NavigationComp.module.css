@@ -43,3 +43,7 @@ nav img {
   align-items: center;
   margin-left: auto;
 }
+
+.user button {
+  margin-left: 10px;
+}

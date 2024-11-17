@@ -21,6 +21,9 @@ module.exports = {
       avatar: {
         type: Sequelize.STRING,
       },
+      frame: {
+        type: Sequelize.STRING,
+      },
       coins: {
         type: Sequelize.INTEGER,
         allowNull: false,

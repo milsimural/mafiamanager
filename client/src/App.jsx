@@ -8,8 +8,8 @@ import axiosInstance from "./axiosInstance";
 import { setAccessToken } from "./axiosInstance";
 import UsersPage from "./components/pages/admin/UsersPage";
 import TournamentsPage from "./components/pages/TournamentsPage";
-import AccountPage from "./components/pages/Account/AccountPage";
-import MinicupPage from "./components/pages/MinicupPage";
+import AccountPage from "./components/pages/Account/TeamPage";
+import MagazinePage from "./components/pages/Magazine/MagazinePage";
 
 function App() {
   const [user, setUser] = useState();
@@ -56,11 +56,11 @@ function App() {
         },
         {
           path: "/account",
-          element: <AccountPage user={user} logoutHandler={logoutHandler}/>,
+          element: <AccountPage user={user} logoutHandler={logoutHandler} />,
         },
         {
-          path: "/minicup/manage/:id",
-          element: <MinicupPage user={user} />,
+          path: "/magazine",
+          element: <MagazinePage user={user} logoutHandler={logoutHandler} />,
         },
       ],
     },

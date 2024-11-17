@@ -341,6 +341,14 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: 'GURU',
+        cityId: 1,
+        countryId: 1,
+        ticker: 'GURU',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
     ]);
   },
 

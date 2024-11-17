@@ -1,0 +1,242 @@
+.shopCard {
+  width: 300px;
+  height: 445px;
+  color: #fff;
+  background-color: #1d1a1d;
+  position: relative;
+  border-radius: 7px;
+}
+
+.foto {
+  width: 100%;
+  height: 100%;
+}
+
+.foto img {
+  margin-top: 30px;
+}
+
+.gray {
+  /* background-color: #636164; */
+  border: 3px solid #595959;
+  box-sizing: border-box;
+}
+
+.grayBackground,
+.greenBackground,
+.blueBackground,
+.violetBackground,
+.goldBackground {
+  background-position: 48% 110%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.grayInfo {
+  width: 100%;
+  height: 106px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #636164;
+  box-shadow: 0 0 11px 6px rgba(89, 89, 89, 0.35);
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+}
+
+.element {
+  position: absolute;
+  width: 142px;
+  height: 162px;
+  top: 62%;
+  left: 51%;
+}
+
+.elementgreen {
+  position: absolute;
+  width: 227px;
+  height: 227px;
+  top: 57%;
+  left: 35%;
+}
+
+.elementblue {
+  position: absolute;
+  width: 157px;
+  height: 167px;
+  top: 61%;
+  left: 48%;
+}
+
+.elementviolet {
+  position: absolute;
+  width: 166px;
+  height: 161px;
+  top: 63%;
+  left: 46%;
+}
+
+.elementgold {
+  position: absolute;
+  width: 168px;
+  height: 159px;
+  top: 62%;
+  left: 45%;
+}
+
+.stars {
+  position: absolute;
+  top: 351px;
+  left: 14px;
+}
+
+.nickname {
+  position: absolute;
+  top: 364px;
+  left: 14px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+  width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.power {
+  position: absolute;
+  top: 395px;
+  left: 14px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.power img {
+  margin-right: 7px;
+}
+
+.sign {
+  font-size: 14px;
+  text-transform: uppercase;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  height: 30px;
+  border-radius: 4px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.graySign {
+  background-color: #595959;
+}
+
+.sign .clubName {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.sign img {
+  margin-left: 8px;
+}
+
+.green {
+  /* background-color: #12A064; */
+  border: 3px solid #068c53;
+  box-sizing: border-box;
+}
+
+.greenSign {
+  background-color: #068c53;
+}
+
+.greenInfo {
+  width: 100%;
+  height: 106px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #068c53;
+  box-shadow: 0 0 11px 6px rgba(6, 140, 83, 0.35);
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+}
+
+.blue {
+  /* background-color: #0854D1; */
+  border: 3px solid #0854d1;
+  box-sizing: border-box;
+}
+
+.blueSign {
+  background-color: #2e5ecd;
+}
+
+.blueInfo {
+  width: 100%;
+  height: 106px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #2e5ecd;
+  box-shadow: 0 0 11px 6px rgba(46, 94, 205, 0.35);
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+}
+
+.violet {
+  /* background-color: #852ABE; */
+  border: 3px solid #4e355e;
+  box-sizing: border-box;
+}
+
+.violetSign {
+  background-color: #4e355e;
+}
+
+.violetInfo {
+  width: 100%;
+  height: 106px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #4e355e;
+  box-shadow: 0 0 11px 6px rgba(78, 53, 94, 0.35);
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+}
+
+.gold {
+  /* background-color: #B59961; */
+  border: 3px solid #997d45;
+  box-sizing: border-box;
+}
+
+.goldSign {
+  background-color: #997d45;
+}
+
+.goldInfo {
+  width: 100%;
+  height: 106px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #997d45;
+  box-shadow: 0 0 11px 6px rgba(153, 125, 69, 0.35);
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+}
