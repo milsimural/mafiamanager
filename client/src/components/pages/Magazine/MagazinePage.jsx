@@ -20,6 +20,17 @@ export default function MagazinePage({ user, logoutHandler }) {
       });
   }, []);
 
+  function buyPlayer(playerId, userId) {
+    axiosInstance
+      .post(`/players/buy/${playerId}/${userId}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error("Ошибка при покупке игрока:", error);
+      });
+  }
+
   return (
     <>
       <div
@@ -44,7 +55,7 @@ export default function MagazinePage({ user, logoutHandler }) {
             {players.map((player) => (
               <div className={styles.playerWrapper} key={player.nickname}>
                 <div className={styles.player}>
-                  <ShopCard player={player} shop={true} />
+                  <ShopCard user={user} player={player} shop={true} buyPlayer={buyPlayer} />
                 </div>
               </div>
             ))}

@@ -22,7 +22,7 @@ import powerImage from "src/components/ui/Cards/power.svg";
 import buyImage from "src/components/ui/Cards/buy2x.png";
 import coinsImage from "src/components/ui/Nav/coins.png";
 
-export default function ShopCard({ player, shop }) {
+export default function ShopCard({ user, player, shop, buyPlayer }) {
   const getColorByStars = (stars) => {
     switch (stars) {
       case 1:
@@ -104,7 +104,10 @@ export default function ShopCard({ player, shop }) {
 
       {shop && (
         <div className={styles.buy}>
-          <button style={{ backgroundImage: `url(${buyImage})` }}>
+          <button
+            onClick={() => buyPlayer(player.id, user.id)}
+            style={{ backgroundImage: `url(${buyImage})` }}
+          >
             <img
               src={coinsImage}
               alt={`${player.nickname}: ${player.costcoins}`}
@@ -118,6 +121,8 @@ export default function ShopCard({ player, shop }) {
 }
 
 ShopCard.propTypes = {
+  user: PropTypes.object.isRequired,
   player: PropTypes.object.isRequired,
   shop: PropTypes.bool,
+  buyPlayer: PropTypes.func,
 };

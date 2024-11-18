@@ -1,8 +1,10 @@
 const { Router } = require('express');
 
-const { Player, Club } = require('../../db/models');
+const { Player, User, Club, Team, Transaction } = require('../../db/models');
 
 const playerRouter = Router();
+
+const verifyAccessToken = require('../middlewares/verifyAccessToken');
 
 playerRouter.get('/', async (req, res) => {
   try {
@@ -18,13 +20,43 @@ playerRouter.get('/', async (req, res) => {
   }
 });
 
-playerRouter.post('/add', async (req, res) => {
+playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) => {
   try {
-    const player = req.body;
-    const newPlayer = await Player.create(player);
-    res.status(200).json(newPlayer);
+    const { playerId } = req.params;
+    const { userId } = req.params;
+    const player = await Player.findByPk(playerId);
+    if (!player) {
+      return res.status(404).send('Игрок не найден');
+    }
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).send('Пользователь не найден');
+    }
+
+    user.coins -= player.costcoins;
+    await user.save();
+
+    await Team.create({
+      ownerid: userId,
+      playerid: playerId,
+      level: 0,
+      exp: 0,
+      tournaments: 0,
+      pointsgain: 0,
+      coinsprofit: 0,
+      gemsprofit: 0,
+      stats: '[]',
+    });
+    await Transaction.create({
+      userId,
+      type: 'buyPlayer',
+      playerId,
+      amount: player.costcoins,
+    });
+
+    res.status(200).send('Игрок успешно куплен');
   } catch (error) {
-    res.status(500).json({ error: `Ошибка при создании игрока ${error.message}` });
+    res.status(500).json({ error: `Ошибка при покупке игрока: ${error.message}` });
   }
 });
 

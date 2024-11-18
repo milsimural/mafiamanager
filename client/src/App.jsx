@@ -29,6 +29,8 @@ function App() {
       .catch(() => setUser(null));
   }, []);
 
+  
+
   const router = createBrowserRouter([
     {
       path: "/",
