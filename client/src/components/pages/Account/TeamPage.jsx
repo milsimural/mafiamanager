@@ -1,104 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "src/components/pages/Account/TeamPage.module.css";
 import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
 import bigCoinImage from "src/components/files/big-coin20.png";
 import ShopCard from "src/components/ui/Cards/ShopCard";
+import axiosInstance from "src/axiosInstance";
 
 export default function AccountPage({ user, logoutHandler }) {
-  const players = [
-    {
-      stars: 1,
-      nickname: "Растишка",
-      power: 30,
-      clubId: 1,
-    },
-    {
-      stars: 2,
-      nickname: "Пельмень",
-      power: 20,
-      clubId: 1,
-    },
-    {
-      stars: 3,
-      nickname: "Капуст",
-      power: 70,
-      clubId: 1,
-    },
-    {
-      stars: 4,
-      nickname: "Куст",
-      power: 90,
-      clubId: 1,
-    },
-    {
-      stars: 5,
-      nickname: "Побег",
-      power: 90,
-      clubId: 1,
-    },
-    {
-      stars: 1,
-      nickname: "Растишка",
-      power: 30,
-      clubId: 1,
-    },
-    {
-      stars: 2,
-      nickname: "Пельмень",
-      power: 20,
-      clubId: 1,
-    },
-    {
-      stars: 3,
-      nickname: "Капуст",
-      power: 70,
-      clubId: 1,
-    },
-    {
-      stars: 4,
-      nickname: "Куст",
-      power: 90,
-      clubId: 1,
-    },
-    {
-      stars: 5,
-      nickname: "Побег",
-      power: 90,
-      clubId: 1,
-    },
-    {
-      stars: 1,
-      nickname: "Растишка",
-      power: 30,
-      clubId: 1,
-    },
-    {
-      stars: 2,
-      nickname: "Пельмень",
-      power: 20,
-      clubId: 1,
-    },
-    {
-      stars: 3,
-      nickname: "Капуст",
-      power: 70,
-      clubId: 1,
-    },
-    {
-      stars: 4,
-      nickname: "Куст",
-      power: 90,
-      clubId: 1,
-    },
-    {
-      stars: 5,
-      nickname: "Побег",
-      power: 90,
-      clubId: 1,
-    },
-  ];
+  const [players, setPlayers] = useState([]);
+
+  useEffect(() => {
+    axiosInstance
+      .get("/players")
+      .then((res) => {
+        setPlayers(res.data);
+      })
+      .catch((error) => {
+        console.error("Ошибка при получении списка игроков:", error);
+      });
+  }, []);
 
   return (
     <>
@@ -122,7 +43,7 @@ export default function AccountPage({ user, logoutHandler }) {
                 {players.map((player) => (
                   <div className={styles.playerWrapper} key={player.nickname}>
                     <div className={styles.player}>
-                      <ShopCard player={player} />
+                      <ShopCard player={player} shop={false} />
                     </div>
                   </div>
                 ))}

@@ -5,6 +5,45 @@
   background-color: #1d1a1d;
   position: relative;
   border-radius: 7px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.buy {
+    width: 300px;
+    height: 140px;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.buy button {
+    width: calc(91px * 2);
+    height: calc(40px * 2);
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: calc(11px * 2);
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-family: "Montserrat", sans-serif;
+}
+
+.buy img {
+    width: calc(10px * 2);
+    height: calc(10px * 2);
+    margin-right: calc(3px* 2);
+    margin-bottom: 10px;
+}
+
+.buttonText {
+    margin-bottom: 11px;
 }
 
 .foto {

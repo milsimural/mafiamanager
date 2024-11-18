@@ -1,5 +1,5 @@
-import React from "react";
 import classNames from "classnames";
+import PropTypes from "prop-types";
 import styles from "src/components/ui/Cards/Cards.module.css";
 
 import grayBlurImagePng from "src/components/ui/Cards/gray-blur.png";
@@ -19,7 +19,10 @@ import russiaImage from "src/components/ui/Cards/countries/russia.png";
 import StarsComponent from "src/components/ui/Cards/StarsComponent/StarsComponent";
 import powerImage from "src/components/ui/Cards/power.svg";
 
-export default function ShopCard({ player }) {
+import buyImage from "src/components/ui/Cards/buy2x.png";
+import coinsImage from "src/components/ui/Nav/coins.png";
+
+export default function ShopCard({ player, shop }) {
   const getColorByStars = (stars) => {
     switch (stars) {
       case 1:
@@ -69,35 +72,52 @@ export default function ShopCard({ player }) {
   const elementImage = elementImages[color];
   const blurImage = blurImages[color];
 
-  const clubName = "red elvis";
-
   return (
-    <div className={classNames(styles.shopCard, styles[color])}>
-      <div
-        className={classNames(styles[`${color}Background`])}
-        style={{ backgroundImage: `url(${blurImage})` }}
-      >
-        <div className={styles.foto}>
-          <img src={testImage} alt={player.name} />
-        </div>
-        <div className={classNames(styles[`${color}Info`])}></div>
+    <>
+      <div className={classNames(styles.shopCard, styles[color])}>
         <div
-          className={`${styles.element} ${styles[`element${color}`]}`}
-          style={{ backgroundImage: `url(${elementImage})` }}
-        ></div>
-        <div className={classNames(styles.sign, styles[`${color}Sign`])}>
-          <img src={countryImage} alt={player.countryId} />
-          <div className={styles.clubName}>{clubName}</div>
-        </div>
-        <div className={styles.stars}>
-          <StarsComponent stars={player.stars} />
-        </div>
-        <div className={styles.nickname}>{player.nickname}</div>
-        <div className={styles.power}>
-          <img src={powerImage} alt={`${player.nickname}: ${player.power}`} />
-          {player.power}
+          className={classNames(styles[`${color}Background`])}
+          style={{ backgroundImage: `url(${blurImage})` }}
+        >
+          <div className={styles.foto}>
+            <img src={testImage} alt={player.name} />
+          </div>
+          <div className={classNames(styles[`${color}Info`])}></div>
+          <div
+            className={`${styles.element} ${styles[`element${color}`]}`}
+            style={{ backgroundImage: `url(${elementImage})` }}
+          ></div>
+          <div className={classNames(styles.sign, styles[`${color}Sign`])}>
+            <img src={countryImage} alt={player.countryId} />
+            <div className={styles.clubName}>{player.Club.ticker}</div>
+          </div>
+          <div className={styles.stars}>
+            <StarsComponent stars={player.stars} />
+          </div>
+          <div className={styles.nickname}>{player.nickname}</div>
+          <div className={styles.power}>
+            <img src={powerImage} alt={`${player.nickname}: ${player.power}`} />
+            {player.power}
+          </div>
         </div>
       </div>
-    </div>
+
+      {shop && (
+        <div className={styles.buy}>
+          <button style={{ backgroundImage: `url(${buyImage})` }}>
+            <img
+              src={coinsImage}
+              alt={`${player.nickname}: ${player.costcoins}`}
+            />
+            <div className={styles.buttonText}>{player.costcoins}</div>
+          </button>
+        </div>
+      )}
+    </>
   );
 }
+
+ShopCard.propTypes = {
+  player: PropTypes.object.isRequired,
+  shop: PropTypes.bool,
+};

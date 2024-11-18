@@ -8,7 +8,7 @@ module.exports = {
       [
         {
           nickname: 'Варабей',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 39,
           costcoins: 1000,
@@ -23,7 +23,7 @@ module.exports = {
         },
         {
           nickname: 'Попс',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 58,
           costcoins: 1000,
@@ -38,7 +38,7 @@ module.exports = {
         },
         {
           nickname: 'Клюква',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 2,
           power: 50,
           costcoins: 2000,
@@ -53,7 +53,7 @@ module.exports = {
         },
         {
           nickname: 'Бэтмен',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 46,
           costcoins: 1000,
@@ -68,7 +68,7 @@ module.exports = {
         },
         {
           nickname: 'Berlioz',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 37,
           costcoins: 1000,
@@ -83,7 +83,7 @@ module.exports = {
         },
         {
           nickname: 'LeBron',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 3,
           power: 74,
           costcoins: 4000,
@@ -98,7 +98,7 @@ module.exports = {
         },
         {
           nickname: 'Phara',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 3,
           power: 64,
           costcoins: 4000,
@@ -113,7 +113,7 @@ module.exports = {
         },
         {
           nickname: 'Ля-Ля',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 58,
           costcoins: 2000,
@@ -128,7 +128,7 @@ module.exports = {
         },
         {
           nickname: 'Стрелец',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 53,
           costcoins: 1000,
@@ -143,7 +143,7 @@ module.exports = {
         },
         {
           nickname: 'Hanna Montana',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 53,
           costcoins: 1000,
@@ -158,7 +158,7 @@ module.exports = {
         },
         {
           nickname: 'Гаечка',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 3,
           power: 62,
           costcoins: 4000,
@@ -173,7 +173,7 @@ module.exports = {
         },
         {
           nickname: 'NaLabuteNAX',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 51,
           costcoins: 1000,
@@ -188,7 +188,7 @@ module.exports = {
         },
         {
           nickname: 'Кэри',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 2,
           power: 56,
           costcoins: 2000,
@@ -203,7 +203,7 @@ module.exports = {
         },
         {
           nickname: 'rdrk',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 3,
           power: 54,
           costcoins: 4000,
@@ -218,7 +218,7 @@ module.exports = {
         },
         {
           nickname: 'Ривер',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 2,
           power: 58,
           costcoins: 2000,
@@ -233,7 +233,7 @@ module.exports = {
         },
         {
           nickname: 'ARES',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 2,
           power: 56,
           costcoins: 2000,
@@ -248,7 +248,7 @@ module.exports = {
         },
         {
           nickname: 'ИхтиАндр',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 47,
           costcoins: 1000,
@@ -263,7 +263,7 @@ module.exports = {
         },
         {
           nickname: 'Булыжник',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 58,
           costcoins: 1000,
@@ -278,7 +278,7 @@ module.exports = {
         },
         {
           nickname: 'Асмодея',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 52,
           costcoins: 1000,
@@ -293,7 +293,7 @@ module.exports = {
         },
         {
           nickname: 'Пуля',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 45,
           costcoins: 1000,
@@ -308,7 +308,7 @@ module.exports = {
         },
         {
           nickname: 'Лотсо',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 51,
           costcoins: 1000,
@@ -323,7 +323,7 @@ module.exports = {
         },
         {
           nickname: 'Снорк',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 30,
           costcoins: 1000,
@@ -338,7 +338,7 @@ module.exports = {
         },
         {
           nickname: 'Провокация.',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 57,
           costcoins: 1000,
@@ -353,7 +353,7 @@ module.exports = {
         },
         {
           nickname: 'Инструктор на порше',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 63,
           costcoins: 1000,
@@ -368,7 +368,7 @@ module.exports = {
         },
         {
           nickname: 'фederal',
-          picture: 'base.jpg',
+          picture: 'base.png',
           stars: 1,
           power: 56,
           costcoins: 1000,

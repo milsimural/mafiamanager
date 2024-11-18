@@ -47,3 +47,10 @@ nav img {
 .user button {
   margin-left: 10px;
 }
+
+.link {
+    color: #fff;
+    text-decoration: none;
+}
+
+.spacer {margin-left: 5px;}
