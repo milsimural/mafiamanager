@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const bcrypt = require('bcrypt');
 
 const { Player, Club } = require('../../db/models');
 

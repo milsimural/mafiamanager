@@ -23,6 +23,15 @@ module.exports = {
       power: {
         type: Sequelize.INTEGER,
       },
+      powerHistory: {
+        type: Sequelize.STRING,
+      },
+      costcoinsHistory: {
+        type: Sequelize.STRING,
+      },
+      costgemsHistory: {
+        type: Sequelize.STRING,
+      },
       costcoins: {
         type: Sequelize.INTEGER,
       },

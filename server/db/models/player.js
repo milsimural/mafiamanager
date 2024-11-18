@@ -8,10 +8,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Club, City, Country }) {
+    static associate({ Club, City, Country, User, Team }) {
       this.belongsTo(Club, { foreignKey: 'clubId' });
       this.belongsTo(City, { foreignKey: 'cityId' });
       this.belongsTo(Country, { foreignKey: 'countryId' });
+      this.belongsToMany(User, { through: Team });
     }
   }
   Player.init(
@@ -20,8 +21,11 @@ module.exports = (sequelize, DataTypes) => {
       picture: DataTypes.STRING,
       stars: DataTypes.INTEGER,
       power: DataTypes.INTEGER,
+      powerHistory: DataTypes.STRING,
       costcoins: DataTypes.INTEGER,
+      costcoinsHistory: DataTypes.STRING,
       costgems: DataTypes.INTEGER,
+      costgemsHistory: DataTypes.STRING,
       bio: DataTypes.TEXT,
       ismarket: DataTypes.BOOLEAN,
       clubId: DataTypes.INTEGER,
