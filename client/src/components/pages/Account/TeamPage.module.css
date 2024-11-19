@@ -41,6 +41,10 @@ html {
   justify-content: flex-end;
 }
 
+.burger {
+  margin-right: auto;
+}
+
 h1 {
   color: #fff;
   font-weight: bold;

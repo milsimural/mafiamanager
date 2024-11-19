@@ -40,6 +40,10 @@ body {
   justify-content: flex-end;
 }
 
+.burger {
+    margin-right: auto;
+}
+
 .magazineNavigation {
   display: flex;
   flex-direction: row;

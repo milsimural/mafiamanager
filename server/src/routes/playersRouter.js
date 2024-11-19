@@ -20,6 +20,29 @@ playerRouter.get('/', async (req, res) => {
   }
 });
 
+playerRouter.get('/myteam/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const teamPlayers = await Team.findAll({
+        where: { ownerid: userId },
+        include: {
+          model: Player,
+          as: 'player',  
+          include: {
+            model: Club,
+            as: 'Club',  
+            attributes: ['ticker'],  
+          },
+        },
+      });
+      res.json(teamPlayers);
+    } catch (error) {
+      res.status(500).json({ error: `Ошибка при получении всех игроков: ${error.message}` });
+    }
+  });
+  
+  
+
 playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) => {
   try {
     const { playerId } = req.params;

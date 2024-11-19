@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from "src/components/pages/Magazine/MagazinePage.module.css";
 import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
+import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
 import ShopCard from "src/components/ui/Cards/ShopCard";
 import axiosInstance from "src/axiosInstance";
 
@@ -39,6 +40,9 @@ export default function MagazinePage({ user, logoutHandler }) {
       >
         <div className={styles.wrapper}>
           <div className={styles.nav}>
+            <div className={styles.burger}>
+              <BurgerMenuComp />
+            </div>
             <NavigationComp user={user} logoutHandler={logoutHandler} />
           </div>
           <div className={styles.magazineNavigation}>
@@ -55,7 +59,12 @@ export default function MagazinePage({ user, logoutHandler }) {
             {players.map((player) => (
               <div className={styles.playerWrapper} key={player.nickname}>
                 <div className={styles.player}>
-                  <ShopCard user={user} player={player} shop={true} buyPlayer={buyPlayer} />
+                  <ShopCard
+                    user={user}
+                    player={player}
+                    shop={true}
+                    buyPlayer={buyPlayer}
+                  />
                 </div>
               </div>
             ))}

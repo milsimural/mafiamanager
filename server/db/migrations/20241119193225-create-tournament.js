@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Federations', {
+    await queryInterface.createTable('Tournaments', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,24 +12,37 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
-      logo: {
+      gomafiaId: {
+        type: Sequelize.INTEGER,
+      },
+      date_start: {
+        type: Sequelize.DATEONLY,
+      },
+      date_end: {
+        type: Sequelize.DATEONLY,
+      },
+      cityId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Cities',
+          key: 'id',
+        },
+      },
+      status: {
         type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
       },
     });
   },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Federations');
+  async down(queryInterface) {
+    await queryInterface.dropTable('Tournaments');
   },
 };
