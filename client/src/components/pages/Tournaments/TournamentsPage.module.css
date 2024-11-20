@@ -1,0 +1,21 @@
+.twoCol {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.leftCol {
+}
+
+.rigthCol {
+
+}
+
+.tournamentList {
+}
+
+.tournamentCard {
+}
+
+.tournamentName {
+}

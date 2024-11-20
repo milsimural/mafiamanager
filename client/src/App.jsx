@@ -7,7 +7,7 @@ import LoginPage from "./components/pages/Auth/LoginPage";
 import axiosInstance from "./axiosInstance";
 import { setAccessToken } from "./axiosInstance";
 import UsersPage from "./components/pages/admin/UsersPage";
-import TournamentsPage from "./components/pages/TournamentsPage";
+import TournamentsPage from "./components/pages/Tournaments/TournamentsPage";
 import AccountPage from "./components/pages/Account/TeamPage";
 import MagazinePage from "./components/pages/Magazine/MagazinePage";
 
