@@ -1,4 +1,5 @@
 'use strict';
+
 const {
   Model
 } = require('sequelize');
@@ -19,7 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     date_start: DataTypes.DATEONLY,
     date_end: DataTypes.DATEONLY,
     cityId: DataTypes.INTEGER,
-    status: DataTypes.STRING
+    countryId: DataTypes.INTEGER,
+    status: DataTypes.STRING,
+    main_referee_id: DataTypes.INTEGER,
+    star: DataTypes.INTEGER,
+    type: DataTypes.STRING,
+    projected_count_of_participants: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Tournament',
