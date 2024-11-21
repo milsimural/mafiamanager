@@ -8,6 +8,7 @@ import axiosInstance from "./axiosInstance";
 import { setAccessToken } from "./axiosInstance";
 import UsersPage from "./components/pages/admin/UsersPage";
 import TournamentsPage from "./components/pages/Tournaments/TournamentsPage";
+import TournamentPage from "./components/pages/Tournaments/TournamentPage";
 import AccountPage from "./components/pages/Account/TeamPage";
 import MagazinePage from "./components/pages/Magazine/MagazinePage";
 
@@ -28,8 +29,6 @@ function App() {
       })
       .catch(() => setUser(null));
   }, []);
-
-  
 
   const router = createBrowserRouter([
     {
@@ -56,6 +55,7 @@ function App() {
           path: "/tournaments",
           element: <TournamentsPage />,
         },
+        { path: "/tournaments/:tournamentId", element: <TournamentPage /> },
         {
           path: "/account",
           element: <AccountPage user={user} logoutHandler={logoutHandler} />,

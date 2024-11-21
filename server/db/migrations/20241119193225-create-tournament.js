@@ -52,7 +52,7 @@ module.exports = {
       type: {
         type: Sequelize.STRING,
       },
-      projected_count_of_participant: {
+      projected_count_of_participants: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

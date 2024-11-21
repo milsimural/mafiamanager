@@ -15,7 +15,7 @@ tournamentRouter.get('/', async (req, res) => {
   }
 });
 
-tournamentRouter.get('/tournament/:id', async (req, res) => {
+tournamentRouter.get('/details/:id', async (req, res) => {
     try {
         const tournamentId = req.params.id;
         const tournamentData = await Tournament.findByPk(tournamentId);

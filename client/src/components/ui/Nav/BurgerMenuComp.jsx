@@ -37,6 +37,11 @@ export default function BurgerMenuComp() {
             Регистрация
           </Link>
         </li>
+        <li>
+          <Link className={styles.menuItem} to="/tournaments">
+            Турниры
+          </Link>
+        </li>
       </ul>
     </div>
   );

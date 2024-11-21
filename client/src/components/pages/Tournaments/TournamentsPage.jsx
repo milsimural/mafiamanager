@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "src/axiosInstance";
-import styles from "./TournamentsPage.module";
+import styles from "./TournamentsPage.module.css";
+import { Link } from "react-router-dom";
 
 export default function TournamentsPage() {
   const [tournamentsList, setTournamentsList] = useState([]);
@@ -23,7 +24,12 @@ export default function TournamentsPage() {
         <div className={styles.leftCol}>
           {tournamentsList.map((tournament) => (
             <div key={tournament.id} className={styles.tournamentCard}>
-              <div className={styles.tournamentName}>{tournament.name}</div>
+              <Link
+                to={`/tournaments/${tournament.id}`}
+                className={styles.tournamentLink}
+              >
+                <div className={styles.tournamentName}>{tournament.name}</div>
+              </Link>
             </div>
           ))}
         </div>
