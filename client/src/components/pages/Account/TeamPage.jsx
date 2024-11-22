@@ -8,7 +8,7 @@ import bigCoinImage from "src/components/files/big-coin20.png";
 import ShopCard from "src/components/ui/Cards/ShopCard";
 import axiosInstance from "src/axiosInstance";
 
-export default function AccountPage({ user, logoutHandler }) {
+export default function TeamPage({ user, logoutHandler }) {
   const [teamMembers, setTeamMembers] = useState([]);
   const [teamCost, setTeamCost] = useState(0);
 
@@ -74,7 +74,7 @@ export default function AccountPage({ user, logoutHandler }) {
   );
 }
 
-AccountPage.propTypes = {
-  user: PropTypes.object.isRequired,
+TeamPage.propTypes = {
+  user: PropTypes.object,
   logoutHandler: PropTypes.func.isRequired,
 };

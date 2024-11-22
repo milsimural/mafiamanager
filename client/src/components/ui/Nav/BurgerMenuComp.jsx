@@ -24,7 +24,7 @@ export default function BurgerMenuComp() {
         </li>
         <li>
           <Link className={styles.menuItem} to="/magazine">
-            Гонтракты
+            Контракты
           </Link>
         </li>
         <li>

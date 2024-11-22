@@ -76,6 +76,6 @@ export default function MagazinePage({ user, logoutHandler }) {
 }
 
 MagazinePage.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   logoutHandler: PropTypes.func.isRequired,
 };

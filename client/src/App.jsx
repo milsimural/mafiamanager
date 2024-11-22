@@ -9,7 +9,7 @@ import { setAccessToken } from "./axiosInstance";
 import UsersPage from "./components/pages/admin/UsersPage";
 import TournamentsPage from "./components/pages/Tournaments/TournamentsPage";
 import TournamentPage from "./components/pages/Tournaments/TournamentPage";
-import AccountPage from "./components/pages/Account/TeamPage";
+import TeamPage from "./components/pages/Account/TeamPage";
 import MagazinePage from "./components/pages/Magazine/MagazinePage";
 
 function App() {
@@ -41,11 +41,11 @@ function App() {
         },
         {
           path: "/registration",
-          element: <RegistrationPage setUser={setUser} />,
+          element: <RegistrationPage user={user} setUser={setUser} />,
         },
         {
           path: "/login",
-          element: <LoginPage setUser={setUser} />,
+          element: <LoginPage user={user} setUser={setUser} />,
         },
         {
           path: "/users",
@@ -53,12 +53,17 @@ function App() {
         },
         {
           path: "/tournaments",
-          element: <TournamentsPage />,
+          element: (
+            <TournamentsPage user={user} logoutHandler={logoutHandler} />
+          ),
         },
-        { path: "/tournaments/:tournamentId", element: <TournamentPage /> },
+        {
+          path: "/tournaments/:tournamentId",
+          element: <TournamentPage user={user} logoutHandler={logoutHandler} />,
+        },
         {
           path: "/account",
-          element: <AccountPage user={user} logoutHandler={logoutHandler} />,
+          element: <TeamPage user={user} logoutHandler={logoutHandler} />,
         },
         {
           path: "/magazine",

@@ -55,6 +55,13 @@ module.exports = {
       projected_count_of_participants: {
         type: Sequelize.INTEGER,
       },
+      isReady: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      playersList: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -7,7 +7,7 @@ import backgroundImage from "src/components/pages/Auth/fon-green-red-2x.png";
 import buttonImage from "src/components/pages/Auth/button-login.png";
 import loginImage from "src/components/pages/Auth/login.png";
 
-export default function RegistrationPage({ setUser }) {
+export default function RegistrationPage({ user, setUser }) {
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -137,5 +137,6 @@ export default function RegistrationPage({ setUser }) {
 }
 
 RegistrationPage.propTypes = {
+  user: PropTypes.object,
   setUser: PropTypes.func.isRequired,
 };

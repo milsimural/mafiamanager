@@ -13632,3 +13632,5 @@ const exampleData = {
     "gssp": true,
     "scriptLoader": []
 }
+
+export default exampleData;

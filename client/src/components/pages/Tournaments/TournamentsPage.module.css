@@ -1,22 +1,39 @@
 .twoCol {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    color: #fff;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  color: #fff;
 }
 
 .leftCol {
 }
 
 .rigthCol {
-
 }
 
 .tournamentList {
 }
 
 .tournamentCard {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
-.tournamentName {
+.tournamentCard .date {
+  margin-right: 14px;
+}
+
+.tournamentCard .projectedCount {
+  margin-right: 14px;
+}
+
+.tournamentCard .tournamentName {
+  margin-right: 14px;
+}
+
+.tournamentCard .ready {
+}
+
+.tournamentCard .ready button {
 }

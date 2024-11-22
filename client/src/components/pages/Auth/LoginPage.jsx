@@ -1,18 +1,25 @@
 import { useState, useEffect } from "react";
 import axiosInstance, { setAccessToken } from "../../../axiosInstance";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "src/components/pages/Auth/LoginPage.module.css";
 import backgroundImage from "src/components/pages/Auth/fon-green-red-2x.png";
 import buttonImage from "src/components/pages/Auth/button-login.png";
 import regImage from "src/components/pages/Auth/reg.png";
 
-export default function LoginPage({ setUser }) {
+export default function LoginPage({ user, setUser }) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [allowLogin, setAllowLogin] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/account");
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     setAllowLogin(formData.email.length > 0 && formData.password.length > 0);
@@ -105,5 +112,6 @@ export default function LoginPage({ setUser }) {
 }
 
 LoginPage.propTypes = {
+  user: PropTypes.object,
   setUser: PropTypes.func.isRequired,
 };
