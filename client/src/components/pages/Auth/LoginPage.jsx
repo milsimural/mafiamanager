@@ -17,7 +17,7 @@ export default function LoginPage({ user, setUser }) {
 
   useEffect(() => {
     if (user) {
-      navigate("/account");
+      navigate("/team");
     }
   }, [user, navigate]);
 

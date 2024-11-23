@@ -7,7 +7,7 @@ import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
 import ShopCard from "src/components/ui/Cards/ShopCard";
 import axiosInstance from "src/axiosInstance";
 
-export default function MagazinePage({ user, logoutHandler }) {
+export default function MagazinePage({ user, logoutHandler, updateUser }) {
   const [players, setPlayers] = useState([]);
 
   useEffect(() => {
@@ -26,6 +26,7 @@ export default function MagazinePage({ user, logoutHandler }) {
       .post(`/players/buy/${playerId}/${userId}`)
       .then((res) => {
         console.log(res.data);
+        updateUser(user);
       })
       .catch((error) => {
         console.error("Ошибка при покупке игрока:", error);
@@ -78,4 +79,5 @@ export default function MagazinePage({ user, logoutHandler }) {
 MagazinePage.propTypes = {
   user: PropTypes.object,
   logoutHandler: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
 };

@@ -1,9 +1,129 @@
+html,
 body {
-    color: #fff;
-    text-decoration: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  background-color: #1d1a1d;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+.background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  width: 100vw;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  display: flex;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1100px;
+  box-sizing: border-box;
+  margin: 0 auto; /* Центрирование блока */
+}
+
+.nav {
+  margin-top: 68px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.burger {
+  margin-right: auto;
 }
 
 a:visited {
-    color:#fff;
-    text-decoration: none;
+  color: #fff;
+  text-decoration: none;
 }
+
+.adminText {
+  line-height: 16px;
+  font-size: 12px;
+}
+
+.flexContainer {
+  display: flex;
+  height: 100vh;
+}
+
+.leftColumn {
+  flex: 0 0 45%; /* Занимает 45% ширины */
+  max-height: 880px;
+  overflow-y: auto;
+  margin-right: 20px; /* Для отступа справа, если необходимо */
+}
+
+/* Стилизация скроллбара */
+.leftColumn::-webkit-scrollbar {
+  width: 8px; /* Ширина скроллбара */
+}
+
+.leftColumn::-webkit-scrollbar-thumb {
+  background-color: #888; /* Цвет ползунка скроллбара */
+  border-radius: 4px; /* Скруглённые углы у ползунка */
+}
+
+.leftColumn::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Цвет ползунка скроллбара при наведении */
+}
+
+.leftColumn::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Цвет фона скроллбара */
+}
+
+.rightColumn {
+  flex: 0 0 55%;
+}
+
+
+.playersListContainer {
+
+}
+
+.playersListElement {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 16px;
+    height: 62px;
+    border: 3px solid transparent;
+    border-image: linear-gradient(to right, #482832, #fff 50%, #1c3d43) 1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.playersListElement .num {
+    padding: 8px 8px 8px 16px;
+    color: #16fcce;
+    flex: 0 0 10%;
+}
+
+.playersListElement .nickname {
+    color: #fff;
+    padding: 8px 16px 8px 8px;
+    flex: 0 0 70%;
+}
+
+.playersListElement .sign {
+    padding: 8px 16px 8px 8px;
+    display: flex;
+}
+
+

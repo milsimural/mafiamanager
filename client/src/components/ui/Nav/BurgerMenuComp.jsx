@@ -18,7 +18,7 @@ export default function BurgerMenuComp() {
           </Link>
         </li>
         <li>
-          <Link className={styles.menuItem} to="/account">
+          <Link className={styles.menuItem} to="/team">
             Команда
           </Link>
         </li>

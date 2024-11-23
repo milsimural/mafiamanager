@@ -112,4 +112,69 @@ playerRouter.post('/getPlayersByGomafiaIds', async (req, res) => {
   }
 });
 
+playerRouter.get('/getTournamentPlayersArray/:tournamentId/:userId', async (req, res) => {
+  try {
+    const { tournamentId, userId } = req.params;
+    if (Number.isNaN(tournamentId) || Number.isNaN(userId)) {
+      return res.status(400).send('Некорректные параметры ввода');
+    }
+
+    const tournament = await Tournament.findByPk(tournamentId);
+    if (!tournament) {
+      return res.status(404).send('Турнир не найден');
+    }
+
+    const arrayPlayers = tournament.playersList.slice(1, -1) 
+                .split(',') 
+                .map(Number);
+
+    if (!Array.isArray(arrayPlayers) || arrayPlayers.length === 0) {
+      return res.status(404).send(`Игроки турнира не найдены: ${tournament.playersList}`);
+    }
+
+    // нашли всех игроков из БД которые играют на турнире
+    const tournamentPlayers = await Player.findAll({
+      where: {
+        id: arrayPlayers,
+      },
+    });
+
+    if (tournamentPlayers.length === 0) {
+      return res.status(404).send('Игроки на турнире не найдены');
+    }
+
+    // Нашли всех игроков в моей команде
+    const userPlayers = await Team.findAll({
+      where: {
+        ownerid: userId,
+      },
+    });
+
+    if (userPlayers.length === 0) {
+      for (let i = 0; i < tournamentPlayers.length; i++) {
+        tournamentPlayers[i].isInTeam = false;
+      }
+      return res.status(200).json(tournamentPlayers);
+    }
+
+    // Сохранили id игроков моей команды в массив
+    const userPlayersIds = userPlayers.map((player) => player.playerid);
+
+    // Пометили всех игроков турнира которые есть в моей команде
+    for (let i = 0; i < tournamentPlayers.length; i++) {
+      if (userPlayersIds.includes(tournamentPlayers[i].id)) {
+        tournamentPlayers[i].isInTeam = true;
+      } else {
+        tournamentPlayers[i].isInTeam = false;
+      }
+    }
+
+    return res.json(tournamentPlayers);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: `Ошибка при получении списка игроков турнира: ${error.message}` });
+  }
+});
+
 module.exports = playerRouter;

@@ -30,6 +30,14 @@ function App() {
       .catch(() => setUser(null));
   }, []);
 
+  const updateUser = async (user) => {
+    const res = await axiosInstance.post(`/auth/update/${user.id}`);
+    user.coins = res.data.coins;
+    user.gems = res.data.gems;
+    console.log(user);
+    setUser(user);
+  };
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -62,12 +70,18 @@ function App() {
           element: <TournamentPage user={user} logoutHandler={logoutHandler} />,
         },
         {
-          path: "/account",
+          path: "/team",
           element: <TeamPage user={user} logoutHandler={logoutHandler} />,
         },
         {
           path: "/magazine",
-          element: <MagazinePage user={user} logoutHandler={logoutHandler} />,
+          element: (
+            <MagazinePage
+              user={user}
+              logoutHandler={logoutHandler}
+              updateUser={updateUser}
+            />
+          ),
         },
       ],
     },

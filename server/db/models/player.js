@@ -9,10 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate({ Club, City, Country, User, Team, Transaction, Coach }) {
-      this.belongsTo(Club, { foreignKey: 'clubId', as: 'Club' }); 
+      this.belongsTo(Club, { foreignKey: 'clubId', as: 'Club' });
       this.belongsTo(City, { foreignKey: 'cityId' });
       this.belongsTo(Country, { foreignKey: 'countryId' });
-      this.belongsToMany(User, { through: Team, foreignKey: 'playerid', otherKey: 'ownerid', as: 'users' });
+      this.belongsToMany(User, {
+        through: Team,
+        foreignKey: 'playerid',
+        otherKey: 'ownerid',
+        as: 'users',
+      });
       this.hasMany(Transaction, { foreignKey: 'playerId' });
       this.hasOne(Coach, { foreignKey: 'playerId', as: 'coach' });
     }
@@ -38,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       gomafiaId: DataTypes.INTEGER,
       countryId: DataTypes.INTEGER,
       cityId: DataTypes.INTEGER,
+      isOpen: DataTypes.BOOLEAN,
     },
     {
       sequelize,

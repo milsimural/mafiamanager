@@ -49,6 +49,16 @@ authRouter.post('/login', async (req, res) => {
     .json({ user, accessToken });
 });
 
+authRouter.post('/update/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const user = await User.findByPk(userId);
+  if (!user) {
+    return res.status(404).json({ text: 'Пользователь не найден' });
+  }
+  const { coins, gems } = user;
+  return res.status(200).json({ coins, gems})
+});
+
 authRouter.get('/logout', (req, res) => {
   res.clearCookie('refreshToken').status(200).send('Вы успешно вышли');
 });

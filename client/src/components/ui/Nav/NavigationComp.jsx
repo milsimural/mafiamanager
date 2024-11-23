@@ -49,6 +49,6 @@ export default function NavigationComp({ user, logoutHandler }) {
 }
 
 NavigationComp.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   logoutHandler: PropTypes.func.isRequired,
 };
