@@ -48,6 +48,14 @@ playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) 
   try {
     const { playerId } = req.params;
     const { userId } = req.params;
+
+    const existingEntry = await Team.findOne({
+      where: { playerid: playerId, ownerid: userId },
+    });
+    if (existingEntry) {
+      return res.status(423).send('Игрок уже куплен');
+    }
+
     const player = await Player.findByPk(playerId);
     if (!player) {
       return res.status(404).send('Игрок не найден');
@@ -78,7 +86,7 @@ playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) 
       amount: player.costcoins,
     });
 
-    res.status(200).send('Игрок успешно куплен');
+    res.status(200).json(user.coins);
   } catch (error) {
     res.status(500).json({ error: `Ошибка при покупке игрока: ${error.message}` });
   }
@@ -152,6 +160,7 @@ playerRouter.get('/getTournamentPlayersArray/:tournamentId/:userId', async (req,
 
     if (userPlayers.length === 0) {
       for (let i = 0; i < tournamentPlayers.length; i++) {
+        tournamentPlayers[i] = tournamentPlayers[i].get({ plain: true });
         tournamentPlayers[i].isInTeam = false;
       }
       return res.status(200).json(tournamentPlayers);
@@ -163,8 +172,10 @@ playerRouter.get('/getTournamentPlayersArray/:tournamentId/:userId', async (req,
     // Пометили всех игроков турнира которые есть в моей команде
     for (let i = 0; i < tournamentPlayers.length; i++) {
       if (userPlayersIds.includes(tournamentPlayers[i].id)) {
+        tournamentPlayers[i] = tournamentPlayers[i].get({ plain: true });
         tournamentPlayers[i].isInTeam = true;
       } else {
+        tournamentPlayers[i] = tournamentPlayers[i].get({ plain: true });
         tournamentPlayers[i].isInTeam = false;
       }
     }

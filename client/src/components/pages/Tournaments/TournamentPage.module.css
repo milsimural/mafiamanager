@@ -41,6 +41,19 @@ body {
   justify-content: flex-end;
 }
 
+h1 {
+  color: #fff;
+  font-weight: bold;
+  font-size: 40px;
+  margin-bottom: 0;
+}
+
+h2 {
+  color: #18ffc9;
+  font-size: 24px;
+  font-weight: bold;
+}
+
 .burger {
   margin-right: auto;
 }
@@ -62,43 +75,193 @@ a:visited {
 
 .leftColumn {
   flex: 0 0 45%; /* Занимает 45% ширины */
-  max-height: 880px;
-  overflow-y: auto;
-  margin-right: 20px; /* Для отступа справа, если необходимо */
 }
 
-/* Стилизация скроллбара */
-.leftColumn::-webkit-scrollbar {
-  width: 8px; /* Ширина скроллбара */
-}
-
-.leftColumn::-webkit-scrollbar-thumb {
-  background-color: #888; /* Цвет ползунка скроллбара */
-  border-radius: 4px; /* Скруглённые углы у ползунка */
-}
-
-.leftColumn::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Цвет ползунка скроллбара при наведении */
-}
-
-.leftColumn::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Цвет фона скроллбара */
+.playersMainContainer {
+  height: 680px;
 }
 
 .rightColumn {
   flex: 0 0 55%;
 }
 
-
 .playersListContainer {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 3px solid transparent;
+  border-image: linear-gradient(to right, #482832, #fff 50%, #1c3d43) 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
 
+.playersListContainerNone {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
 }
 
 .playersListElement {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  height: 62px;
+  border: 3px solid transparent;
+  border-bottom: 0;
+  border-image: linear-gradient(to right, #482832, #fff 50%, #1c3d43) 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.playersListElementNone {
+  font-size: 16px;
+  height: 62px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.playersListElement .num {
+  padding: 8px 8px 8px 16px;
+  color: #16fcce;
+  flex: 0 0 10%;
+}
+
+.playersListElementNone .num {
+  padding: 8px 8px 8px 16px;
+  color: #a9a9a9;
+  flex: 0 0 10%;
+}
+
+.playersListElement .nickname {
+  color: #fff;
+  padding: 8px 16px 8px 8px;
+  flex: 0 0 70%;
+}
+
+.playersListElementNone .nickname {
+  color: #a9a9a9;
+  padding: 8px 16px 8px 8px;
+  flex: 0 0 70%;
+}
+
+.playersListElement .sign {
+  padding: 8px 16px 8px 8px;
+  display: flex;
+}
+
+.playersListElementNone .sign {
+  padding: 8px 19px 8px 8px;
+  display: flex;
+}
+
+.uncknownPlayersCount {
+  color: #fff;
+  font-size: 16px;
+  height: 62px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 8px 8px 16px;
+}
+
+.rightContainer {
+  margin-top: 150px;
+}
+
+.myteam {
+  width: 100%;
+  width: 552px;
+  height: 100%;
+  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.myteam::before,
+.myteam::after {
+  content: "";
+  position: absolute;
+  left: 50%; /* Начало от центра элемента */
+  width: 552px; /* Полная ширина элемента */
+  height: 2px; /* Толщина границы */
+  transform: translateX(-50%); /* Центрирование */
+  background: linear-gradient(
+    to right,
+    transparent 88px,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent calc(100% - 88px)
+  );
+}
+
+.myteam::before {
+  top: 0; /* Расположение сверху */
+}
+
+.myteam::after {
+  bottom: 0; /* Расположение снизу */
+}
+
+.myteam h2 {
+  color: #18ffc9;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.square {
+    width: 50px;
+    height: 50px;
+    background-color: #d9d9d9; /* Заливка цветом */
+    border-radius: 50%; /* Делает div круглым */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.frame {
+  width: 40px;
+  height: 40px;
+}
+
+
+.teamListContainer {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 267px;
+    box-sizing: border-box;
+    margin-bottom: 40px;
+  }
+  
+  .teamListElement {
     background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
     font-size: 16px;
-    height: 62px;
+    height: 46px;
     border: 3px solid transparent;
     border-image: linear-gradient(to right, #482832, #fff 50%, #1c3d43) 1;
     box-sizing: border-box;
@@ -107,23 +270,20 @@ a:visited {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-}
+    margin-bottom: 5px;
+  }
 
-.playersListElement .num {
-    padding: 8px 8px 8px 16px;
-    color: #16fcce;
-    flex: 0 0 10%;
-}
-
-.playersListElement .nickname {
-    color: #fff;
-    padding: 8px 16px 8px 8px;
-    flex: 0 0 70%;
-}
-
-.playersListElement .sign {
-    padding: 8px 16px 8px 8px;
+  .flexTeamContainer {
     display: flex;
-}
-
-
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .leftTeamColumn {
+    flex: 0 0 45%; /* Занимает 45% ширины */
+  }
+  
+  .rightTeamColumn {
+    flex: 0 0 55%;
+  }

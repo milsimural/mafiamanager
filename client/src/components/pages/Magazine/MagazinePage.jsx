@@ -7,8 +7,9 @@ import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
 import ShopCard from "src/components/ui/Cards/ShopCard";
 import axiosInstance from "src/axiosInstance";
 
-export default function MagazinePage({ user, logoutHandler, updateUser }) {
+export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   const [players, setPlayers] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
 
   useEffect(() => {
     axiosInstance
@@ -21,14 +22,33 @@ export default function MagazinePage({ user, logoutHandler, updateUser }) {
       });
   }, []);
 
+  useEffect(() => {
+    if (user && user.id) {
+      axiosInstance
+        .get(`/players/myteam/${user.id}`)
+        .then((res) => {
+          setTeamMembers(res.data);
+        })
+        .catch((error) => {
+          console.error("Ошибка при получении списка игроков команды:", error);
+        });
+    }
+  }, [user]);
+
   function buyPlayer(playerId, userId) {
     axiosInstance
       .post(`/players/buy/${playerId}/${userId}`)
       .then((res) => {
         console.log(res.data);
-        updateUser(user);
+        updateUserCoins(res.data);
       })
       .catch((error) => {
+        const errorMessage =
+          error.response && error.response.data
+            ? error.response.data
+            : error.message;
+
+        alert(`Произошла ошибка при покупке игрока. ${errorMessage}`);
         console.error("Ошибка при покупке игрока:", error);
       });
   }
@@ -57,18 +77,27 @@ export default function MagazinePage({ user, logoutHandler, updateUser }) {
             <h2>Тренеры</h2>
           </div>
           <div className={styles.players}>
-            {players.map((player) => (
-              <div className={styles.playerWrapper} key={player.nickname}>
-                <div className={styles.player}>
-                  <ShopCard
-                    user={user}
-                    player={player}
-                    shop={true}
-                    buyPlayer={buyPlayer}
-                  />
+            {players.map((player) => {
+              // Проверяем, входит ли player.id в teamMembers
+              const isInTeam = teamMembers.some(
+                (member) => member.playerid === player.id
+              );
+              console.log(isInTeam);
+
+              return (
+                <div className={styles.playerWrapper} key={player.nickname}>
+                  <div className={styles.player}>
+                    <ShopCard
+                      user={user}
+                      player={player}
+                      shop={true}
+                      buyPlayer={buyPlayer}
+                      isInTeam={isInTeam} // Передаем проп isInTeam
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -79,5 +108,4 @@ export default function MagazinePage({ user, logoutHandler, updateUser }) {
 MagazinePage.propTypes = {
   user: PropTypes.object,
   logoutHandler: PropTypes.func.isRequired,
-  updateUser: PropTypes.func.isRequired,
 };

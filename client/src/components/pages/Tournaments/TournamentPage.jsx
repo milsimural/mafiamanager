@@ -11,13 +11,13 @@ import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
 import test from "./test.js";
 import onImage from "src/components/pages/Tournaments/on.png";
 import offImage from "src/components/pages/Tournaments/off.png";
+import frameImage from "src/components/pages/Tournaments/frame.png";
 
 function TournamentDetails({ user, logoutHandler }) {
   const navigate = useNavigate();
   const { tournamentId } = useParams();
   const [tournament, setTournament] = useState(null);
   const [players, setPlayers] = useState(null);
-  const [error, setError] = useState(false);
   const [sortedPlayers, setSortedPlayers] = useState([]);
 
   useEffect(() => {
@@ -39,7 +39,6 @@ function TournamentDetails({ user, logoutHandler }) {
           "Ошибка при получении отсортированных игроков:",
           error.message
         );
-        setError(true);
         return null;
       }
     }
@@ -60,10 +59,6 @@ function TournamentDetails({ user, logoutHandler }) {
 
     const tablesArray = games[0]?.game.flatMap(({ table }) => table) || [];
     const gomafiaIds = tablesArray.map((player) => player.id);
-    // const gomafiaString = tablesArray.map(player => player.id).join(',');
-    // const gomafiaIds = gomafiaString.split(',');
-    // console.log(gomafiaIds);
-    // return gomafiaIds;
     return gomafiaIds;
   }
 
@@ -133,23 +128,6 @@ function TournamentDetails({ user, logoutHandler }) {
     );
   }
 
-  // Функция получает для конкретного юзера список игроков которые участвуют в турнире с пометкой, есть они у него или нет
-  // async function getSortedPlayers() {
-  //   try {
-  //     const response = await axiosInstance.get(
-  //       `/players/getTournamentPlayersArray/${tournamentId}/${user.id}`
-  //     );
-  //     setSortedPlayers(response.data);
-  //   } catch (error) {
-  //     console.error(
-  //       "Ошибка при получении отсортированных игроков:",
-  //       error.message
-  //     );
-  //     setError(true);
-  //     return null;
-  //   }
-  // }
-
   function ShowTournamentUI() {
     if (!user) {
       // Если пользователь не определён, отображаем предложение залогиниться
@@ -172,10 +150,8 @@ function TournamentDetails({ user, logoutHandler }) {
     if (
       sortedPlayers.length === 0 ||
       sortedPlayers === undefined ||
-      sortedPlayers === null ||
-      sortedPlayers === error
+      sortedPlayers === null
     ) {
-      console.log("Ошибка с данными турнира");
       return <div>На данный момент данных о турнире нет.</div>;
     }
 
@@ -187,27 +163,114 @@ function TournamentDetails({ user, logoutHandler }) {
       <>
         <div className={styles.flexContainer}>
           <div className={styles.leftColumn}>
-            {tournament && <h2>{tournament.name}</h2>}
-            <div>
+            {tournament && <h1>{tournament.name}</h1>}
+            <h2>Состав участников</h2>
+            <div className={styles.playersMainContainer}>
               <div className={styles.playersListContainer}>
-                {sortedPlayers.map((player, index) => (
-                  <div
-                    className={styles.playersListElement}
-                    key={player.id || index}
-                  >
-                    <div className={styles.num}>
-                      {String(index + 1).padStart(2, "0")}
+                {sortedPlayers
+                  .filter((player) => player.isInTeam) // Фильтруем игроков по isInTeam
+                  .map((player, index) => (
+                    <div
+                      className={styles.playersListElement}
+                      key={player.id || index}
+                    >
+                      <div className={styles.num}>
+                        {String(index + 1).padStart(2, "0")}
+                      </div>
+                      <div className={styles.nickname}>{player.nickname}</div>
+                      <div className={styles.sign}>
+                        <img src={onImage} alt="Status" />
+                      </div>
                     </div>
-                    <div className={styles.nickname}>{player.nickname}</div>
-                    <div className={styles.sign}>
-                      <img src={onImage} alt="Status" />
+                  ))}
+              </div>
+
+              <div className={styles.playersListContainerNone}>
+                {sortedPlayers
+                  .filter((player) => player.isInTeam === false)
+                  .map((player, index) => (
+                    <div
+                      className={styles.playersListElementNone}
+                      key={player.id || index}
+                    >
+                      <div className={styles.num}>
+                        {String(index + 1).padStart(2, "0")}
+                      </div>
+                      <div className={styles.nickname}>{player.nickname}</div>
+                      <div className={styles.sign}>
+                        <img src={offImage} alt="Status" />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+              </div>
+
+              <div className={styles.uncknownPlayersCount}>
+                {uncknownPlayersCount} неизвестных системе участников...
               </div>
             </div>
           </div>
-          <div className={styles.rightColumn}>ghjgjhgjh</div>
+          <div className={styles.rightColumn}>
+            <div className={styles.rightContainer}>
+              <div className={styles.myteam}>
+                <h2>Выставляю</h2>
+                <div className={styles.flexTeamContainer}>
+                  <div className={styles.leftTeamColumn}></div>
+                  <div className={styles.rightTeamColumn}>
+                    <div className={styles.teamListContainer}>
+                      <div className={styles.teamListElement}>
+                        <div className={styles.square}>
+                          <div
+                            className={styles.frame}
+                            style={{ backgroundImage: `url(${frameImage})` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className={styles.teamListElement}>
+                        <div className={styles.square}>
+                          <div
+                            className={styles.frame}
+                            style={{ backgroundImage: `url(${frameImage})` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className={styles.teamListElement}>
+                        <div className={styles.square}>
+                          <div
+                            className={styles.frame}
+                            style={{ backgroundImage: `url(${frameImage})` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className={styles.teamListElement}>
+                        <div className={styles.square}>
+                          <div
+                            className={styles.frame}
+                            style={{ backgroundImage: `url(${frameImage})` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className={styles.teamListElement}>
+                        <div className={styles.square}>
+                          <div
+                            className={styles.frame}
+                            style={{ backgroundImage: `url(${frameImage})` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className={styles.teamListElement}>
+                        <div className={styles.square}>
+                          <div
+                            className={styles.frame}
+                            style={{ backgroundImage: `url(${frameImage})` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </>
     );

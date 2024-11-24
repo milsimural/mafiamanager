@@ -30,13 +30,18 @@ function App() {
       .catch(() => setUser(null));
   }, []);
 
-  const updateUser = async (user) => {
-    const res = await axiosInstance.post(`/auth/update/${user.id}`);
-    user.coins = res.data.coins;
-    user.gems = res.data.gems;
-    console.log(user);
-    setUser(user);
-  };
+  // const updateUser = async (user) => {
+  //   const res = await axiosInstance.post(`/auth/update/${user.id}`);
+  //   user.coins = res.data.coins;
+  //   user.gems = res.data.gems;
+  //   console.log(user);
+  //   setUser(user);
+  // };
+
+  function updateUserCoins(coins) {
+    const updatedUser = { ...user, coins: coins };
+    setUser(updatedUser);
+  }
 
   const router = createBrowserRouter([
     {
@@ -79,7 +84,7 @@ function App() {
             <MagazinePage
               user={user}
               logoutHandler={logoutHandler}
-              updateUser={updateUser}
+              updateUserCoins={updateUserCoins}
             />
           ),
         },

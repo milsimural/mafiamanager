@@ -20,9 +20,10 @@ import StarsComponent from "src/components/ui/Cards/StarsComponent/StarsComponen
 import powerImage from "src/components/ui/Cards/power.svg";
 
 import buyImage from "src/components/ui/Cards/buy2x.png";
+import closeBuyImage from "src/components/ui/Cards/close2x.png";
 import coinsImage from "src/components/ui/Nav/coins.png";
 
-export default function ShopCard({ user, player, shop, buyPlayer }) {
+export default function ShopCard({ user, player, shop, buyPlayer, isInTeam }) {
   const getColorByStars = (stars) => {
     switch (stars) {
       case 1:
@@ -104,16 +105,26 @@ export default function ShopCard({ user, player, shop, buyPlayer }) {
 
       {shop && (
         <div className={styles.buy}>
-          <button
-            onClick={() => buyPlayer(player.id, user.id)}
-            style={{ backgroundImage: `url(${buyImage})` }}
-          >
-            <img
-              src={coinsImage}
-              alt={`${player.nickname}: ${player.costcoins}`}
-            />
-            <div className={styles.buttonText}>{player.costcoins}</div>
-          </button>
+          {!isInTeam ? (
+            <button
+              onClick={() => buyPlayer(player.id, user.id)}
+              style={{ backgroundImage: `url(${buyImage})` }}
+            >
+              <img
+                src={coinsImage}
+                alt={`${player.nickname}: ${player.costcoins}`}
+              />
+              <div className={styles.buttonText}>{player.costcoins}</div>
+            </button>
+          ) : (
+            <button style={{ backgroundImage: `url(${closeBuyImage})` }}>
+              <img
+                src={coinsImage}
+                alt={`${player.nickname}: ${player.costcoins}`}
+              />
+              <div className={styles.buttonText}>{player.costcoins}</div>
+            </button>
+          )}
         </div>
       )}
     </>
@@ -125,4 +136,5 @@ ShopCard.propTypes = {
   player: PropTypes.object.isRequired,
   shop: PropTypes.bool,
   buyPlayer: PropTypes.func,
+  isInTeam: PropTypes.bool,
 };
