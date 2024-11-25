@@ -11,7 +11,8 @@ import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
 import test from "./test.js";
 import onImage from "src/components/pages/Tournaments/on.png";
 import offImage from "src/components/pages/Tournaments/off.png";
-import frameImage from "src/components/pages/Tournaments/frame.png";
+import ShortPlayerBar from "src/components/ui/PlayerBars/ShortPlayerBarComp";
+import basicCaptainImage from "src/components/pages/Tournaments/captainBasic.png";
 
 function TournamentDetails({ user, logoutHandler }) {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ function TournamentDetails({ user, logoutHandler }) {
   const [tournament, setTournament] = useState(null);
   const [players, setPlayers] = useState(null);
   const [sortedPlayers, setSortedPlayers] = useState([]);
+
+  const stars = 3;
 
   useEffect(() => {
     axiosInstance
@@ -213,57 +216,28 @@ function TournamentDetails({ user, logoutHandler }) {
             <div className={styles.rightContainer}>
               <div className={styles.myteam}>
                 <h2>Выставляю</h2>
-                <div className={styles.flexTeamContainer}>
-                  <div className={styles.leftTeamColumn}></div>
-                  <div className={styles.rightTeamColumn}>
-                    <div className={styles.teamListContainer}>
-                      <div className={styles.teamListElement}>
-                        <div className={styles.square}>
-                          <div
-                            className={styles.frame}
-                            style={{ backgroundImage: `url(${frameImage})` }}
-                          ></div>
-                        </div>
+                <div className={styles.wrapMT}>
+                  <div className={styles.leftMT}>
+                    <dvi className={styles.captain}>
+                      <div className={styles.captainWrapper}>
+                        <div className={styles.captainNum}>1</div>
+                        <div className={styles.captainName}>Владимир</div>
                       </div>
-                      <div className={styles.teamListElement}>
-                        <div className={styles.square}>
-                          <div
-                            className={styles.frame}
-                            style={{ backgroundImage: `url(${frameImage})` }}
-                          ></div>
-                        </div>
+                      <div className={styles.captainRole}>Капитан</div>
+                      <div className={styles.captainFotoCont}>
+                        <img src={basicCaptainImage} alt="" />
                       </div>
-                      <div className={styles.teamListElement}>
-                        <div className={styles.square}>
-                          <div
-                            className={styles.frame}
-                            style={{ backgroundImage: `url(${frameImage})` }}
-                          ></div>
-                        </div>
-                      </div>
-                      <div className={styles.teamListElement}>
-                        <div className={styles.square}>
-                          <div
-                            className={styles.frame}
-                            style={{ backgroundImage: `url(${frameImage})` }}
-                          ></div>
-                        </div>
-                      </div>
-                      <div className={styles.teamListElement}>
-                        <div className={styles.square}>
-                          <div
-                            className={styles.frame}
-                            style={{ backgroundImage: `url(${frameImage})` }}
-                          ></div>
-                        </div>
-                      </div>
-                      <div className={styles.teamListElement}>
-                        <div className={styles.square}>
-                          <div
-                            className={styles.frame}
-                            style={{ backgroundImage: `url(${frameImage})` }}
-                          ></div>
-                        </div>
+                    </dvi>
+                  </div>
+                  <div className={styles.rightMT}>
+                    <div className={styles.flexTeamContainer}>
+                      <div className={styles.teamListContainer}>
+                        <ShortPlayerBar num={2} />
+                        <ShortPlayerBar num={3} />
+                        <ShortPlayerBar num={4} />
+                        <ShortPlayerBar num={5} />
+                        <ShortPlayerBar num={6} />
+                        <ShortPlayerBar num={7} />
                       </div>
                     </div>
                   </div>

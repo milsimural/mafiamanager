@@ -79,7 +79,23 @@ a:visited {
 
 .playersMainContainer {
   height: 680px;
+  width: 460px;
+  overflow-y: auto;
 }
+
+.playersMainContainer::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .playersMainContainer::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 10px;
+    border: 2px solid #000;
+  }
+  
+  .playersMainContainer::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
 
 .rightColumn {
   flex: 0 0 55%;
@@ -184,12 +200,13 @@ a:visited {
 
 .rightContainer {
   margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
 }
 
 .myteam {
-  width: 100%;
   width: 552px;
-  height: 100%;
   border-radius: 30px;
   background-color: rgba(0, 0, 0, 0.3);
   position: relative;
@@ -203,7 +220,7 @@ a:visited {
   content: "";
   position: absolute;
   left: 50%; /* Начало от центра элемента */
-  width: 552px; /* Полная ширина элемента */
+  width: 552px;
   height: 2px; /* Толщина границы */
   transform: translateX(-50%); /* Центрирование */
   background: linear-gradient(
@@ -228,62 +245,114 @@ a:visited {
   font-weight: bold;
 }
 
-.square {
-    width: 50px;
-    height: 50px;
-    background-color: #d9d9d9; /* Заливка цветом */
-    border-radius: 50%; /* Делает div круглым */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-.frame {
-  width: 40px;
-  height: 40px;
+.captain {
+  display: flex;
+  flex-direction: column;
 }
 
+.captainWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: baseline;
+}
+
+.captainNum {
+  color: #b3b3b3;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 0;
+}
+
+.captainName {
+  margin-left: 14px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 0;
+}
+
+.captainRole {
+  color: #18ffc9;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-left: 23px;
+  margin-top: 1px;
+}
+
+.captainFotoCont {
+  width: 168px;
+  height: 260px;
+  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 8px black;
+}
+
+.captainFotoCont::before,
+.captainFotoCont::after {
+  content: "";
+  position: absolute;
+  left: 50%; /* Начало от центра элемента */
+  width: 168px; /* Полная ширина элемента */
+  height: 2px; /* Толщина границы */
+  transform: translateX(-50%); /* Центрирование */
+  background: linear-gradient(
+    to right,
+    transparent 28px,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent calc(100% - 28px)
+  );
+}
+
+.captainFotoCont::before {
+  top: 0; /* Расположение сверху */
+}
+
+.captainFotoCont::after {
+  bottom: 0; /* Расположение снизу */
+}
+
+.captainFotoCont img {
+  width: 168px;
+  height: 260px;
+  border-radius: 30px;
+}
+
+.rightMT {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 43px;
+}
+
+.leftMT {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 34px;
+}
+
+.wrapMT {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  margin-bottom: 40px;
+}
 
 .teamListContainer {
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    max-width: 267px;
-    box-sizing: border-box;
-    margin-bottom: 40px;
-  }
-  
-  .teamListElement {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 16px;
-    height: 46px;
-    border: 3px solid transparent;
-    border-image: linear-gradient(to right, #482832, #fff 50%, #1c3d43) 1;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 5px;
-  }
-
-  .flexTeamContainer {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  
-  .leftTeamColumn {
-    flex: 0 0 45%; /* Занимает 45% ширины */
-  }
-  
-  .rightTeamColumn {
-    flex: 0 0 55%;
-  }
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 267px;
+  box-sizing: border-box;
+}

@@ -1,0 +1,11 @@
+.starsContainer img {
+    margin-right: 5px;
+    width: 12px;
+    height: 11px;
+}
+
+.starsContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

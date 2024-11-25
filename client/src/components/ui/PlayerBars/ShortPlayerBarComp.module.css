@@ -1,0 +1,93 @@
+.teamListElement {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  height: 46px;
+  border: 3px solid transparent;
+  border-image: linear-gradient(to right, #482832, #fff 50%, #1c3d43) 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 240px;
+  margin-bottom: 5px;
+}
+
+.teamElementWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+}
+
+.slotNum {
+  color: #b3b3b3;
+  font-size: 15px;
+  font-weight: bold;
+  margin-right: 22px;
+}
+
+.square {
+  width: 50px;
+  height: 50px;
+  background-color: #d9d9d9; /* Заливка цветом */
+  border-radius: 50%; /* Делает div круглым */
+  position: relative;
+}
+
+.frame {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background-size: cover;
+  background-position: center;
+}
+
+.image {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  object-fit: cover;
+  clip-path: circle(50% at 50% 50%);
+}
+
+.stars {
+  margin-bottom: 8px;
+}
+
+.flexTeamContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.leftTeamColumn {
+  flex: 0 0 45%; /* Занимает 45% ширины */
+}
+
+.rightTeamColumn {
+  flex: 0 0 55%;
+}
+
+.playerInfoContainer {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  align-items: left;
+  justify-content: center;
+}
+
+.picName {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0;
+  line-height: 0;
+  margin-bottom: 8px;
+}
