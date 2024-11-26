@@ -62,6 +62,21 @@ module.exports = {
       playersList: {
         type: Sequelize.STRING,
       },
+      gamesTables: {
+        type: Sequelize.STRING,
+      },
+      resultTable: {
+        type: Sequelize.STRING,
+      },
+      giftConfigId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'GiftConfigs',
+          key: 'id',
+        },
+        allowNull: true,
+        onDelete: 'SET NULL',
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

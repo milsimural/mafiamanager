@@ -9,7 +9,7 @@ export default function CaptainBarComp({ captain, removeCaptainFromRoster }) {
   return (
     <div
       className={styles.captain}
-      onClick={() => removeCaptainFromRoster(captain.id)}
+      onClick={() => removeCaptainFromRoster()}
     >
       <div className={styles.captainWrapper}>
         <div className={styles.captainNum}>1</div>

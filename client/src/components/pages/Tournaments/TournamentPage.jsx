@@ -54,11 +54,6 @@ function TournamentDetails({ user, logoutHandler }) {
   function addCaptainToRoster(playerId) {
     if (roster.some((rosterPlayer) => rosterPlayer.id === playerId)) return;
     const captain = sortedPlayers.find((player) => player.id === playerId);
-
-    // const newRoster = [
-    //   captain,
-    //   ...roster.filter((player) => player.id !== playerId),
-    // ];
     const newRoster = [...roster];
     newRoster[0] = captain;
     setRoster(newRoster);
@@ -82,7 +77,7 @@ function TournamentDetails({ user, logoutHandler }) {
     setRoster(newRoster);
   }
 
-  function removeCaptainFromRoster(playerId) {
+  function removeCaptainFromRoster() {
     const newRoster = [...roster];
     newRoster[0] = { noname: true };
     setRoster(newRoster);
