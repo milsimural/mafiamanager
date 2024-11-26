@@ -1,0 +1,41 @@
+.playersListElement {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 16px;
+    height: 62px;
+    border: 3px solid transparent;
+    border-bottom: 0;
+    border-image: linear-gradient(to right, #482832, #fff 50%, #1c3d43) 1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .playersListElement .num {
+    padding: 8px 8px 8px 16px;
+    color: #16fcce;
+    flex: 0 0 10%;
+  }
+  
+  .playersListElement .nickname {
+    color: #fff;
+    padding: 8px 16px 8px 8px;
+    flex: 0 0 70%;
+  }
+  
+  .playersListElement .sign {
+    padding: 8px 16px 8px 8px;
+    display: flex;
+  }
+
+  .playersListMenu {
+    background-color:black;
+    height: 62px;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }

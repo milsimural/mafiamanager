@@ -1,0 +1,80 @@
+.captain {
+  display: flex;
+  flex-direction: column;
+}
+
+.captainWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: baseline;
+}
+
+.captainNum {
+  color: #b3b3b3;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 0;
+}
+
+.captainName {
+  margin-left: 14px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 0;
+}
+
+.captainRole {
+  color: #18ffc9;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-left: 23px;
+  margin-top: 1px;
+}
+
+.captainFotoCont {
+  width: 168px;
+  height: 260px;
+  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 8px black;
+}
+
+.captainFotoCont::before,
+.captainFotoCont::after {
+  content: "";
+  position: absolute;
+  left: 50%; /* Начало от центра элемента */
+  width: 168px; /* Полная ширина элемента */
+  height: 2px; /* Толщина границы */
+  transform: translateX(-50%); /* Центрирование */
+  background: linear-gradient(
+    to right,
+    transparent 28px,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent calc(100% - 28px)
+  );
+}
+
+.captainFotoCont::before {
+  top: 0; /* Расположение сверху */
+}
+
+.captainFotoCont::after {
+  bottom: 0; /* Расположение снизу */
+}
+
+.captainFotoCont img {
+  width: 168px;
+  height: 260px;
+  border-radius: 30px;
+}
+
+.none {
+    width: 168px;
+}

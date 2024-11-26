@@ -9,10 +9,11 @@ import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
 import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
 import test from "./test.js";
-import onImage from "src/components/pages/Tournaments/on.png";
 import offImage from "src/components/pages/Tournaments/off.png";
 import ShortPlayerBar from "src/components/ui/PlayerBars/ShortPlayerBarComp";
-import basicCaptainImage from "src/components/pages/Tournaments/captainBasic.png";
+import CaptainBarComp from "src/components/ui/PlayerBars/CaptainBarComp";
+import ListElementComp from "src/components/ui/PlayerBars/ListElementComp";
+import blueButtonImage from "src/components/pages/Tournaments/blueButton.png";
 
 function TournamentDetails({ user, logoutHandler }) {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function TournamentDetails({ user, logoutHandler }) {
   const [tournament, setTournament] = useState(null);
   const [players, setPlayers] = useState(null);
   const [sortedPlayers, setSortedPlayers] = useState([]);
-  const [roster, setRoster] = useState([]);
+  const [roster, setRoster] = useState([{ noname: true }]);
 
   useEffect(() => {
     axiosInstance
@@ -50,30 +51,42 @@ function TournamentDetails({ user, logoutHandler }) {
     }
   }, [tournament, tournamentId, user]);
 
-function addCaptainToRoster(playerId) {
-  const captain = sortedPlayers.find((player) => player.id === playerId);
-  const newRoster = [captain, ...roster.filter((player) => player.id !== playerId)];
-  setRoster(newRoster);
-}
+  function addCaptainToRoster(playerId) {
+    if (roster.some((rosterPlayer) => rosterPlayer.id === playerId)) return;
+    const captain = sortedPlayers.find((player) => player.id === playerId);
 
-function addPlayerToRoster(playerId) {
-  const player = sortedPlayers.find((player) => player.id === playerId);
-  if (!roster.some((rosterPlayer) => rosterPlayer.id === playerId)) {
-    const nextIndex = roster.length;
+    // const newRoster = [
+    //   captain,
+    //   ...roster.filter((player) => player.id !== playerId),
+    // ];
     const newRoster = [...roster];
-    newRoster[nextIndex] = player;
-
+    newRoster[0] = captain;
     setRoster(newRoster);
   }
-}
 
-function removePlayerFromRoster(playerId) {
-  const newRoster = roster.filter((player) => player.id !== playerId);
-  setRoster(newRoster);
-}
+  function addPlayerToRoster(playerId) {
+    if (!playerId) return;
+    if (roster.length >= 6) return;
+    const player = sortedPlayers.find((player) => player.id === playerId);
+    if (!roster.some((rosterPlayer) => rosterPlayer.id === playerId)) {
+      const nextIndex = roster.length;
+      const newRoster = [...roster];
+      newRoster[nextIndex] = player;
 
+      setRoster(newRoster);
+    }
+  }
 
+  function removePlayerFromRoster(playerId) {
+    const newRoster = roster.filter((player) => player.id !== playerId);
+    setRoster(newRoster);
+  }
 
+  function removeCaptainFromRoster(playerId) {
+    const newRoster = [...roster];
+    newRoster[0] = { noname: true };
+    setRoster(newRoster);
+  }
 
   function getPlayerList() {
     const {
@@ -197,18 +210,13 @@ function removePlayerFromRoster(playerId) {
                 {sortedPlayers
                   .filter((player) => player.isInTeam) // Фильтруем игроков по isInTeam
                   .map((player, index) => (
-                    <div
-                      className={styles.playersListElement}
-                      key={player.id || index}
-                    >
-                      <div className={styles.num}>
-                        {String(index + 1).padStart(2, "0")}
-                      </div>
-                      <div className={styles.nickname}>{player.nickname}</div>
-                      <div className={styles.sign}>
-                        <img src={onImage} alt="Status" />
-                      </div>
-                    </div>
+                    <ListElementComp
+                      key={index}
+                      index={index}
+                      player={player}
+                      addPlayerToRoster={addPlayerToRoster}
+                      addCaptainToRoster={addCaptainToRoster}
+                    />
                   ))}
               </div>
 
@@ -242,30 +250,39 @@ function removePlayerFromRoster(playerId) {
                 <h2>Выставляю</h2>
                 <div className={styles.wrapMT}>
                   <div className={styles.leftMT}>
-                    <dvi className={styles.captain}>
-                      <div className={styles.captainWrapper}>
-                        <div className={styles.captainNum}>1</div>
-                        <div className={styles.captainName}>Владимир</div>
-                      </div>
-                      <div className={styles.captainRole}>Капитан</div>
-                      <div className={styles.captainFotoCont}>
-                        <img src={basicCaptainImage} alt="" />
-                      </div>
-                    </dvi>
+                    <CaptainBarComp
+                      captain={roster[0]}
+                      removeCaptainFromRoster={removeCaptainFromRoster}
+                    />
                   </div>
                   <div className={styles.rightMT}>
-                    <div className={styles.flexTeamContainer}>
-                      <div className={styles.teamListContainer}>
-                        <ShortPlayerBar num={2} />
-                        <ShortPlayerBar num={3} />
-                        <ShortPlayerBar num={4} />
-                        <ShortPlayerBar num={5} />
-                        <ShortPlayerBar num={6} />
-                        <ShortPlayerBar num={7} />
-                      </div>
+                    <div className={styles.teamListContainer}>
+                      {roster.slice(1).map((player, index) => (
+                        <ShortPlayerBar
+                          num={index + 2} // num должен стартовать с 2, как указано
+                          key={player.id || index} // Используйте player.id для уникальных ключей, если доступно
+                          player={player}
+                          remover={removePlayerFromRoster}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>
+
+                <div className={styles.coeffText}>Коэффициент призовых</div>
+                <div className={styles.coeffNum}>100%</div>
+                <div className={styles.coeffDesc}>
+                  Состав вашей команды не влияет на коэффициент призовых.
+                </div>
+                <div className={styles.coeffResult}>Призовые стандартные.</div>
+              </div>
+              <div className={styles.buttonPlacer}>
+                <button
+                  className={styles.closeTeam}
+                  style={{ backgroundImage: `url(${blueButtonImage})` }}
+                >
+                  Подтвердить
+                </button>
               </div>
             </div>
           </div>

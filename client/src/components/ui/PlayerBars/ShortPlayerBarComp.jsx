@@ -5,11 +5,13 @@ import basicFoto from "src/components/ui/PlayerBars/basic.png";
 import StarsComp from "src/components/ui/Stars/StarsComp";
 import styles from "src/components/ui/PlayerBars/ShortPlayerBarComp.module.css";
 
-export default function ShortPlayerBarComp({ num }) {
-  const stars = 3;
-
+export default function ShortPlayerBarComp({ num, key, player, remover }) {
   return (
-    <div className={styles.teamElementWrapper}>
+    <div
+      key={key}
+      className={styles.teamElementWrapper}
+      onClick={() => remover(player.id)}
+    >
       <div className={styles.slotNum}>{num ? num : 0}</div>
       <div className={styles.teamListElement}>
         <div className={styles.square}>
@@ -21,9 +23,9 @@ export default function ShortPlayerBarComp({ num }) {
         </div>
         <div className={styles.playerInfoContainer}>
           <div className={styles.stars}>
-            <StarsComp stars={stars} />
+            <StarsComp stars={player.stars} />
           </div>
-          <div className={styles.picName}>Градиент</div>
+          <div className={styles.picName}>{player.nickname}</div>
         </div>
       </div>
     </div>
@@ -32,4 +34,7 @@ export default function ShortPlayerBarComp({ num }) {
 
 ShortPlayerBarComp.propTypes = {
   num: PropTypes.number,
+  key: PropTypes.number,
+  player: PropTypes.object,
+  remover: PropTypes.func,
 };

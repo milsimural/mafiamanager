@@ -231,87 +231,10 @@ a:visited {
   font-weight: bold;
 }
 
-.captain {
-  display: flex;
-  flex-direction: column;
-}
-
-.captainWrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: baseline;
-}
-
-.captainNum {
-  color: #b3b3b3;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 0;
-}
-
-.captainName {
-  margin-left: 14px;
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  line-height: 0;
-}
-
-.captainRole {
-  color: #18ffc9;
-  font-size: 14px;
-  text-transform: uppercase;
-  margin-left: 23px;
-  margin-top: 1px;
-}
-
-.captainFotoCont {
-  width: 168px;
-  height: 260px;
-  border-radius: 30px;
-  background-color: rgba(0, 0, 0, 0.3);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 0 8px black;
-}
-
-.captainFotoCont::before,
-.captainFotoCont::after {
-  content: "";
-  position: absolute;
-  left: 50%; /* Начало от центра элемента */
-  width: 168px; /* Полная ширина элемента */
-  height: 2px; /* Толщина границы */
-  transform: translateX(-50%); /* Центрирование */
-  background: linear-gradient(
-    to right,
-    transparent 28px,
-    rgba(255, 255, 255, 0.5) 50%,
-    transparent calc(100% - 28px)
-  );
-}
-
-.captainFotoCont::before {
-  top: 0; /* Расположение сверху */
-}
-
-.captainFotoCont::after {
-  bottom: 0; /* Расположение снизу */
-}
-
-.captainFotoCont img {
-  width: 168px;
-  height: 260px;
-  border-radius: 30px;
-}
-
 .rightMT {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   margin-left: 43px;
 }
 
@@ -328,7 +251,7 @@ a:visited {
   align-items: center;
   justify-content: start;
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 }
 
 .teamListContainer {
@@ -337,8 +260,64 @@ a:visited {
   border-right: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   width: 100%;
   max-width: 267px;
   box-sizing: border-box;
+  height: 294px;
+}
+
+.coeffText {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  line-height: 0;
+}
+
+.coeffNum {
+  font-size: 36px;
+  font-weight: bold;
+  color: #fff;
+  line-height: 0;
+  margin-top: 31px;
+}
+
+.coeffDesc {
+  font-size: 11px;
+  font-weight: normal;
+  color: #fff;
+  line-height: 16px;
+  margin-top: 27px;
+}
+
+.coeffResult {
+  font-size: 11px;
+  font-weight: normal;
+  color: #fff;
+  line-height: 16px;
+  margin-bottom: 30px;
+}
+
+.closeTeam {
+  color: #fff;
+  width: 164px;
+  height: 59px;
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: uppercase;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-bottom: 8px;
+}
+
+.buttonPlacer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 552px;
+  margin-top: 30px;
 }
