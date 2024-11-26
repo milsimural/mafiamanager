@@ -70,7 +70,6 @@ a:visited {
 
 .flexContainer {
   display: flex;
-  height: 100vh;
 }
 
 .leftColumn {
@@ -78,24 +77,9 @@ a:visited {
 }
 
 .playersMainContainer {
-  height: 680px;
-  width: 460px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
-
-.playersMainContainer::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  .playersMainContainer::-webkit-scrollbar-thumb {
-    background-color: #fff;
-    border-radius: 10px;
-    border: 2px solid #000;
-  }
-  
-  .playersMainContainer::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-  }
 
 .rightColumn {
   flex: 0 0 55%;
@@ -203,6 +187,8 @@ a:visited {
   display: flex;
   flex-direction: column;
   align-items: end;
+  position: sticky;
+  top: 90px;
 }
 
 .myteam {

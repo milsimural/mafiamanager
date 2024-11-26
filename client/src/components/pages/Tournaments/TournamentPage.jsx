@@ -20,8 +20,7 @@ function TournamentDetails({ user, logoutHandler }) {
   const [tournament, setTournament] = useState(null);
   const [players, setPlayers] = useState(null);
   const [sortedPlayers, setSortedPlayers] = useState([]);
-
-  const stars = 3;
+  const [roster, setRoster] = useState([]);
 
   useEffect(() => {
     axiosInstance
@@ -50,6 +49,31 @@ function TournamentDetails({ user, logoutHandler }) {
       getSortedPlayers();
     }
   }, [tournament, tournamentId, user]);
+
+function addCaptainToRoster(playerId) {
+  const captain = sortedPlayers.find((player) => player.id === playerId);
+  const newRoster = [captain, ...roster.filter((player) => player.id !== playerId)];
+  setRoster(newRoster);
+}
+
+function addPlayerToRoster(playerId) {
+  const player = sortedPlayers.find((player) => player.id === playerId);
+  if (!roster.some((rosterPlayer) => rosterPlayer.id === playerId)) {
+    const nextIndex = roster.length;
+    const newRoster = [...roster];
+    newRoster[nextIndex] = player;
+
+    setRoster(newRoster);
+  }
+}
+
+function removePlayerFromRoster(playerId) {
+  const newRoster = roster.filter((player) => player.id !== playerId);
+  setRoster(newRoster);
+}
+
+
+
 
   function getPlayerList() {
     const {
