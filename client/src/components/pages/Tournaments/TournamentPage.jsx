@@ -22,6 +22,8 @@ function TournamentDetails({ user, logoutHandler }) {
   const [players, setPlayers] = useState(null);
   const [sortedPlayers, setSortedPlayers] = useState([]);
   const [roster, setRoster] = useState([{ noname: true }]);
+  const [rosterData, setRosterData] = useState({});
+  const [isOld, setIsOld] = useState(false);
 
   useEffect(() => {
     axiosInstance
@@ -50,6 +52,77 @@ function TournamentDetails({ user, logoutHandler }) {
       getSortedPlayers();
     }
   }, [tournament, tournamentId, user]);
+
+  useEffect(() => {
+    if (!user || !tournament || !sortedPlayers || sortedPlayers.length === 0)
+      return;
+
+    const fetchRoster = async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/constract/getroster/${user.id}/${tournament.id}`
+        );
+        const rosterPlayerId = JSON.parse(response.data.rosterPlayers);
+        if (typeof rosterPlayerId !== "object") return;
+
+        let oldRoster = [];
+        for (let i = 0; i < rosterPlayerId.length; i++) {
+          oldRoster.push(
+            sortedPlayers.find((player) => player.id === rosterPlayerId[i])
+          );
+        }
+        setRoster(oldRoster);
+        setIsOld(true);
+      } catch (error) {
+        console.error("Error fetching roster:", error);
+      }
+    };
+
+    fetchRoster();
+
+    const savedRoster = rosterData.rosterPlayers;
+    if (savedRoster) setRoster(JSON.parse(savedRoster));
+  }, [user, tournament, sortedPlayers, rosterData.rosterPlayers]);
+
+  async function collectRosterData() {
+    const newRosterData = {
+      userId: user.id,
+      tournamentId: tournament.id,
+      rosterPlayers: JSON.stringify(roster.map((player) => player.id)),
+    };
+
+    setRosterData(newRosterData);
+
+    try {
+      const response = await axiosInstance.post(
+        `/constract/add/${user.id}/${tournament.id}`,
+        newRosterData
+      );
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error adding roster:", error);
+    }
+  }
+
+  async function updateRoster() {
+    const newRosterData = {
+      userId: user.id,
+      tournamentId: tournament.id,
+      rosterPlayers: JSON.stringify(roster.map((player) => player.id)),
+    };
+
+    setRosterData(newRosterData);
+
+    try {
+      const response = await axiosInstance.patch(
+        `/constract/update/${user.id}/${tournament.id}`,
+        newRosterData
+      );
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error adding roster:", error);
+    }
+  }
 
   function addCaptainToRoster(playerId) {
     if (roster.some((rosterPlayer) => rosterPlayer.id === playerId)) return;
@@ -216,22 +289,27 @@ function TournamentDetails({ user, logoutHandler }) {
               </div>
 
               <div className={styles.playersListContainerNone}>
-                {sortedPlayers
-                  .filter((player) => player.isInTeam === false)
-                  .map((player, index) => (
+                {(() => {
+                  const playersNotInTeam = sortedPlayers.filter(
+                    (player) => !player.isInTeam
+                  );
+                  const startNumber = playersNotInTeam.length;
+
+                  return playersNotInTeam.map((player, index) => (
                     <div
                       className={styles.playersListElementNone}
                       key={player.id || index}
                     >
                       <div className={styles.num}>
-                        {String(index + 1).padStart(2, "0")}
+                        {String(startNumber + index).padStart(2, "0")}
                       </div>
                       <div className={styles.nickname}>{player.nickname}</div>
                       <div className={styles.sign}>
                         <img src={offImage} alt="Status" />
                       </div>
                     </div>
-                  ))}
+                  ));
+                })()}
               </div>
 
               <div className={styles.uncknownPlayersCount}>
@@ -275,8 +353,9 @@ function TournamentDetails({ user, logoutHandler }) {
                 <button
                   className={styles.closeTeam}
                   style={{ backgroundImage: `url(${blueButtonImage})` }}
+                  onClick={isOld ? updateRoster : collectRosterData}
                 >
-                  Подтвердить
+                  Сохранить
                 </button>
               </div>
             </div>

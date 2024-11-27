@@ -8,6 +8,7 @@ const tokensRouter = require('./routes/tokensRouter');
 const adminRouter = require('./routes/adminRouter');
 const minicupRouter = require('./routes/minicupRouter');
 const playersRouter = require('./routes/playersRouter');
+const constractRouter = require('./routes/constractRouter');
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use('/api/auth', authRouter);
 app.use('/api/tokens', tokensRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/minicup', minicupRouter);
+app.use('/api/constract', constractRouter);
 
 module.exports = app;

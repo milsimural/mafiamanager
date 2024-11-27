@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     isOver: DataTypes.BOOLEAN,
     profitCoins: DataTypes.INTEGER,
     profitGems: DataTypes.INTEGER,
-    proftItems: DataTypes.STRING,
+    profitItems: DataTypes.STRING,
     place: DataTypes.INTEGER,
     perpCount: DataTypes.INTEGER
   }, {
