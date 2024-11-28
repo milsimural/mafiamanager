@@ -63,10 +63,10 @@ module.exports = {
         type: Sequelize.STRING,
       },
       gamesTables: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       resultTable: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       giftConfigId: {
         type: Sequelize.INTEGER,
@@ -76,6 +76,10 @@ module.exports = {
         },
         allowNull: true,
         onDelete: 'SET NULL',
+      },
+      rosterFinish: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,

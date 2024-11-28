@@ -14,6 +14,14 @@ constractRouter.post(
 
       const tournament = await Tournament.findByPk(tournamentId);
 
+      if (!tournament) {
+        return res.status(404).json({ error: 'Турнир не найден' });
+      }
+
+      if(tournament.rosterFinish) {
+        return res.status(400).json({ error: 'Изменение ростера закрыто' });
+      }
+
       const roster = {
         userId,
         tournamentId,
@@ -66,6 +74,16 @@ constractRouter.patch(
     try {
       const { userId, tournamentId } = req.params;
       const rosterData = req.body;
+
+      const tournament = await Tournament.findByPk(tournamentId);
+
+      if (!tournament) {
+        return res.status(404).json({ error: 'Турнир не найден' });
+      }
+
+      if(tournament.rosterFinish) {
+        return res.status(400).json({ error: 'Изменение ростера закрыто' });
+      }
 
       const [updatedRowsCount, updatedRows] = await Roster.update(rosterData, {
         where: { userId, tournamentId },

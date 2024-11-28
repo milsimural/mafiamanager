@@ -30,9 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       projected_count_of_participants: DataTypes.INTEGER,
       isReady: DataTypes.BOOLEAN,
       playersList: DataTypes.STRING,
-      gamesTables: DataTypes.STRING,
-      resultTable: DataTypes.STRING,
+      gamesTables: DataTypes.TEXT,
+      resultTable: DataTypes.TEXT,
       giftConfigId: DataTypes.INTEGER,
+      rosterFinish: DataTypes.BOOLEAN, 
     },
     {
       sequelize,
