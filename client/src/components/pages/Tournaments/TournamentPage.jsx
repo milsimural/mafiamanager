@@ -8,12 +8,13 @@ import { useNavigate } from "react-router-dom";
 import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
 import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
-import test from "./test.js";
 import offImage from "src/components/pages/Tournaments/off.png";
 import ShortPlayerBar from "src/components/ui/PlayerBars/ShortPlayerBarComp";
 import CaptainBarComp from "src/components/ui/PlayerBars/CaptainBarComp";
 import ListElementComp from "src/components/ui/PlayerBars/ListElementComp";
 import blueButtonImage from "src/components/pages/Tournaments/blueButton.png";
+import grayButtonImage from "src/components/pages/Tournaments/grayButton.png";
+import Getter from "src/components/pages/Tournaments/Getter.jsx";
 
 function TournamentDetails({ user, logoutHandler }) {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function TournamentDetails({ user, logoutHandler }) {
   const [roster, setRoster] = useState([{ noname: true }]);
   const [rosterData, setRosterData] = useState({});
   const [isOld, setIsOld] = useState(false);
+  const [rawData, setRawData] = useState({});
 
   useEffect(() => {
     axiosInstance
@@ -56,7 +58,7 @@ function TournamentDetails({ user, logoutHandler }) {
   useEffect(() => {
     if (!user || !tournament || !sortedPlayers || sortedPlayers.length === 0)
       return;
-
+    if (user?.isAdmin || user?.isModerator) return;
     const fetchRoster = async () => {
       try {
         const response = await axiosInstance.get(
@@ -85,6 +87,7 @@ function TournamentDetails({ user, logoutHandler }) {
   }, [user, tournament, sortedPlayers, rosterData.rosterPlayers]);
 
   async function collectRosterData() {
+    if (tournament?.rosterFinish) return;
     const newRosterData = {
       userId: user.id,
       tournamentId: tournament.id,
@@ -101,17 +104,17 @@ function TournamentDetails({ user, logoutHandler }) {
       console.log("Response:", response.data);
     } catch (error) {
       console.error("Error adding roster:", error);
+      alert("Error adding roster: " + error.message);
     }
   }
 
   async function updateRoster() {
+    if (tournament?.rosterFinish) return;
     const newRosterData = {
       userId: user.id,
       tournamentId: tournament.id,
       rosterPlayers: JSON.stringify(roster.map((player) => player.id)),
     };
-
-    setRosterData(newRosterData);
 
     try {
       const response = await axiosInstance.patch(
@@ -121,10 +124,12 @@ function TournamentDetails({ user, logoutHandler }) {
       console.log("Response:", response.data);
     } catch (error) {
       console.error("Error adding roster:", error);
+      alert("Error update roster: " + error.message);
     }
   }
 
   function addCaptainToRoster(playerId) {
+    if (tournament?.rosterFinish) return;
     if (roster.some((rosterPlayer) => rosterPlayer.id === playerId)) return;
     const captain = sortedPlayers.find((player) => player.id === playerId);
     const newRoster = [...roster];
@@ -134,6 +139,7 @@ function TournamentDetails({ user, logoutHandler }) {
 
   function addPlayerToRoster(playerId) {
     if (!playerId) return;
+    if (tournament?.rosterFinish) return;
     if (roster.length >= 6) return;
     const player = sortedPlayers.find((player) => player.id === playerId);
     if (!roster.some((rosterPlayer) => rosterPlayer.id === playerId)) {
@@ -146,28 +152,69 @@ function TournamentDetails({ user, logoutHandler }) {
   }
 
   function removePlayerFromRoster(playerId) {
+    if (tournament?.rosterFinish) return;
     const newRoster = roster.filter((player) => player.id !== playerId);
     setRoster(newRoster);
   }
 
   function removeCaptainFromRoster() {
+    if (tournament?.rosterFinish) return;
     const newRoster = [...roster];
     newRoster[0] = { noname: true };
     setRoster(newRoster);
   }
 
   function getPlayerList() {
+    if (!rawData) return;
     const {
       props: {
         pageProps: {
           serverData: { games },
         },
       },
-    } = test;
+    } = rawData;
 
     const tablesArray = games[0]?.game.flatMap(({ table }) => table) || [];
     const gomafiaIds = tablesArray.map((player) => player.id);
     return gomafiaIds;
+  }
+
+  async function getResults() {
+    if (!rawData) return;
+    const tournamentResultWithFinal =
+      rawData.props.pageProps.serverData.tournamentResultWithFinal;
+    const tournamentResultWithoutFinal =
+      rawData.props.pageProps.serverData.tournamentResultWithoutFinal;
+
+    // Получение первых 10 объектов
+    const selectedFromWithFinal = tournamentResultWithFinal.slice(0, 10);
+
+    // Собираем логины из выбранных 10 объектов
+    const existingLogins = new Set(
+      selectedFromWithFinal.map((item) => item.login)
+    );
+
+    // Добавляем объекты из WithoutFinal, логины которых уникальны
+    const uniqueFromWithoutFinal = tournamentResultWithoutFinal.filter(
+      (item) => !existingLogins.has(item.login)
+    );
+
+    // Результирующий массив
+    const resultArray = [...selectedFromWithFinal, ...uniqueFromWithoutFinal];
+
+    try {
+      const response = await axiosInstance.patch(
+        `/tournaments/update/${tournamentId}`,
+        {
+          resultTable: JSON.stringify(resultArray),
+        }
+      );
+      setTournament(response.data);
+      console.log("Response:", response.data);
+    } catch (error) {
+      alert(error.message);
+      console.error(error);
+    }
   }
 
   async function fetchPlayersByGomafiaIds(gomafiaIds) {
@@ -198,7 +245,7 @@ function TournamentDetails({ user, logoutHandler }) {
             },
           }
         );
-
+        setTournament(response2.data);
         console.log("Обновление прошло успешно:", response2.data);
         alert("Обновление прошло успешно!");
       } catch (error) {
@@ -216,6 +263,7 @@ function TournamentDetails({ user, logoutHandler }) {
     }
   }
 
+  // Информация о турнире которую видет админ
   function TournamentInfo(tournament) {
     // Парсим строку playersList в массив
     let playersCount = 0;
@@ -229,11 +277,87 @@ function TournamentDetails({ user, logoutHandler }) {
     }
 
     return (
-      <p>
-        Сейчас в турнир добавленно {playersCount} игроков из{" "}
-        {tournament?.projected_count_of_participants}
-      </p>
+      <>
+        <p>
+          Сейчас в турнир добавленно {playersCount} игроков из{" "}
+          {tournament?.projected_count_of_participants}
+        </p>
+        <p>
+          Турнир{" "}
+          <b style={{ color: tournament?.isReady ? "green" : "red" }}>
+            {tournament?.isReady ? "открыт" : "закрыт"}
+          </b>
+        </p>
+        <p>
+          Ростеры{" "}
+          <b style={{ color: tournament?.rosterFinish ? "red" : "green" }}>
+            {tournament?.rosterFinish ? "заблокированы" : "открыты"}
+          </b>
+        </p>
+      </>
     );
+  }
+
+  //Функции управления состояние турнира
+
+  async function openTournament() {
+    try {
+      const response = await axiosInstance.patch(
+        `tournaments/update/${tournamentId}`,
+        {
+          isReady: true,
+        }
+      );
+      console.log("Response:", response.data);
+      setTournament(response.data);
+    } catch (error) {
+      console.error("Error open tournament:", error);
+    }
+  }
+
+  async function closeTournament() {
+    try {
+      const response = await axiosInstance.patch(
+        `tournaments/update/${tournamentId}`,
+        {
+          isReady: false,
+        }
+      );
+      console.log("Response:", response.data);
+      setTournament(response.data);
+    } catch (error) {
+      console.error("Error close tournament:", error);
+    }
+  }
+
+  async function finishRosters() {
+    try {
+      const response = await axiosInstance.patch(
+        `tournaments/update/${tournamentId}`,
+        {
+          rosterFinish: true,
+        }
+      );
+      console.log("Response:", response.data);
+      setTournament(response.data);
+    } catch (error) {
+      console.error("Error close tournament:", error);
+    }
+  }
+
+  async function openRosters() {
+    try {
+      const response = await axiosInstance.patch(
+        `tournaments/update/${tournamentId}`,
+        {
+          rosterFinish: false,
+        }
+      );
+      console.log("Response:", response.data);
+      setTournament(response.data);
+    } catch (error) {
+      console.error("Error close tournament:", error);
+    }
   }
 
   function ShowTournamentUI() {
@@ -279,7 +403,7 @@ function TournamentDetails({ user, logoutHandler }) {
                   .filter((player) => player.isInTeam) // Фильтруем игроков по isInTeam
                   .map((player, index) => (
                     <ListElementComp
-                      key={index}
+                      key={player.id}
                       index={index}
                       player={player}
                       addPlayerToRoster={addPlayerToRoster}
@@ -293,7 +417,11 @@ function TournamentDetails({ user, logoutHandler }) {
                   const playersNotInTeam = sortedPlayers.filter(
                     (player) => !player.isInTeam
                   );
-                  const startNumber = playersNotInTeam.length;
+
+                  let startNumber = playersNotInTeam.length;
+                  if (playersNotInTeam.length === sortedPlayers.length) {
+                    startNumber = 1;
+                  }
 
                   return playersNotInTeam.map((player, index) => (
                     <div
@@ -333,7 +461,7 @@ function TournamentDetails({ user, logoutHandler }) {
                       {roster.slice(1).map((player, index) => (
                         <ShortPlayerBar
                           num={index + 2} // num должен стартовать с 2, как указано
-                          key={player.id || index} // Используйте player.id для уникальных ключей, если доступно
+                          key={player.id}
                           player={player}
                           remover={removePlayerFromRoster}
                         />
@@ -350,13 +478,22 @@ function TournamentDetails({ user, logoutHandler }) {
                 <div className={styles.coeffResult}>Призовые стандартные.</div>
               </div>
               <div className={styles.buttonPlacer}>
-                <button
-                  className={styles.closeTeam}
-                  style={{ backgroundImage: `url(${blueButtonImage})` }}
-                  onClick={isOld ? updateRoster : collectRosterData}
-                >
-                  Сохранить
-                </button>
+                {tournament?.rosterFinish ? (
+                  <button
+                    className={styles.closed}
+                    style={{ backgroundImage: `url(${grayButtonImage})` }}
+                  >
+                    Закрыто
+                  </button>
+                ) : (
+                  <button
+                    className={styles.closeTeam}
+                    style={{ backgroundImage: `url(${blueButtonImage})` }}
+                    onClick={isOld ? updateRoster : collectRosterData}
+                  >
+                    Сохранить
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -390,9 +527,22 @@ function TournamentDetails({ user, logoutHandler }) {
               она отраболтала. Она будет обновлять связи между игроками гоумафии
               и игроками в системе.
             </p>
-            <button onClick={() => fetchPlayersByGomafiaIds(getPlayerList())}>
-              Получить игроков
-            </button>
+            <h3>Сначала загрузи сырые данные JSON</h3>
+            <Getter setRawData={setRawData} />
+            <div className={styles.managmentButtons}>
+              <button onClick={() => fetchPlayersByGomafiaIds(getPlayerList())}>
+                Получить игроков
+              </button>
+              <button onClick={() => openTournament()}>ОТКРЫТЬ турнир</button>
+              <button onClick={() => closeTournament()}>ЗАКРЫТЬ турнир</button>
+              <button onClick={() => finishRosters()}>
+                Завершить приемку ростеров
+              </button>
+              <button onClick={() => openRosters()}>
+                Открыть ростеры обратно
+              </button>
+              <button>Получить результаты турнира</button>
+            </div>
             {players && (
               <>
                 <h3>Участники найденные</h3>

@@ -11,6 +11,7 @@ import TournamentsPage from "./components/pages/Tournaments/TournamentsPage";
 import TournamentPage from "./components/pages/Tournaments/TournamentPage";
 import TeamPage from "./components/pages/Account/TeamPage";
 import MagazinePage from "./components/pages/Magazine/MagazinePage";
+import Getter from "./components/pages/Tournaments/Getter";
 
 function App() {
   const [user, setUser] = useState();

@@ -51,6 +51,15 @@ tournamentRouter.patch('/update/:id', async (req, res) => {
       return res.status(404).json({ error: 'Турнир не найден' });
     }
     const updatedTournament = updatedRows[0];
+
+    if (updatedTournament.resultTable) {
+      let result = JSON.parse(updatedTournament.resultTable);
+      result = result.map((item) => ({
+        login: item.login,
+        sum: Number(item.sum) * 2,
+      }));
+    }
+
     const { resultTable, ...responseWithoutResultTable } = updatedTournament.get({
       plain: true,
     });

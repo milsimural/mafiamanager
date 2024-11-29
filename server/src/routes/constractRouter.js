@@ -104,4 +104,28 @@ constractRouter.patch(
   },
 );
 
+// constractRouter.get('/getresult/:userId/:tournamentId', async (req, res) => {
+//   try {
+//     const { userId, tournamentId } = req.params;
+//     const roster = await Roster.findOne({
+//       where: { userId, tournamentId },
+//     });
+
+//     if (!roster) {
+//       return res.status(404).json({ error: 'Заявка на турнир не найдена' });
+//     }
+
+//     const tournament = await Tournament.findByPk(tournamentId);
+
+//     if (!tournament) {
+//       return res.status(404).json({ error: 'Турнир не найден' });
+//     }
+
+//     if(!tournament.resultTable) {
+//       return res.status(404).json({ error: 'Результаты турнира не загружены' });
+//     }
+
+//     const result = JSON.parse(tournament.resultTable);
+
+
 module.exports = constractRouter;

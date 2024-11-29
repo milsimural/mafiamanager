@@ -313,6 +313,22 @@ a:visited {
   padding-bottom: 8px;
 }
 
+.closed {
+  color: #B9B9B9;
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: uppercase;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-bottom: 8px;
+  width: 160px;
+  height: 55px;
+}
+
 .buttonPlacer {
   display: flex;
   flex-direction: row;
@@ -320,4 +336,15 @@ a:visited {
   justify-content: space-around;
   width: 552px;
   margin-top: 30px;
+}
+
+.managmentButtons {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 60px;
+}
+
+.managmentButtons button {
+  margin-right: 10px;
+  cursor: pointer;
 }

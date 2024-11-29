@@ -5,10 +5,9 @@ import basicFoto from "src/components/ui/PlayerBars/basic.png";
 import StarsComp from "src/components/ui/Stars/StarsComp";
 import styles from "src/components/ui/PlayerBars/ShortPlayerBarComp.module.css";
 
-export default function ShortPlayerBarComp({ num, key, player, remover }) {
+export default function ShortPlayerBarComp({ num, player, remover }) {
   return (
     <div
-      key={key}
       className={styles.teamElementWrapper}
       onClick={() => remover(player.id)}
     >

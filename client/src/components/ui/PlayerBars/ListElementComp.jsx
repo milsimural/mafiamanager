@@ -4,7 +4,6 @@ import onImage from "src/components/pages/Tournaments/on.png";
 import styles from "src/components/ui/PlayerBars/ListElementComp.module.css";
 
 export default function ListElementComp({
-  key,
   index,
   player,
   addPlayerToRoster,
@@ -36,7 +35,6 @@ export default function ListElementComp({
     return (
       <div
         className={styles.playersListElement}
-        key={key}
         onClick={() => setMenuOpen(true)}
       >
         <div className={styles.num}>{String(index + 1).padStart(2, "0")}</div>
