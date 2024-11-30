@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const { Tournament, City } = require('../../db/models');
+const { Tournament, City, Player } = require('../../db/models');
 
 const tournamentRouter = Router();
 
@@ -52,13 +52,25 @@ tournamentRouter.patch('/update/:id', async (req, res) => {
     }
     const updatedTournament = updatedRows[0];
 
-    if (updatedTournament.resultTable) {
-      let result = JSON.parse(updatedTournament.resultTable);
-      result = result.map((item) => ({
-        login: item.login,
-        sum: Number(item.sum) * 2,
-      }));
-    }
+    // if (updatedTournament.resultTable) {
+    //   let result = JSON.parse(updatedTournament.resultTable);
+    //   result = result.map((item) => ({
+    //     login: (item.login).toLowerCase(),
+    //     sum: Number(item.sum) * 2,
+    //   }));
+    //   let tournamentPlayers = await Player.findAll();
+    //   tournamentPlayers = tournamentPlayers.map((player) => {
+    //     player.nickname = (player.nickname).toLowerCase();
+    //     return player;
+    //   });
+    //   result = result.map((item) => {
+    //     const tPlayer = tournamentPlayers.find((player) => player.nickname === item.login);
+    //     if (tPlayer) {
+    //       item.id = tPlayer.id;
+    //     }
+    //     return item;
+    //   });
+    //   }
 
     const { resultTable, ...responseWithoutResultTable } = updatedTournament.get({
       plain: true,
