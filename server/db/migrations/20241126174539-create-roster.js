@@ -61,6 +61,9 @@ module.exports = {
       perpCount: {
         type: Sequelize.INTEGER,
       },
+      averagePlace: {
+        type: Sequelize.FLOAT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

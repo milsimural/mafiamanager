@@ -442,7 +442,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          nickname: 'A2',
+          nickname: 'А2',
           picture: 'base.png',
           stars: 1,
           power: 56,

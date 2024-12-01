@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     profitGems: DataTypes.INTEGER,
     profitItems: DataTypes.STRING,
     place: DataTypes.INTEGER,
-    perpCount: DataTypes.INTEGER
+    perpCount: DataTypes.INTEGER,
+    averagePlace: DataTypes.FLOAT,
   }, {
     sequelize,
     modelName: 'Roster',

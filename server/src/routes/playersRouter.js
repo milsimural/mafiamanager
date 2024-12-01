@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { Op } = require('sequelize');
 
 const { Player, User, Club, Team, Transaction, Tournament } = require('../../db/models');
 
@@ -127,14 +128,13 @@ playerRouter.get('/getTournamentPlayersArray/:tournamentId/:userId', async (req,
       return res.status(400).send('Некорректные параметры ввода');
     }
 
+    // Ищем турнир
     const tournament = await Tournament.findByPk(tournamentId);
     if (!tournament) {
       return res.status(404).send('Турнир не найден');
     }
 
-    const arrayPlayers = tournament.playersList.slice(1, -1) 
-                .split(',') 
-                .map(Number);
+    const arrayPlayers = tournament.playersList.slice(1, -1).split(',').map(Number);
 
     if (!Array.isArray(arrayPlayers) || arrayPlayers.length === 0) {
       return res.status(404).send(`Игроки турнира не найдены: ${tournament.playersList}`);
@@ -181,6 +181,43 @@ playerRouter.get('/getTournamentPlayersArray/:tournamentId/:userId', async (req,
     }
 
     return res.json(tournamentPlayers);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: `Ошибка при получении списка игроков турнира: ${error.message}` });
+  }
+});
+
+// Находит обьекты всех игроков играющих на турнире
+playerRouter.get('/getTournamentPlayersAll/:tournamentId', async (req, res) => {
+  try {
+    const { tournamentId } = req.params;
+    const tournament = await Tournament.findByPk(tournamentId);
+
+    if (!tournament) {
+      return res.status(404).send('Турнир не найден');
+    }
+
+    const playersList = JSON.parse(tournament.playersList);
+
+    // Проверьте, что playersList - это массив
+    if (!Array.isArray(playersList)) {
+      return res.status(400).send('Список игроков турнира некорректен');
+    }
+
+    const tournamentPlayers = await Player.findAll({
+      where: {
+        id: {
+          [Op.in]: playersList,
+        },
+      },
+    });
+
+    if (tournamentPlayers.length === 0) {
+      return res.status(404).send('Не удалось найти игроков в базе с турнира');
+    }
+
+    res.json(tournamentPlayers);
   } catch (error) {
     res
       .status(500)

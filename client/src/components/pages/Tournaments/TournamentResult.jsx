@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from './TournamentResult.module.css'
+import axiosInstance from 'src/axiosInstance'
 
 export default function TournamentResult({user, tournament, roster}) {
 const [resultData, setResultData] = useState({})

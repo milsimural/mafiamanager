@@ -60,7 +60,7 @@ module.exports = {
         defaultValue: false,
       },
       playersList: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       gamesTables: {
         type: Sequelize.TEXT,
@@ -80,6 +80,14 @@ module.exports = {
       rosterFinish: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
+      },
+      rawData: {
+        type: Sequelize.TEXT,
+      },
+      x: {
+        type: Sequelize.INTEGER,
+        defaultValue: 3,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

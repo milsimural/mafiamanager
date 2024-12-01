@@ -18,7 +18,7 @@ constractRouter.post(
         return res.status(404).json({ error: 'Турнир не найден' });
       }
 
-      if(tournament.rosterFinish) {
+      if (tournament.rosterFinish) {
         return res.status(400).json({ error: 'Изменение ростера закрыто' });
       }
 
@@ -81,7 +81,7 @@ constractRouter.patch(
         return res.status(404).json({ error: 'Турнир не найден' });
       }
 
-      if(tournament.rosterFinish) {
+      if (tournament.rosterFinish) {
         return res.status(400).json({ error: 'Изменение ростера закрыто' });
       }
 
@@ -104,28 +104,12 @@ constractRouter.patch(
   },
 );
 
-// constractRouter.get('/getresult/:userId/:tournamentId', async (req, res) => {
+// constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
 //   try {
-//     const { userId, tournamentId } = req.params;
-//     const roster = await Roster.findOne({
-//       where: { userId, tournamentId },
+//     const { tournamentId } = req.params;
+//     const {resultTable} = req.body;
+//     const rosters = await Roster.findAll({
+//       where: { tournamentId },
 //     });
-
-//     if (!roster) {
-//       return res.status(404).json({ error: 'Заявка на турнир не найдена' });
-//     }
-
-//     const tournament = await Tournament.findByPk(tournamentId);
-
-//     if (!tournament) {
-//       return res.status(404).json({ error: 'Турнир не найден' });
-//     }
-
-//     if(!tournament.resultTable) {
-//       return res.status(404).json({ error: 'Результаты турнира не загружены' });
-//     }
-
-//     const result = JSON.parse(tournament.resultTable);
-
 
 module.exports = constractRouter;

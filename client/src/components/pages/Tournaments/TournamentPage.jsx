@@ -19,22 +19,31 @@ import Getter from "src/components/pages/Tournaments/Getter.jsx";
 function TournamentDetails({ user, logoutHandler }) {
   const navigate = useNavigate();
   const { tournamentId } = useParams();
+  // Обьект турнира со всеми полями
   const [tournament, setTournament] = useState(null);
   const [players, setPlayers] = useState(null);
+  // Игроки турнира с пометкой есть ли они у конкретного юзера
   const [sortedPlayers, setSortedPlayers] = useState([]);
   const [roster, setRoster] = useState([{ noname: true }]);
   const [rosterData, setRosterData] = useState({});
   const [isOld, setIsOld] = useState(false);
-  const [rawData, setRawData] = useState({});
+  const [rawData, setRawData] = useState();
 
   useEffect(() => {
     axiosInstance
       .get(`/tournaments/details/${tournamentId}`)
-      .then((res) => setTournament(res.data))
+      .then((res) => {
+        setTournament(res.data);
+        if (res.data.rawData) {
+          setRawData(JSON.parse(res.data.rawData)); // Обновляем состояние rawData
+        }
+      })
       .catch((error) => console.error("Ошибка при получении турнира:", error));
   }, [navigate, tournamentId, user]);
 
+  // Возвращает всех игроков с пометкой есть ли они у юзера или нет
   useEffect(() => {
+    if (user?.isAdmin === true || user?.isModerator === true) return;
     async function getSortedPlayers() {
       try {
         const response = await axiosInstance.get(
@@ -164,8 +173,13 @@ function TournamentDetails({ user, logoutHandler }) {
     setRoster(newRoster);
   }
 
+  // Получает список всех gomafiaId игроков участников турнира из rawData
   function getPlayerList() {
-    if (!rawData) return;
+    if (!rawData) {
+      console.log("Не загружены сырые данные");
+      alert("Не загружены сырые данные");
+      return;
+    }
     const {
       props: {
         pageProps: {
@@ -176,11 +190,12 @@ function TournamentDetails({ user, logoutHandler }) {
 
     const tablesArray = games[0]?.game.flatMap(({ table }) => table) || [];
     const gomafiaIds = tablesArray.map((player) => player.id);
+    alert(`Успешно получено: ${gomafiaIds}`);
     return gomafiaIds;
   }
 
   async function getResults() {
-    if (!rawData) return;
+    if (!rawData || !tournament) return;
     const tournamentResultWithFinal =
       rawData.props.pageProps.serverData.tournamentResultWithFinal;
     const tournamentResultWithoutFinal =
@@ -202,22 +217,56 @@ function TournamentDetails({ user, logoutHandler }) {
     // Результирующий массив
     const resultArray = [...selectedFromWithFinal, ...uniqueFromWithoutFinal];
 
+    // Теперь нам нужно сопоставить логины с игроками из БД
+
+    const plainPlayers = resultArray.map((item) => ({
+      login: item.login.toLowerCase(),
+      sum: Number(item.sum) * Number(tournament.x),
+      place: item.place,
+    }));
+    console.log(plainPlayers);
+
+    let players = [];
     try {
-      const response = await axiosInstance.patch(
-        `/tournaments/update/${tournamentId}`,
-        {
-          resultTable: JSON.stringify(resultArray),
-        }
+      const tournamentPlayers = await axiosInstance.get(
+        `/players/getTournamentPlayersAll/${tournament.id}`
       );
-      setTournament(response.data);
-      console.log("Response:", response.data);
+      players = tournamentPlayers.data;
+      console.log(players);
     } catch (error) {
-      alert(error.message);
-      console.error(error);
+      alert("Error getting players: " + error.message);
+      console.log(error);
+      return;
     }
+
+    const resultTable = plainPlayers
+      .map((item) => {
+        const player = players.find(
+          (player) => player.nickname.toLowerCase() === item.login.toLowerCase()
+        );
+        if (player) {
+          item.id = player.id;
+          return item;
+        }
+        return null;
+      })
+      .filter((item) => item !== null); // удаление null из массива
+
+    console.log(resultTable);
+
+    // Дальше - найти все ростеры этого турнира запросом
+    
+    // Вернуть сюда и посчитать прибыль в каждый ростер
+    // Посчитать место в каждый ростер
+    // Записать в каждый ростер - прибыль, место, кол-во игроков и isOver
   }
 
+  // Функция возвращает response.data.players - массив игроков по списку gomafiaId
+  // Возвращаеть response.data.notFoundIds - массив не найденных игроков
+  // И добавляет турниру свойство playersList
+  // - это массив Id игроков участников турнира переведенный в строку
   async function fetchPlayersByGomafiaIds(gomafiaIds) {
+    if (!gomafiaIds) return;
     try {
       const response = await axiosInstance.post(
         "/players/getPlayersByGomafiaIds",
@@ -228,6 +277,8 @@ function TournamentDetails({ user, logoutHandler }) {
 
       const players = response.data;
       setPlayers(players);
+      alert(`Успешно получено: ${players.players.length} игроков`);
+      console.log(players);
 
       const playersIdsForTournamentUpdate = players.players.map(
         (player) => player.id
@@ -247,18 +298,24 @@ function TournamentDetails({ user, logoutHandler }) {
         );
         setTournament(response2.data);
         console.log("Обновление прошло успешно:", response2.data);
-        alert("Обновление прошло успешно!");
+        alert(
+          "Успешно обновили список игроков турнира найденых по гоумафияID!"
+        );
       } catch (error) {
         if (error.response) {
           console.error("Ошибка сервера:", error.response.data);
+          alert(error.response.data);
         } else if (error.request) {
           console.error("Нет ответа от сервера:", error.request);
+          alert(error.request);
         } else {
           console.error("Ошибка запроса:", error.message);
+          alert(error.message);
         }
       }
     } catch (error) {
       console.error("Error fetching players:", error);
+      alert("Error fetching players: " + error.message);
       throw error;
     }
   }
@@ -510,7 +567,7 @@ function TournamentDetails({ user, logoutHandler }) {
           Вы вошли как {user?.email} - у вас есть право редактировать турнир.{" "}
           <button onClick={() => logoutHandler()}>Выйти из аккаунта</button>
         </p>
-        <p>{TournamentInfo(tournament)}</p>
+        <div>{TournamentInfo(tournament)}</div>
         {(user?.isAdmin === true || user?.isModerator === true) && (
           <div className={styles.adminPanel}>
             <p className={styles.adminText}>
@@ -528,9 +585,18 @@ function TournamentDetails({ user, logoutHandler }) {
               и игроками в системе.
             </p>
             <h3>Сначала загрузи сырые данные JSON</h3>
-            <Getter setRawData={setRawData} />
+            <Getter
+              setRawData={setRawData}
+              tournamentId={tournamentId}
+              rawData={rawData}
+            />
+            <p>Получить игрока не работает если не получить сырые данные</p>
             <div className={styles.managmentButtons}>
-              <button onClick={() => fetchPlayersByGomafiaIds(getPlayerList())}>
+              <button
+                disabled={!rawData}
+                className={!rawData ? "disabled-button" : ""}
+                onClick={() => fetchPlayersByGomafiaIds(getPlayerList())}
+              >
                 Получить игроков
               </button>
               <button onClick={() => openTournament()}>ОТКРЫТЬ турнир</button>
@@ -541,7 +607,9 @@ function TournamentDetails({ user, logoutHandler }) {
               <button onClick={() => openRosters()}>
                 Открыть ростеры обратно
               </button>
-              <button>Получить результаты турнира</button>
+              <button onClick={() => getResults()}>
+                Получить результаты турнира
+              </button>
             </div>
             {players && (
               <>
