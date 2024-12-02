@@ -104,12 +104,62 @@ constractRouter.patch(
   },
 );
 
-// constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
-//   try {
-//     const { tournamentId } = req.params;
-//     const {resultTable} = req.body;
-//     const rosters = await Roster.findAll({
-//       where: { tournamentId },
-//     });
+constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
+  try {
+    const { tournamentId } = req.params;
+    const parsedBody = JSON.parse(req.body);
+    const { resultTable } = parsedBody;
+
+    const rosters = await Roster.findAll({
+      where: { tournamentId },
+    });
+
+    if (!rosters || rosters.length === 0) {
+      return res
+        .status(404)
+        .json({ error: 'Ростеры турнира не найдены или нет турнира' });
+    }
+
+    await Promise.all(
+      rosters.map(async (roster) => {
+        const { rosterPlayers } = JSON.parse(roster.rosterPlayers);
+        let count = 0;
+        let totalPlaceSum = 0;
+
+        // Создаем новый объект из ростера
+        const updatedRoster = { ...roster };
+
+        resultTable.forEach((player) => {
+          if (rosterPlayers.includes(player.id)) {
+            count += 1;
+            updatedRoster.profitCoins += player.sum;
+            totalPlaceSum += player.sum;
+          }
+        });
+
+        if (count > 0) {
+          updatedRoster.averagePlace = totalPlaceSum / count;
+        }
+
+        // Используем метод обновления для базы данных
+        await Roster.update(
+          {
+            profitCoins: updatedRoster.profitCoins,
+            averagePlace: updatedRoster.averagePlace,
+          },
+          {
+            where: { id: roster.id },
+          },
+        );
+      }),
+    );
+
+    res.status(200).json({ message: 'Свойства ростеров успешно обновлены.' });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: `Ошибка при обновлении ростеров турнира: ${error.message}` });
+  }
+});
 
 module.exports = constractRouter;

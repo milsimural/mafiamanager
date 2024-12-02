@@ -254,12 +254,25 @@ function TournamentDetails({ user, logoutHandler }) {
 
     console.log(resultTable);
 
+    // Дальше передаем работу серверу: 
+    try {
+      const response = await axiosInstance.patch(
+        `/constract/closeRosters/${tournament.id}`, JSON.stringify(resultTable)
+      );
+      console.log(response);
+    } catch (error) {
+      alert("Error closing rosters: " + error.message);
+      console.log(error);
+      return;
+    }
+
     // Дальше - найти все ростеры этого турнира запросом
-    
+
     // Вернуть сюда и посчитать прибыль в каждый ростер
     // Посчитать место в каждый ростер
     // Записать в каждый ростер - прибыль, место, кол-во игроков и isOver
   }
+
 
   // Функция возвращает response.data.players - массив игроков по списку gomafiaId
   // Возвращаеть response.data.notFoundIds - массив не найденных игроков
