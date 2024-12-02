@@ -107,8 +107,11 @@ constractRouter.patch(
 constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
   try {
     const { tournamentId } = req.params;
-    const parsedBody = JSON.parse(req.body);
-    const { resultTable } = parsedBody;
+    const resultTable = req.body;
+
+    if (!Array.isArray(resultTable)) {
+      return res.status(400).json({ error: 'Ожидался массив resultTable.', resultTable });
+    }    
 
     const rosters = await Roster.findAll({
       where: { tournamentId },
@@ -129,13 +132,13 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
         // Создаем новый объект из ростера
         const updatedRoster = { ...roster };
 
-        resultTable.forEach((player) => {
-          if (rosterPlayers.includes(player.id)) {
-            count += 1;
-            updatedRoster.profitCoins += player.sum;
-            totalPlaceSum += player.sum;
-          }
-        });
+          resultTable.forEach((player) => {
+            if (rosterPlayers.includes(player.id)) {
+              count += 1;
+              updatedRoster.profitCoins += player.sum;
+              totalPlaceSum += player.sum;
+            }
+          });
 
         if (count > 0) {
           updatedRoster.averagePlace = totalPlaceSum / count;

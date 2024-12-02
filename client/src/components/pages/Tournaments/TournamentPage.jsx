@@ -224,6 +224,7 @@ function TournamentDetails({ user, logoutHandler }) {
       sum: Number(item.sum) * Number(tournament.x),
       place: item.place,
     }));
+    console.log("Получаем списочек");
     console.log(plainPlayers);
 
     let players = [];
@@ -232,6 +233,7 @@ function TournamentDetails({ user, logoutHandler }) {
         `/players/getTournamentPlayersAll/${tournament.id}`
       );
       players = tournamentPlayers.data;
+      console.log("Сейчас будет Players");
       console.log(players);
     } catch (error) {
       alert("Error getting players: " + error.message);
@@ -252,12 +254,19 @@ function TournamentDetails({ user, logoutHandler }) {
       })
       .filter((item) => item !== null); // удаление null из массива
 
+    console.log("Это отсылается на сервак в боди");
     console.log(resultTable);
 
-    // Дальше передаем работу серверу: 
+    if(!Array.isArray(resultTable)) {
+      alert("Error: resultTable is not an array");
+      return;
+    }
+
+    // Дальше передаем работу серверу:
     try {
       const response = await axiosInstance.patch(
-        `/constract/closeRosters/${tournament.id}`, JSON.stringify(resultTable)
+        `/constract/closeRosters/${tournament.id}`,
+        JSON.stringify(resultTable)
       );
       console.log(response);
     } catch (error) {
@@ -272,7 +281,6 @@ function TournamentDetails({ user, logoutHandler }) {
     // Посчитать место в каждый ростер
     // Записать в каждый ростер - прибыль, место, кол-во игроков и isOver
   }
-
 
   // Функция возвращает response.data.players - массив игроков по списку gomafiaId
   // Возвращаеть response.data.notFoundIds - массив не найденных игроков
