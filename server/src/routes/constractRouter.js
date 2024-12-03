@@ -9,18 +9,6 @@ constractRouter.get('/getrosters/:tournamentId', async (req, res) => {
     const { tournamentId } = req.params;
     const rosters = await Roster.findAll({
       where: { tournamentId },
-      attributes: [
-        'id',
-        'userId',
-        'rosterPlayers',
-        'teamPlayers',
-        'profitCoins',
-        'profitGems',
-        'profitItems',
-        'place',
-        'perpCount',
-        'averagePlace',
-      ],
     });
     res.json(rosters);
   } catch (error) {
@@ -242,7 +230,7 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
     );
 
     const updatedRosters = await Roster.findAll({
-      where: { tournamentId }
+      where: { tournamentId },
     });
 
     // Сортируем составы по их среднему месту
