@@ -157,18 +157,12 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
         const rosterPlayers = JSON.parse(roster.rosterPlayers);
 
         if (!Array.isArray(rosterPlayers)) {
-          // return res.status(500).json({
-          //   error: 'rosterPlayers не является массивом',
-          //   rosterPlayers,
-          //   roster,
-          //   rosters,
-          // });
           throw new Error('rosterPlayers не является массивом');
         }
 
         let count = 0;
+        let profitCoins = 0;
         let totalPlaceSum = 0;
-
         
         const updatedRoster = { ...roster };
 
@@ -181,13 +175,14 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
           }
           if (rosterPlayers.includes(player.id)) {
             count += 1;
-            updatedRoster.profitCoins += Number(player.sum);
-            totalPlaceSum += player.place;
+            profitCoins += Number(player.sum);
+            totalPlaceSum += Number(player.place);
           }
         });
 
         if (count > 0) {
           updatedRoster.averagePlace = totalPlaceSum / count;
+          updatedRoster.profitCoins = Math.floor(profitCoins);
         }
 
         if (!roster.id) {
