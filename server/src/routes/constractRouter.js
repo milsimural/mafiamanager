@@ -111,11 +111,33 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
 
     if (!Array.isArray(resultTable)) {
       return res.status(400).json({ error: 'Ожидался массив resultTable.', resultTable });
-    }    
+    }
 
-    const rosters = await Roster.findAll({
-      where: { tournamentId },
-    });
+    let rosters;
+    try {
+      rosters = await Roster.findAll({
+        where: { tournamentId },
+        attributes: [
+          'id',
+          'userId',
+          'tournamentId',
+          'rosterPlayers',
+          'teamPlayers',
+          'isClose',
+          'isOver',
+          'profitCoins',
+          'profitGems',
+          'profitItems',
+          'place',
+          'perpCount',
+          'averagePlace',
+        ],
+      });
+    } catch (error) {
+      return res
+        .status(511)
+        .json({ error: `Ошибка при получении ростеров турнира: ${error.message}` });
+    }
 
     if (!rosters || rosters.length === 0) {
       return res
@@ -125,41 +147,73 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
 
     await Promise.all(
       rosters.map(async (roster) => {
-        const { rosterPlayers } = JSON.parse(roster.rosterPlayers);
+        const rosterPlayers = JSON.parse(roster.rosterPlayers);
+
+        if (!Array.isArray(rosterPlayers)) {
+          return res.status(500).json({
+            error: 'rosterPlayers не является массивом',
+            rosterPlayers,
+            roster,
+            rosters,
+          });
+        }
+
         let count = 0;
         let totalPlaceSum = 0;
 
         // Создаем новый объект из ростера
         const updatedRoster = { ...roster };
 
-          resultTable.forEach((player) => {
-            if (rosterPlayers.includes(player.id)) {
-              count += 1;
-              updatedRoster.profitCoins += player.sum;
-              totalPlaceSum += player.sum;
-            }
-          });
+        resultTable.forEach((player) => {
+          if (!player.id) {
+            return res.status(509).json({ error: 'Проблемы с player.id', player });
+          }
+          if (!player.sum) {
+            return res.status(511).json({ error: 'Проблемы с player.sum', player });
+          }
+          if (rosterPlayers.includes(player.id)) {
+            count += 1;
+            updatedRoster.profitCoins = Math.round(
+              updatedRoster.profitCoins + player.sum,
+            );
+            totalPlaceSum += player.sum;
+          }
+        });
 
         if (count > 0) {
           updatedRoster.averagePlace = totalPlaceSum / count;
         }
 
-        // Используем метод обновления для базы данных
-        await Roster.update(
-          {
-            profitCoins: updatedRoster.profitCoins,
-            averagePlace: updatedRoster.averagePlace,
-          },
-          {
-            where: { id: roster.id },
-          },
-        );
+        if (!roster.id) {
+          return res.status(512).json({ error: 'Проблемы с roster.id', roster, rosters });
+        }
+
+        try {
+          await Roster.update(
+            {
+              profitCoins: updatedRoster.profitCoins,
+              averagePlace: updatedRoster.averagePlace,
+            },
+            {
+              where: { id: roster.id },
+            },
+          );
+        } catch (updateError) {
+          return res.status(500).json({
+            error: `Ошибка при обновлении ростера: ${updateError.message}`,
+            attemptedUpdate: {
+              profitCoins: updatedRoster.profitCoins,
+              averagePlace: updatedRoster.averagePlace,
+            },
+            rosterId: roster.id,
+          });
+        }
       }),
     );
 
-    res.status(200).json({ message: 'Свойства ростеров успешно обновлены.' });
+    return res.status(200).json({ message: 'Свойства ростеров успешно обновлены.' });
   } catch (error) {
-    res
+    return res
       .status(500)
       .json({ error: `Ошибка при обновлении ростеров турнира: ${error.message}` });
   }

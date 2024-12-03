@@ -257,7 +257,7 @@ function TournamentDetails({ user, logoutHandler }) {
     console.log("Это отсылается на сервак в боди");
     console.log(resultTable);
 
-    if(!Array.isArray(resultTable)) {
+    if (!Array.isArray(resultTable)) {
       alert("Error: resultTable is not an array");
       return;
     }
@@ -266,7 +266,7 @@ function TournamentDetails({ user, logoutHandler }) {
     try {
       const response = await axiosInstance.patch(
         `/constract/closeRosters/${tournament.id}`,
-        JSON.stringify(resultTable)
+        resultTable
       );
       console.log(response);
     } catch (error) {
