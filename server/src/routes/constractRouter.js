@@ -4,6 +4,30 @@ const constractRouter = Router();
 
 const verifyAccessToken = require('../middlewares/verifyAccessToken');
 
+constractRouter.get('/getrosters/:tournamentId', async (req, res) => {
+  try {
+    const { tournamentId } = req.params;
+    const rosters = await Roster.findAll({
+      where: { tournamentId },
+      attributes: [
+        'id',
+        'userId',
+        'rosterPlayers',
+        'teamPlayers',
+        'profitCoins',
+        'profitGems',
+        'profitItems',
+        'place',
+        'perpCount',
+        'averagePlace',
+      ],
+    });
+    res.json(rosters);
+  } catch (error) {
+    res.status(500).json({ error: `Ошибка при выгрузке ростеров: ${error.message}` });
+  }
+});
+
 constractRouter.post(
   '/add/:userId/:tournamentId',
   verifyAccessToken,
@@ -104,6 +128,7 @@ constractRouter.patch(
   },
 );
 
+// Этот класс нужен для лучшего написания ошибки
 class RosterUpdateError extends Error {
   constructor(message, details) {
     super(message);
@@ -111,6 +136,7 @@ class RosterUpdateError extends Error {
   }
 }
 
+// Обновление всех ростеров турнира
 constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
   try {
     const { tournamentId } = req.params;
@@ -163,7 +189,7 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
         let count = 0;
         let profitCoins = 0;
         let totalPlaceSum = 0;
-        
+
         const updatedRoster = { ...roster };
 
         resultTable.forEach((player) => {
@@ -200,23 +226,45 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
             },
           );
         } catch (updateError) {
-          throw new RosterUpdateError(`Ошибка при обновлении ростера: ${updateError.message}`, {
-            attemptedUpdate: {
-              profitCoins: updatedRoster.profitCoins,
-              averagePlace: updatedRoster.averagePlace,
+          throw new RosterUpdateError(
+            `Ошибка при обновлении ростера: ${updateError.message}`,
+            {
+              attemptedUpdate: {
+                profitCoins: updatedRoster.profitCoins,
+                averagePlace: updatedRoster.averagePlace,
+              },
+              rosterId: roster.id,
+              updatedRoster,
             },
-            rosterId: roster.id,
-            updatedRoster,
-          });
+          );
         }
       }),
     );
 
+    const updatedRosters = await Roster.findAll({
+      where: { tournamentId }
+    });
+
+    // Сортируем составы по их среднему месту
+    updatedRosters.sort((a, b) => a.averagePlace - b.averagePlace);
+
+    // Создаем массив промисов для сохранения изменений
+    const savePromises = updatedRosters.map((roster, index) => {
+      roster.set('place', index + 1); // Устанавливаем новое место
+      return roster.save(); // Возвращаем промис
+    });
+
+    // Ожидаем выполнения всех операций сохранения
+    await Promise.all(savePromises);
+
     return res.status(200).json({ message: 'Свойства ростеров успешно обновлены.' });
   } catch (error) {
-    if (error instanceof RosterUpdateError) return res.status(500).json({ error: error.message, details: error.details });
-    
-    return res.status(500).json({ error: `Ошибка при обновлении данных ростеров: ${error.message}` });
+    if (error instanceof RosterUpdateError)
+      return res.status(500).json({ error: error.message, details: error.details });
+
+    return res
+      .status(500)
+      .json({ error: `Ошибка при обновлении данных ростеров: ${error.message}` });
   }
 });
 
