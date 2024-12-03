@@ -104,6 +104,13 @@ constractRouter.patch(
   },
 );
 
+class RosterUpdateError extends Error {
+  constructor(message, details) {
+    super(message);
+    this.details = details;
+  }
+}
+
 constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
   try {
     const { tournamentId } = req.params;
@@ -150,33 +157,32 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
         const rosterPlayers = JSON.parse(roster.rosterPlayers);
 
         if (!Array.isArray(rosterPlayers)) {
-          return res.status(500).json({
-            error: 'rosterPlayers не является массивом',
-            rosterPlayers,
-            roster,
-            rosters,
-          });
+          // return res.status(500).json({
+          //   error: 'rosterPlayers не является массивом',
+          //   rosterPlayers,
+          //   roster,
+          //   rosters,
+          // });
+          throw new Error('rosterPlayers не является массивом');
         }
 
         let count = 0;
         let totalPlaceSum = 0;
 
-        // Создаем новый объект из ростера
+        
         const updatedRoster = { ...roster };
 
         resultTable.forEach((player) => {
           if (!player.id) {
-            return res.status(509).json({ error: 'Проблемы с player.id', player });
+            throw new Error('Проблемы с player.id');
           }
-          if (!player.sum) {
-            return res.status(511).json({ error: 'Проблемы с player.sum', player });
+          if (!Number.isFinite(player.sum)) {
+            throw new Error('Проблемы с player.sum - либо его нет, либо это не число');
           }
           if (rosterPlayers.includes(player.id)) {
             count += 1;
-            updatedRoster.profitCoins = Math.round(
-              updatedRoster.profitCoins + player.sum,
-            );
-            totalPlaceSum += player.sum;
+            updatedRoster.profitCoins += Number(player.sum);
+            totalPlaceSum += player.place;
           }
         });
 
@@ -185,7 +191,7 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
         }
 
         if (!roster.id) {
-          return res.status(512).json({ error: 'Проблемы с roster.id', roster, rosters });
+          throw new Error('Проблемы с roster.id');
         }
 
         try {
@@ -199,13 +205,13 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
             },
           );
         } catch (updateError) {
-          return res.status(500).json({
-            error: `Ошибка при обновлении ростера: ${updateError.message}`,
+          throw new RosterUpdateError(`Ошибка при обновлении ростера: ${updateError.message}`, {
             attemptedUpdate: {
               profitCoins: updatedRoster.profitCoins,
               averagePlace: updatedRoster.averagePlace,
             },
             rosterId: roster.id,
+            updatedRoster,
           });
         }
       }),
@@ -213,9 +219,9 @@ constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
 
     return res.status(200).json({ message: 'Свойства ростеров успешно обновлены.' });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ error: `Ошибка при обновлении ростеров турнира: ${error.message}` });
+    if (error instanceof RosterUpdateError) return res.status(500).json({ error: error.message, details: error.details });
+    
+    return res.status(500).json({ error: `Ошибка при обновлении данных ростеров: ${error.message}` });
   }
 });
 
