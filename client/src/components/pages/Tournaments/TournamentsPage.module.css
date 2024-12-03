@@ -1,3 +1,64 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  background-color: #1d1a1d;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+.background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  width: 100vw;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  display: flex;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1100px;
+  box-sizing: border-box;
+  margin: 0 auto; /* Центрирование блока */
+}
+
+.nav {
+  margin-top: 68px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.burger {
+  margin-right: auto;
+}
+
+h1 {
+  color: #fff;
+  font-weight: bold;
+  font-size: 40px;
+  margin-bottom: 0;
+}
+
+h2 {
+  color: #18ffc9;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
 .twoCol {
   display: flex;
   flex-direction: row;
@@ -6,34 +67,85 @@
 }
 
 .leftCol {
+  flex: 0 0 45%;
 }
 
 .rigthCol {
 }
 
-.tournamentList {
+/* Нормальные стили элементов */
+
+.elementListContainer {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 3px solid transparent;
+  border-image: linear-gradient(to right, #482832, #fff 50%, #1c3d43) 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.tournamentCard {
+.listElement {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 15px;
+  height: 62px;
+  border: 3px solid transparent;
+  border-bottom: 0;
+  border-image: linear-gradient(to right, #482832, #fff 50%, #1c3d43) 1;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: start;
   width: 100%;
 }
 
-.tournamentCard .date {
-  margin-right: 14px;
+.listElement .num {
+  padding: 8px 8px 8px 16px;
+  color: #16fcce;
+  width: 30px;
 }
 
-.tournamentCard .projectedCount {
-  margin-right: 14px;
+.listElement .tournamentName {
+  color: #fff;
+  padding: 8px 16px 8px 8px;
+  flex: 0 0 70%;
+  width: 200px;
 }
 
-.tournamentCard .tournamentName {
-  margin-right: 14px;
+.listElement a {
+  text-decoration: none;
 }
 
-.tournamentCard .ready {
+.listElement .date {
+  padding: 8px 16px 8px 17px;
+  width: 100px;
 }
 
-.tournamentCard .ready button {
+.listElement .tournamentLink {
+  padding: 8px 16px 8px 8px;
+}
+
+.ready {
+  width: 120px;
+}
+
+.readyButton {
+  color: #fff;
+  width: 100px;
+  height: 43px;
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: uppercase;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-bottom: 8px;
 }
