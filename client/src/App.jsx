@@ -11,7 +11,6 @@ import TournamentsPage from "./components/pages/Tournaments/TournamentsPage";
 import TournamentPage from "./components/pages/Tournaments/TournamentPage";
 import TeamPage from "./components/pages/Account/TeamPage";
 import MagazinePage from "./components/pages/Magazine/MagazinePage";
-import Getter from "./components/pages/Tournaments/Getter";
 
 function App() {
   const [user, setUser] = useState();
@@ -30,14 +29,6 @@ function App() {
       })
       .catch(() => setUser(null));
   }, []);
-
-  // const updateUser = async (user) => {
-  //   const res = await axiosInstance.post(`/auth/update/${user.id}`);
-  //   user.coins = res.data.coins;
-  //   user.gems = res.data.gems;
-  //   console.log(user);
-  //   setUser(user);
-  // };
 
   function updateUserCoins(coins) {
     const updatedUser = { ...user, coins: coins };

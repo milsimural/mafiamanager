@@ -46,6 +46,8 @@ constractRouter.post(
         profitItems: '',
         place: 0,
         perpCount: tournament.projected_count_of_participants,
+        averagePlace: 0,
+        isTakeProfit: false,
       };
 
       const newRoster = await Roster.create(roster);

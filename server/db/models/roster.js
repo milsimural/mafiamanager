@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     place: DataTypes.INTEGER,
     perpCount: DataTypes.INTEGER,
     averagePlace: DataTypes.FLOAT,
+    isTakeProfit: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Roster',

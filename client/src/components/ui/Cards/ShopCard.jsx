@@ -107,7 +107,7 @@ export default function ShopCard({ user, player, shop, buyPlayer, isInTeam }) {
         <div className={styles.buy}>
           {!isInTeam ? (
             <button
-              onClick={() => buyPlayer(player.id, user.id)}
+              onClick={() => buyPlayer(player.id, user.id, player.costcoins)}
               style={{ backgroundImage: `url(${buyImage})` }}
             >
               <img

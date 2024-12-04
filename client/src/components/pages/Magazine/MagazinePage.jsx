@@ -11,6 +11,8 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   const [players, setPlayers] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
 
+  
+
   useEffect(() => {
     axiosInstance
       .get("/players")
@@ -35,7 +37,13 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
     }
   }, [user]);
 
-  function buyPlayer(playerId, userId) {
+  console.log(user);
+
+  function buyPlayer(playerId, userId, playercostcoins) {
+    if (user.coins < playercostcoins) {
+      alert("Недостаточно монет");
+      return;
+    }
     axiosInstance
       .post(`/players/buy/${playerId}/${userId}`)
       .then((res) => {
@@ -68,13 +76,9 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
           </div>
           <div className={styles.magazineNavigation}>
             <h1 className={styles.underline}>Контракты</h1>
-            <h1>Аренда</h1>
-            <h1>Разрешения</h1>
-            <h1>Трансферы</h1>
           </div>
           <div className={styles.subNavigation}>
             <h2 className={styles.underline}>Спортсмены</h2>
-            <h2>Тренеры</h2>
           </div>
           <div className={styles.players}>
             {players.map((player) => {
@@ -82,7 +86,6 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
               const isInTeam = teamMembers.some(
                 (member) => member.playerid === player.id
               );
-              console.log(isInTeam);
 
               return (
                 <div className={styles.playerWrapper} key={player.nickname}>
@@ -108,4 +111,5 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
 MagazinePage.propTypes = {
   user: PropTypes.object,
   logoutHandler: PropTypes.func.isRequired,
+  updateUserCoins: PropTypes.func.isRequired,
 };

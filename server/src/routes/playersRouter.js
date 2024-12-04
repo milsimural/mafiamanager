@@ -66,6 +66,10 @@ playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) 
       return res.status(404).send('Пользователь не найден');
     }
 
+    if (player.costcoins > user.coins) {
+      return res.status(400).send('Недостаточно монет');
+    }
+
     user.coins -= player.costcoins;
     await user.save();
 
