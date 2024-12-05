@@ -488,8 +488,11 @@ function TournamentDetails({ user, logoutHandler }) {
                   const playersNotInTeam = sortedPlayers.filter(
                     (player) => !player.isInTeam
                   );
+                  const playersInTeam = sortedPlayers.filter(
+                    (player) => player.isInTeam
+                  );
 
-                  let startNumber = playersNotInTeam.length;
+                  let startNumber = playersInTeam.length + 1;
                   if (playersNotInTeam.length === sortedPlayers.length) {
                     startNumber = 1;
                   }
