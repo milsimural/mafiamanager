@@ -414,6 +414,15 @@ function TournamentDetails({ user, logoutHandler }) {
     } catch (error) {
       console.error("Error close tournament:", error);
     }
+
+    try {
+      const responce = await axiosInstance.patch(
+        `constract/closeRosters/${tournamentId}`
+      );
+      console.log("Response:", responce.data);
+    } catch (error) {
+      console.error("Error close tournament:", error);
+    }
   }
 
   async function openRosters() {
@@ -426,6 +435,15 @@ function TournamentDetails({ user, logoutHandler }) {
       );
       console.log("Response:", response.data);
       setTournament(response.data);
+    } catch (error) {
+      console.error("Error close tournament:", error);
+    }
+
+    try {
+      const responce = await axiosInstance.patch(
+        `constract/openRosters/${tournamentId}`
+      );
+      console.log("Response:", responce.data);
     } catch (error) {
       console.error("Error close tournament:", error);
     }
@@ -467,6 +485,7 @@ function TournamentDetails({ user, logoutHandler }) {
         <div className={styles.flexContainer}>
           <div className={styles.leftColumn}>
             {tournament && <h1>{tournament.name}</h1>}
+            <button onClick={() => navigate(`/tournaments/${tournamentId}/result`)}>Смотреть результаты</button>
             <h2>Состав участников</h2>
             <div className={styles.playersMainContainer}>
               <div className={styles.playersListContainer}>

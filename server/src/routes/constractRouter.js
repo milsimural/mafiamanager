@@ -4,15 +4,69 @@ const constractRouter = Router();
 
 const verifyAccessToken = require('../middlewares/verifyAccessToken');
 
+// constractRouter.get('/getrosters/:tournamentId', async (req, res) => {
+//   try {
+//     const { tournamentId } = req.params;
+//     const rosters = await Roster.findAll({
+//       where: { tournamentId },
+//     });
+//     res.json(rosters);
+//   } catch (error) {
+//     res.status(500).json({ error: `Ошибка при выгрузке ростеров: ${error.message}` });
+//   }
+// });
+
 constractRouter.get('/getrosters/:tournamentId', async (req, res) => {
   try {
     const { tournamentId } = req.params;
     const rosters = await Roster.findAll({
       where: { tournamentId },
     });
-    res.json(rosters);
+
+    // Для каждого ростера извлечём и добавим игроков
+    const rostersWithPlayers = await Promise.all(
+      rosters.map(async (roster) => {
+        // Парсим строку с ID игроков
+        const playerIds = JSON.parse(roster.rosterPlayers);
+
+        // Получаем данные игроков из базы данных
+        const players = await Player.findAll({
+          where: {
+            id: playerIds
+          }
+        });
+
+        // Возвращаем ростер с вложенными данными игроков
+        return {
+          ...roster.toJSON(),
+          players, // добавляем массив объектов игроков
+        };
+      })
+    );
+
+    res.json(rostersWithPlayers);
   } catch (error) {
     res.status(500).json({ error: `Ошибка при выгрузке ростеров: ${error.message}` });
+  }
+});
+
+constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
+  try {
+    const { tournamentId } = req.params;
+    const rosters = await Roster.update({ isClose: true }, { where: { tournamentId } });
+    res.json(rosters);
+  } catch (error) {
+    res.status(500).json({ error: `Ошибка при закрытии ростеров: ${error.message}` });
+  }
+});
+
+constractRouter.patch('/openRosters/:tournamentId', async (req, res) => {
+  try {
+    const { tournamentId } = req.params;
+    const rosters = await Roster.update({ isClose: false }, { where: { tournamentId } });
+    res.json(rosters);
+  } catch (error) {
+    res.status(500).json({ error: `Ошибка при открытии ростеров: ${error.message}` });
   }
 });
 

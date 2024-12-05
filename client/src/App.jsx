@@ -11,6 +11,7 @@ import TournamentsPage from "./components/pages/Tournaments/TournamentsPage";
 import TournamentPage from "./components/pages/Tournaments/TournamentPage";
 import TeamPage from "./components/pages/Account/TeamPage";
 import MagazinePage from "./components/pages/Magazine/MagazinePage";
+import TournamentResult from "./components/pages/Tournaments/TournamentResult";
 
 function App() {
   const [user, setUser] = useState();
@@ -65,6 +66,15 @@ function App() {
         {
           path: "/tournaments/:tournamentId",
           element: <TournamentPage user={user} logoutHandler={logoutHandler} />,
+        },
+        {
+          path: "/tournaments/:tournamentId/result",
+          element: (
+            <TournamentResult
+              user={user}
+              logoutHandler={logoutHandler} 
+            />
+          ),
         },
         {
           path: "/team",
