@@ -8,13 +8,20 @@ const generateTokens = require('../utils/generateTokens');
 const cookieConfig = require('../configs/cookieConfig');
 
 authRouter.post('/registration', async (req, res) => {
-  const { name, password, email } = req.body;
+  const { name, password, email, gomafiaId } = req.body;
   const hashpass = await bcrypt.hash(password, 10);
 
   const [newUser, created] = await User.findOrCreate({
     where: { email },
-    defaults: { name, password: hashpass },
+    defaults: {
+      name,
+      password: hashpass,
+      coins: 20000,
+      gems: 10,
+      ...(gomafiaId && { gomafiaId }), // Устанавливаем gomafiaId, если он передан
+    },
   });
+
   if (!created) {
     return res.status(400).json({ text: 'Такие учетные данные уже используются' });
   }

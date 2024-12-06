@@ -181,7 +181,7 @@ class RosterUpdateError extends Error {
 }
 
 // Обновление всех ростеров турнира
-constractRouter.patch('/closeRosters/:tournamentId', async (req, res) => {
+constractRouter.patch('/setProfitAndPlaces/:tournamentId', async (req, res) => {
   try {
     const { tournamentId } = req.params;
     const resultTable = req.body;

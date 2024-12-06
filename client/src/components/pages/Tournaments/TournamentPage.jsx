@@ -264,7 +264,7 @@ function TournamentDetails({ user, logoutHandler }) {
 
     try {
       const response = await axiosInstance.patch(
-        `/constract/closeRosters/${tournament.id}`,
+        `/constract/setProfitAndPlaces/${tournament.id}`,
         resultTable
       );
       console.log(response);

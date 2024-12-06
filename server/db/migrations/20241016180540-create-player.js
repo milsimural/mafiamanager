@@ -14,6 +14,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      winrate: {
+        type: Sequelize.INTEGER,
+      },
       picture: {
         type: Sequelize.STRING,
       },
@@ -59,7 +62,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       elo: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       transfers: {
         type: Sequelize.INTEGER,
