@@ -16,7 +16,7 @@ authRouter.post('/registration', async (req, res) => {
     defaults: {
       name,
       password: hashpass,
-      coins: 20000,
+      coins: 100000,
       gems: 10,
       ...(gomafiaId && { gomafiaId }), // Устанавливаем gomafiaId, если он передан
     },

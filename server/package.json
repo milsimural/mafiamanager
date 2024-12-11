@@ -7,7 +7,7 @@
     "dev": "nodemon ./src/server.js",
     "start": "NODE_ENV=production node ./src/server.js",
     "db": "sequelize db:seed:undo && sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
-    "db:setup": "NODE_ENV=production npx sequelize db:create && NODE_ENV=production npx sequelize db:migrate && NODE_ENV=production npx sequelize db:seed:all",
+    "db:setup": "NODE_ENV=production npx sequelize db:migrate && NODE_ENV=production npx sequelize db:seed:all",
     "db:reset": "NODE_ENV=production npx sequelize db:seed:undo:all && NODE_ENV=production npx sequelize db:migrate:undo:all"
   },
   "keywords": [],

@@ -37,6 +37,7 @@ export default function RegistrationPage({ user, setUser }) {
     event.preventDefault();
     try {
       const res = await axiosInstance.post("/auth/registration", formData);
+      alert("Регистрация прошла успешно");
       setUser(res.data.user);
       setAccessToken(res.data.accessToken);
     } catch (error) {
