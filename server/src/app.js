@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const tournamentRouter = require('./routes/tournamentRouter');
 const authRouter = require('./routes/authRouter');
@@ -24,5 +25,12 @@ app.use('/api/tokens', tokensRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/minicup', minicupRouter);
 app.use('/api/constract', constractRouter);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '..', 'dist')));
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
+  });
+}
 
 module.exports = app;
