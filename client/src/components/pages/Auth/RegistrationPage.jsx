@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axiosInstance, { setAccessToken } from "../../../axiosInstance";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "src/components/pages/Auth/LoginPage.module.css";
 import backgroundImage from "src/components/pages/Auth/fon-green-red-2x.png";
@@ -8,6 +8,7 @@ import buttonImage from "src/components/pages/Auth/button-login.png";
 import loginImage from "src/components/pages/Auth/login.png";
 
 export default function RegistrationPage({ user, setUser }) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -40,6 +41,7 @@ export default function RegistrationPage({ user, setUser }) {
       alert("Регистрация прошла успешно");
       setUser(res.data.user);
       setAccessToken(res.data.accessToken);
+      navigate("/team");
     } catch (error) {
       if (error.response) {
         console.error("Ошибка ответа сервера:", error.response.data);
