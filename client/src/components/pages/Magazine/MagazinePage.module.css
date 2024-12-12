@@ -7,7 +7,7 @@ body {
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
   background-color: #1d1a1d;
-  overflow-x: hidden; 
+  overflow-x: hidden;
 }
 
 .background {
@@ -41,7 +41,7 @@ body {
 }
 
 .burger {
-    margin-right: auto;
+  margin-right: auto;
 }
 
 .magazineNavigation {
@@ -59,14 +59,14 @@ body {
 }
 
 .underline {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .subNavigation {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .subNavigation h2 {
@@ -74,30 +74,62 @@ body {
   font-weight: bold;
   font-size: 24px;
   line-height: 0;
-  margin-right:40px;
+  margin-right: 40px;
 }
 
 .players {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  gap: 40px;
+}
+
+.playerWrapper {
+  width: calc(
+    300px * 0.5
+  ); /* jтот размер определяется фактическим размером блока */
+  height: calc(585px * 0.5); /* Замените на фактические размеры каждого блока */
+  overflow: hidden; /* предотвращаем выход за пределы */
+}
+
+.player {
+  transform: scale(0.5);
+  transform-origin: top left;
+}
+
+@media (max-width: 767px) {
+  .wrapper {
+    flex-direction: column; /* Может остаться таким же, если требуется */
+    padding: 10px; /* Добавим отступы */
+    max-width: 100%; /* Чтобы максимально использовать ширину экрана смартфона */
+  }
+
+  .players {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    /* justify-content: flex-start;
-    gap: 20px; */
-    margin-top: 32px;
-    margin-bottom: 32px;
+    margin: 32px auto;
     width: 100%;
     box-sizing: border-box;
     justify-content: flex-start;
     gap: 40px;
   }
-  
-  .playerWrapper {
-    width: calc(300px * 0.5); /* jтот размер определяется фактическим размером блока */
-    height: calc(585px * 0.5); /* Замените на фактические размеры каждого блока */
-    overflow: hidden; /* предотвращаем выход за пределы */
+
+  .nav {
+    margin-top: 32px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
-  
-  .player {
-    transform: scale(0.5);
-    transform-origin: top left;
+
+  .burger {
+    margin-right: auto;
+    margin-bottom: 26px;
   }
+}

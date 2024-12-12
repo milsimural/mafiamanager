@@ -75,10 +75,10 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
             <NavigationComp user={user} logoutHandler={logoutHandler} />
           </div>
           <div className={styles.magazineNavigation}>
-            <h1 className={styles.underline}>Контракты</h1>
+            <h1>Контракты</h1>
           </div>
           <div className={styles.subNavigation}>
-            <h2 className={styles.underline}>Спортсмены</h2>
+            <h2>Спортсмены</h2>
           </div>
           <div className={styles.players}>
             {players.map((player) => {

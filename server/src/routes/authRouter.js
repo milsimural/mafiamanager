@@ -11,6 +11,13 @@ authRouter.post('/registration', async (req, res) => {
   const { name, password, email, gomafiaId } = req.body;
   const hashpass = await bcrypt.hash(password, 10);
 
+  if (gomafiaId) {
+    const existingUser = await User.findOne({ where: { gomafiaId } });
+    if (existingUser) {
+      return res.status(400).json({ text: 'gomafiaId уже используется' });
+    }
+  }
+
   const [newUser, created] = await User.findOrCreate({
     where: { email },
     defaults: {
