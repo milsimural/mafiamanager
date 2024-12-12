@@ -4,7 +4,7 @@ import basicCaptainImage from "src/components/ui/PlayerBars/captainBasic.png";
 import styles from "src/components/ui/PlayerBars/CaptainBarComp.module.css";
 
 export default function CaptainBarComp({ captain, removeCaptainFromRoster }) {
-  if (captain.noname) return <div className={styles.none}>Нет капитана</div>;
+  if (captain === null || captain === undefined) return <div className={styles.none}>Нет капитана</div>;
 
   return (
     <div

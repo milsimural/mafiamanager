@@ -24,7 +24,7 @@ function TournamentDetails({ user, logoutHandler }) {
   const [players, setPlayers] = useState(null);
   // Игроки турнира с пометкой есть ли они у конкретного юзера
   const [sortedPlayers, setSortedPlayers] = useState([]);
-  const [roster, setRoster] = useState([{ noname: true }]);
+  const [roster, setRoster] = useState([]);
   const [rosterData, setRosterData] = useState({});
   const [isOld, setIsOld] = useState(false);
   const [rawData, setRawData] = useState();
@@ -97,6 +97,9 @@ function TournamentDetails({ user, logoutHandler }) {
 
   async function collectRosterData() {
     if (tournament?.rosterFinish) return;
+    if( roster.length < 1 ) {
+      alert("Добавьте игроков в ростер");
+    }
     const newRosterData = {
       userId: user.id,
       tournamentId: tournament.id,
@@ -252,7 +255,7 @@ function TournamentDetails({ user, logoutHandler }) {
         }
         return null;
       })
-      .filter((item) => item !== null); 
+      .filter((item) => item !== null);
 
     console.log("Это отсылается на сервак в боди");
     console.log(resultTable);
@@ -485,7 +488,11 @@ function TournamentDetails({ user, logoutHandler }) {
         <div className={styles.flexContainer}>
           <div className={styles.leftColumn}>
             {tournament && <h1>{tournament.name}</h1>}
-            <button onClick={() => navigate(`/tournaments/${tournamentId}/result`)}>Смотреть результаты</button>
+            <button
+              onClick={() => navigate(`/tournaments/${tournamentId}/result`)}
+            >
+              Смотреть результаты
+            </button>
             <h2>Состав участников</h2>
             <div className={styles.playersMainContainer}>
               <div className={styles.playersListContainer}>
