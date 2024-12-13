@@ -97,7 +97,7 @@ function TournamentDetails({ user, logoutHandler }) {
 
   async function collectRosterData() {
     if (tournament?.rosterFinish) return;
-    if( roster.length < 1 ) {
+    if (roster.length < 1) {
       alert("Добавьте игроков в ростер");
     }
     const newRosterData = {
@@ -141,12 +141,19 @@ function TournamentDetails({ user, logoutHandler }) {
   }
 
   function addCaptainToRoster(playerId) {
-    if (tournament?.rosterFinish) return;
-    if (roster.some((rosterPlayer) => rosterPlayer.id === playerId)) return;
-    const captain = sortedPlayers.find((player) => player.id === playerId);
-    const newRoster = [...roster];
-    newRoster[0] = captain;
-    setRoster(newRoster);
+    if (roster === undefined || roster.length === 0 || roster === null || roster[0] === undefined) {
+      let newRoster = [];
+      const captain = sortedPlayers.find((player) => player.id === playerId);
+      newRoster.push(captain);
+      setRoster(newRoster);
+    } else {
+      console.log(roster)
+      if (roster.some((rosterPlayer) => rosterPlayer.id === playerId)) return;
+      const captain = sortedPlayers.find((player) => player.id === playerId);
+      const newRoster = [...roster];
+      newRoster[0] = captain;
+      setRoster(newRoster);
+    }
   }
 
   function addPlayerToRoster(playerId) {
@@ -356,6 +363,7 @@ function TournamentDetails({ user, logoutHandler }) {
           Сейчас в турнир добавленно {playersCount} игроков из{" "}
           {tournament?.projected_count_of_participants}
         </p>
+        <p>Название турнира: {tournament?.name}</p>
         <p>
           Турнир{" "}
           <b style={{ color: tournament?.isReady ? "green" : "red" }}>

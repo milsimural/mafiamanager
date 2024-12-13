@@ -11,8 +11,6 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   const [players, setPlayers] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
 
-  
-
   useEffect(() => {
     axiosInstance
       .get("/players")
@@ -80,6 +78,17 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
           <div className={styles.subNavigation}>
             <h2>Спортсмены</h2>
           </div>
+          <div className={styles.form}>
+            <form className={styles.searchForm}>
+              <input
+                type="text"
+                placeholder="Введите ник игрока..."
+                className={styles.searchInput}
+                onChange={(event) => {console.log(event.target.value)}}
+              />
+            </form>
+          </div>
+
           <div className={styles.players}>
             {players.map((player) => {
               // Проверяем, входит ли player.id в teamMembers

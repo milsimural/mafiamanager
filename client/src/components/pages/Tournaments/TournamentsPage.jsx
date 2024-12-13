@@ -103,6 +103,20 @@ export default function TournamentsPage({ user, logoutHandler }) {
                       </button>
                     </div>
                   )}
+
+                  {!tournament.isReady && user?.isAdmin && (
+                    <div className={styles.ready}>
+                      <button
+                        className={styles.readyButton}
+                        onClick={() =>
+                          handleTournamentNavigation(tournament.id)
+                        }
+                        style={{ backgroundImage: `url(${readyButtonImage})` }}
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
