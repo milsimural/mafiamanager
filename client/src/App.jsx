@@ -70,15 +70,18 @@ function App() {
         {
           path: "/tournaments/:tournamentId/result",
           element: (
-            <TournamentResult
-              user={user}
-              logoutHandler={logoutHandler} 
-            />
+            <TournamentResult user={user} logoutHandler={logoutHandler} />
           ),
         },
         {
           path: "/team",
-          element: <TeamPage user={user} logoutHandler={logoutHandler} />,
+          element: (
+            <TeamPage
+              user={user}
+              logoutHandler={logoutHandler}
+              updateUserCoins={updateUserCoins}
+            />
+          ),
         },
         {
           path: "/magazine",

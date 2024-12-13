@@ -23,7 +23,14 @@ import buyImage from "src/components/ui/Cards/buy2x.png";
 import closeBuyImage from "src/components/ui/Cards/close2x.png";
 import coinsImage from "src/components/ui/Nav/coins.png";
 
-export default function ShopCard({ user, player, shop, buyPlayer, isInTeam }) {
+export default function ShopCard({
+  user,
+  player,
+  shop,
+  buyPlayer,
+  isInTeam,
+  sellPlayer,
+}) {
   const getColorByStars = (stars) => {
     switch (stars) {
       case 1:
@@ -127,14 +134,45 @@ export default function ShopCard({ user, player, shop, buyPlayer, isInTeam }) {
           )}
         </div>
       )}
+
+      {!shop && (
+        <div className={styles.buy}>
+          <button
+            onClick={() => sellPlayer(player.id, user.id)}
+            style={{
+              backgroundColor: "black", // Черный фон
+              width: "300px", // Длина 200px
+              border: "none", // Убирает границу
+              color: "white", // Цвет текста
+              cursor: "pointer", // Указатель при наведении
+              display: "flex", // Для выравнивания содержимого
+              alignItems: "center", // Вертикальное выравнивание
+              justifyContent: "center", // Горизонтальное выравнивание
+              padding: "10px", // Отступы (по желанию)
+              borderRadius: "5px", // Закругленные углы (по желанию)
+            }}
+          >
+            <div style={{ paddingRight: "10px" }}>Продать:</div>
+            <img
+              src={coinsImage}
+              alt={`${player.nickname}: ${player.costcoins}`}
+              style={{ marginTop: "12px" }}
+            />
+            <div className={styles.buttonText} style={{ marginTop: "12px" }}>
+              {player.costcoins}
+            </div>
+          </button>
+        </div>
+      )}
     </>
   );
 }
 
 ShopCard.propTypes = {
-  user: PropTypes.object.isRequired,
-  player: PropTypes.object.isRequired,
+  user: PropTypes.object,
+  player: PropTypes.object,
   shop: PropTypes.bool,
   buyPlayer: PropTypes.func,
   isInTeam: PropTypes.bool,
+  sellPlayer: PropTypes.func,
 };

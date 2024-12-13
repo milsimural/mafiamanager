@@ -8,11 +8,12 @@ import bigCoinImage from "src/components/files/big-coin20.png";
 import ShopCard from "src/components/ui/Cards/ShopCard";
 import axiosInstance from "src/axiosInstance";
 
-export default function TeamPage({ user, logoutHandler }) {
+export default function TeamPage({ user, logoutHandler, updateUserCoins }) {
   const [teamMembers, setTeamMembers] = useState([]);
   const [teamCost, setTeamCost] = useState(0);
 
   useEffect(() => {
+    if (!user) return;
     axiosInstance
       .get(`/players/myteam/${user?.id}`)
       .then((res) => {
@@ -30,6 +31,33 @@ export default function TeamPage({ user, logoutHandler }) {
       cost += teamPlayer.player.costcoins;
     });
     setTeamCost(cost);
+  }
+
+  function sellPlayer(playerId, userId) {
+    axiosInstance
+      .post(`/players/sell/${playerId}/${userId}`)
+      .then((res) => {
+        console.log(res.data);
+        updateUserCoins(res.data);
+        alert(`Вы продали игрока`);
+      })
+      .catch((error) => {
+        let errorMessage;
+
+        // Проверка, есть ли ответ от сервера
+        if (error.response) {
+          // Если ответ от сервера содержит данные, используем их
+          errorMessage = error.response.data
+            ? error.response.data.message || error.response.data
+            : "Неизвестная ошибка"; // Добавляем сообщение по умолчанию
+        } else {
+          // Если ответа от сервера нет (например, сетевая ошибка)
+          errorMessage = error.message;
+        }
+
+        alert(`Произошла ошибка при продаже игрока. ${errorMessage}`);
+        console.error("Ошибка при продаже игрока:", error);
+      });
   }
 
   return (
@@ -60,7 +88,12 @@ export default function TeamPage({ user, logoutHandler }) {
                     key={teamMember.player.nickname}
                   >
                     <div className={styles.player}>
-                      <ShopCard player={teamMember.player} shop={false} />
+                      <ShopCard
+                        user={user}
+                        player={teamMember.player}
+                        shop={false}
+                        sellPlayer={sellPlayer}
+                      />
                     </div>
                   </div>
                 ))}
@@ -77,4 +110,5 @@ export default function TeamPage({ user, logoutHandler }) {
 TeamPage.propTypes = {
   user: PropTypes.object,
   logoutHandler: PropTypes.func.isRequired,
+  updateUserCoins: PropTypes.func.isRequired,
 };

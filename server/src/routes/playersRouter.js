@@ -45,17 +45,52 @@ playerRouter.get('/myteam/:userId', async (req, res) => {
   }
 });
 
-playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) => {
+playerRouter.post('/sell/:playerId/:userId', verifyAccessToken, async (req, res) => {
+  const { playerId, userId } = req.params;
+
   try {
-    const { playerId } = req.params;
-    const { userId } = req.params;
+    const player = await Player.findByPk(playerId);
+    if (!player) {
+      return res.status(404).send('Игрок не найден');
+    }
+
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).send('Пользователь не найден');
+    }
 
     const existingEntry = await Team.findOne({
       where: { playerid: playerId, ownerid: userId },
     });
-    if (existingEntry) {
-      return res.status(423).send('Игрок уже куплен');
+    if (!existingEntry) {
+      return res.status(423).send('Такого игрока у вас нет');
     }
+
+    await existingEntry.destroy();
+
+    user.coins += player.costcoins;
+
+    await user.save();
+
+    await Transaction.create({
+      userId,
+      type: 'sellPlayer',
+      playerId,
+      amount: player.costcoins,
+    });
+
+    res.status(200).json(user.coins);
+  } catch (error) {
+    console.error('Ошибка при продаже игрока:', error);
+    res.status(500).send('Произошла ошибка при продаже игрока');
+  }
+});
+
+
+playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) => {
+  try {
+    const { playerId } = req.params;
+    const { userId } = req.params;
 
     const player = await Player.findByPk(playerId);
     if (!player) {
@@ -64,6 +99,13 @@ playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) 
     const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).send('Пользователь не найден');
+    }
+
+    const existingEntry = await Team.findOne({
+      where: { playerid: playerId, ownerid: userId },
+    });
+    if (existingEntry) {
+      return res.status(423).send('Игрок уже куплен');
     }
 
     if (player.costcoins > user.coins) {
