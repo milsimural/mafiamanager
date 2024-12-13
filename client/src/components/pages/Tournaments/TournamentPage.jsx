@@ -85,7 +85,7 @@ function TournamentDetails({ user, logoutHandler }) {
         setRoster(oldRoster);
         setIsOld(true);
       } catch (error) {
-        console.error("Error fetching roster:", error);
+        console.log("Заявка на турнир не была найдена:", error);
       }
     };
 
@@ -95,15 +95,21 @@ function TournamentDetails({ user, logoutHandler }) {
     if (savedRoster) setRoster(JSON.parse(savedRoster));
   }, [user, tournament, sortedPlayers, rosterData.rosterPlayers]);
 
+  useEffect(() => {
+    // Этот эффект будет выполняться при каждом изменении roster
+    console.log(`Изменение в ростере: ${JSON.stringify(roster, null, 2)}`);
+  }, [roster]);
+
   async function collectRosterData() {
     if (tournament?.rosterFinish) return;
     if (roster.length < 1) {
       alert("Добавьте игроков в ростер");
+      return;
     }
     const newRosterData = {
       userId: user.id,
       tournamentId: tournament.id,
-      rosterPlayers: JSON.stringify(roster.map((player) => player.id)),
+      rosterPlayers: JSON.stringify(roster.map((player) => player?.id)),
     };
 
     setRosterData(newRosterData);
@@ -114,6 +120,7 @@ function TournamentDetails({ user, logoutHandler }) {
         newRosterData
       );
       console.log("Response:", response.data);
+      console.log(roster);
     } catch (error) {
       console.error("Error adding roster:", error);
       alert("Error adding roster: " + error.message);
@@ -122,10 +129,19 @@ function TournamentDetails({ user, logoutHandler }) {
 
   async function updateRoster() {
     if (tournament?.rosterFinish) return;
+    if (
+      roster === undefined ||
+      roster.length === 0 ||
+      roster === null ||
+      roster[0] === undefined
+    ) {
+      alert("Вы пытаетесь сохранить пустой ростер");
+      return;
+    }
     const newRosterData = {
       userId: user.id,
       tournamentId: tournament.id,
-      rosterPlayers: JSON.stringify(roster.map((player) => player.id)),
+      rosterPlayers: JSON.stringify(roster.map((player) => player?.id)),
     };
 
     try {
@@ -141,46 +157,69 @@ function TournamentDetails({ user, logoutHandler }) {
   }
 
   function addCaptainToRoster(playerId) {
-    if (roster === undefined || roster.length === 0 || roster === null || roster[0] === undefined) {
+    if (
+      roster === undefined ||
+      roster.length === 0 ||
+      roster === null ||
+      roster[0] === undefined ||
+      roster[0] === null
+    ) {
       let newRoster = [];
       const captain = sortedPlayers.find((player) => player.id === playerId);
       newRoster.push(captain);
       setRoster(newRoster);
+      console.log(
+        `ДОБАВИЛ КАПИТАНА В ПУСТОЙ РОСТЕР:  ${JSON.stringify(
+          newRoster,
+          null,
+          2
+        )}`
+      );
     } else {
-      console.log(roster)
+      console.log(roster);
       if (roster.some((rosterPlayer) => rosterPlayer.id === playerId)) return;
       const captain = sortedPlayers.find((player) => player.id === playerId);
       const newRoster = [...roster];
       newRoster[0] = captain;
       setRoster(newRoster);
+      console.log(`ДОБАВИЛ КАПИТАНА:  ${JSON.stringify(newRoster, null, 2)}`);
     }
   }
 
   function addPlayerToRoster(playerId) {
     if (!playerId) return;
     if (tournament?.rosterFinish) return;
-    if (roster.length >= 6) return;
+    if (roster.length >= 7) return;
     const player = sortedPlayers.find((player) => player.id === playerId);
-    if (!roster.some((rosterPlayer) => rosterPlayer.id === playerId)) {
-      const nextIndex = roster.length;
+    if (!roster.some((rosterPlayer) => rosterPlayer?.id === playerId)) {
+      let nextIndex = roster.length;
+      if (nextIndex === 0) {
+        nextIndex = 1;
+      }
       const newRoster = [...roster];
       newRoster[nextIndex] = player;
 
       setRoster(newRoster);
+      console.log(`ДОБАВИЛ ИГРОКА: ${JSON.stringify(newRoster, null, 2)}`);
     }
   }
 
   function removePlayerFromRoster(playerId) {
     if (tournament?.rosterFinish) return;
-    const newRoster = roster.filter((player) => player.id !== playerId);
+    const newRoster = roster.filter((player) => player?.id !== playerId);
     setRoster(newRoster);
+    console.log(`УДАЛИЛ ИГРОКА: ${JSON.stringify(newRoster, null, 2)}`);
   }
 
   function removeCaptainFromRoster() {
     if (tournament?.rosterFinish) return;
     const newRoster = [...roster];
-    newRoster[0] = { noname: true };
+    newRoster[0] = null;
     setRoster(newRoster);
+
+    console.log(
+      `УДАЛИЛ КАПИТАНА, текущий ростер: ${JSON.stringify(newRoster, null, 2)}`
+    );
   }
 
   // Получает список всех gomafiaId игроков участников турнира из rawData
@@ -376,6 +415,15 @@ function TournamentDetails({ user, logoutHandler }) {
             {tournament?.rosterFinish ? "заблокированы" : "открыты"}
           </b>
         </p>
+        <div>
+          {/* <ul>
+    {tournament?.playersList.map((player) => (
+      <li key={player.id}>
+        {player.id}: {player.nickname}
+      </li>
+    ))}
+  </ul> */}
+        </div>
       </>
     );
   }
