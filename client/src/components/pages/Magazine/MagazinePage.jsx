@@ -78,7 +78,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
           <div className={styles.subNavigation}>
             <h2>Спортсмены</h2>
           </div>
-          <div className={styles.form}>
+          {/* <div className={styles.form}>
             <form className={styles.searchForm}>
               <input
                 type="text"
@@ -87,7 +87,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
                 onChange={(event) => {console.log(event.target.value)}}
               />
             </form>
-          </div>
+          </div> */}
 
           <div className={styles.players}>
             {players.map((player) => {

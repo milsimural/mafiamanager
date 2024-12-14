@@ -121,6 +121,7 @@ function TournamentDetails({ user, logoutHandler }) {
       );
       console.log("Response:", response.data);
       console.log(roster);
+      alert('Успешно сохранено');
     } catch (error) {
       console.error("Error adding roster:", error);
       alert("Error adding roster: " + error.message);
@@ -150,6 +151,7 @@ function TournamentDetails({ user, logoutHandler }) {
         newRosterData
       );
       console.log("Response:", response.data);
+      alert('Успешно сохранено');
     } catch (error) {
       console.error("Error adding roster:", error);
       alert("Error update roster: " + error.message);
