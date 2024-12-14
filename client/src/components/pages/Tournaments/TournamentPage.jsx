@@ -64,6 +64,7 @@ function TournamentDetails({ user, logoutHandler }) {
     }
   }, [tournament, tournamentId, user]);
 
+  // Проверяет была ли заявка на турнир
   useEffect(() => {
     if (!user || !tournament || !sortedPlayers || sortedPlayers.length === 0)
       return;
@@ -91,8 +92,8 @@ function TournamentDetails({ user, logoutHandler }) {
 
     fetchRoster();
 
-    const savedRoster = rosterData.rosterPlayers;
-    if (savedRoster) setRoster(JSON.parse(savedRoster));
+    // const savedRoster = rosterData.rosterPlayers;
+    // if (savedRoster) setRoster(JSON.parse(savedRoster));
   }, [user, tournament, sortedPlayers, rosterData.rosterPlayers]);
 
   useEffect(() => {
@@ -100,8 +101,16 @@ function TournamentDetails({ user, logoutHandler }) {
     console.log(`Изменение в ростере: ${JSON.stringify(roster, null, 2)}`);
   }, [roster]);
 
+  // ПЕРВОЕ СОХРАНЕНИЕ РОСТЕРА
   async function collectRosterData() {
     if (tournament?.rosterFinish) return;
+    if (isOld) {
+      console.error("Ошибка повторного первого сохранения");
+      alert(
+        "Ошибка повторного первого сохранения. Пожалуйста ОБНОВИТЕ СТРАНИЦУ"
+      );
+      return;
+    }
     if (roster.length < 1) {
       alert("Добавьте игроков в ростер");
       return;
@@ -112,29 +121,31 @@ function TournamentDetails({ user, logoutHandler }) {
       rosterPlayers: JSON.stringify(roster.map((player) => player?.id)),
     };
 
-    setRosterData(newRosterData);
+    // setRosterData(newRosterData);
 
     try {
       const response = await axiosInstance.post(
         `/constract/add/${user.id}/${tournament.id}`,
         newRosterData
       );
-      console.log("Response:", response.data);
-      console.log(roster);
-      alert('Успешно сохранено');
+      setIsOld(true);
+      console.log("Response первого сохранения:", response.data);
+      alert("Успешно сохранено");
     } catch (error) {
       console.error("Error adding roster:", error);
       alert("Error adding roster: " + error.message);
     }
   }
 
+  // ОБНОВЛЕНИЕ РОСТЕРА
   async function updateRoster() {
     if (tournament?.rosterFinish) return;
     if (
       roster === undefined ||
       roster.length === 0 ||
       roster === null ||
-      roster[0] === undefined
+      roster[0] === undefined ||
+      (roster[0] === null && roster.length === 1)
     ) {
       alert("Вы пытаетесь сохранить пустой ростер");
       return;
@@ -151,7 +162,7 @@ function TournamentDetails({ user, logoutHandler }) {
         newRosterData
       );
       console.log("Response:", response.data);
-      alert('Успешно сохранено');
+      alert("Успешно сохранено");
     } catch (error) {
       console.error("Error adding roster:", error);
       alert("Error update roster: " + error.message);
@@ -164,7 +175,7 @@ function TournamentDetails({ user, logoutHandler }) {
       roster.length === 0 ||
       roster === null ||
       roster[0] === undefined ||
-      roster[0] === null
+      roster[0] === null && roster.length === 1
     ) {
       let newRoster = [];
       const captain = sortedPlayers.find((player) => player.id === playerId);
@@ -179,7 +190,7 @@ function TournamentDetails({ user, logoutHandler }) {
       );
     } else {
       console.log(roster);
-      if (roster.some((rosterPlayer) => rosterPlayer.id === playerId)) return;
+      if (roster.some((rosterPlayer) => rosterPlayer?.id === playerId)) return;
       const captain = sortedPlayers.find((player) => player.id === playerId);
       const newRoster = [...roster];
       newRoster[0] = captain;

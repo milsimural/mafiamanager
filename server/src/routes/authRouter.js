@@ -8,59 +8,72 @@ const generateTokens = require('../utils/generateTokens');
 const cookieConfig = require('../configs/cookieConfig');
 
 authRouter.post('/registration', async (req, res) => {
-  const { name, password, email, gomafiaId } = req.body;
-  const hashpass = await bcrypt.hash(password, 10);
+  try {
+    const { name, password, email, gomafiaId } = req.body;
+    const hashpass = await bcrypt.hash(password, 10);
 
-  if (gomafiaId) {
-    const existingUser = await User.findOne({ where: { gomafiaId } });
-    if (existingUser) {
-      return res.status(400).json({ text: 'gomafiaId уже используется' });
+    if (gomafiaId) {
+      const existingUser = await User.findOne({ where: { gomafiaId } });
+      if (existingUser) {
+        return res.status(400).json({ text: 'gomafiaId уже используется' });
+      }
     }
+
+    const [newUser, created] = await User.findOrCreate({
+      where: { email },
+      defaults: {
+        name,
+        password: hashpass,
+        coins: 100000,
+        gems: 10,
+        ...(gomafiaId && { gomafiaId }), // Устанавливаем gomafiaId, если он передан
+      },
+    });
+
+    if (!created) {
+      return res.status(400).json({ text: 'Такие учетные данные уже используются' });
+    }
+
+    const user = newUser.get();
+    delete user.password;
+    const { refreshToken, accessToken } = generateTokens({ user });
+
+    res
+      .status(200)
+      .cookie('refreshToken', refreshToken, cookieConfig)
+      .json({ user, accessToken });
+  } catch (error) {
+    console.error('Error during registration process:', error);
+    res.status(500).json({ text: 'Произошла ошибка на сервере' });
   }
-
-  const [newUser, created] = await User.findOrCreate({
-    where: { email },
-    defaults: {
-      name,
-      password: hashpass,
-      coins: 100000,
-      gems: 10,
-      ...(gomafiaId && { gomafiaId }), // Устанавливаем gomafiaId, если он передан
-    },
-  });
-
-  if (!created) {
-    return res.status(400).json({ text: 'Такие учетные данные уже используются' });
-  }
-
-  const user = newUser.get();
-  delete user.password;
-  const { refreshToken, accessToken } = generateTokens({ user });
-  res
-    .status(200)
-    .cookie('refreshToken', refreshToken, cookieConfig)
-    .json({ user, accessToken });
 });
 
 authRouter.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const targetUser = await User.findOne({ where: { email } });
-  if (!targetUser) {
-    return res.status(400).json({ text: 'Неверные учетные данные' });
-  }
-  const isValid = await bcrypt.compare(password, targetUser.password);
-  if (!isValid) {
-    return res.status(400).json({ text: 'Неверные учетные данные' });
-  }
+    const targetUser = await User.findOne({ where: { email } });
+    if (!targetUser) {
+      return res.status(400).json({ text: 'Неверные учетные данные' });
+    }
 
-  const user = targetUser.get();
-  delete user.password;
-  const { refreshToken, accessToken } = generateTokens({ user });
-  res
-    .status(200)
-    .cookie('refreshToken', refreshToken, cookieConfig)
-    .json({ user, accessToken });
+    const isValid = await bcrypt.compare(password, targetUser.password);
+    if (!isValid) {
+      return res.status(400).json({ text: 'Неверные учетные данные' });
+    }
+
+    const user = targetUser.get();
+    delete user.password;
+    const { refreshToken, accessToken } = generateTokens({ user });
+
+    res
+      .status(200)
+      .cookie('refreshToken', refreshToken, cookieConfig)
+      .json({ user, accessToken });
+  } catch (error) {
+    console.error('Error during login process:', error);
+    res.status(500).json({ text: 'Произошла ошибка на сервере' });
+  }
 });
 
 // authRouter.post('/update/:userId', async (req, res) => {

@@ -32,8 +32,8 @@ constractRouter.get('/getrosters/:tournamentId', async (req, res) => {
         // Получаем данные игроков из базы данных
         const players = await Player.findAll({
           where: {
-            id: playerIds
-          }
+            id: playerIds,
+          },
         });
 
         // Возвращаем ростер с вложенными данными игроков
@@ -41,7 +41,7 @@ constractRouter.get('/getrosters/:tournamentId', async (req, res) => {
           ...roster.toJSON(),
           players, // добавляем массив объектов игроков
         };
-      })
+      }),
     );
 
     res.json(rostersWithPlayers);
@@ -309,6 +309,32 @@ constractRouter.patch('/setProfitAndPlaces/:tournamentId', async (req, res) => {
     return res
       .status(500)
       .json({ error: `Ошибка при обновлении данных ростеров: ${error.message}` });
+  }
+});
+
+constractRouter.get('/checkPlayerInLiveRosters/:userId/:number', async (req, res) => {
+  const { userId, number } = req.params;
+
+  try {
+    // Находим ростеры пользователя с isOver = false или null
+    const rosters = await Roster.findAll({
+      where: {
+        userId,
+        isOver: [false, null],
+      },
+    });
+
+    // Проверяем каждый ростер
+    const numberExists = rosters.some((roster) => {
+      // Преобразуем строку с числовым массивом в реальный массив
+      const rosterPlayersArray = JSON.parse(roster.rosterPlayers);
+      return rosterPlayersArray.includes(Number(number));
+    });
+
+    res.json({ result: numberExists });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while checking the roster' });
   }
 });
 

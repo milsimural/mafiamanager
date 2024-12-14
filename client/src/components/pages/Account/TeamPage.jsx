@@ -11,6 +11,7 @@ import axiosInstance from "src/axiosInstance";
 export default function TeamPage({ user, logoutHandler, updateUserCoins }) {
   const [teamMembers, setTeamMembers] = useState([]);
   const [teamCost, setTeamCost] = useState(0);
+  const [result, setResult] = useState(null);
 
   useEffect(() => {
     if (!user) return;
@@ -33,31 +34,39 @@ export default function TeamPage({ user, logoutHandler, updateUserCoins }) {
     setTeamCost(cost);
   }
 
-  function sellPlayer(playerId, userId) {
-    axiosInstance
-      .post(`/players/sell/${playerId}/${userId}`)
-      .then((res) => {
-        console.log(res.data);
-        updateUserCoins(res.data);
-        alert(`Вы продали игрока`);
-      })
-      .catch((error) => {
-        let errorMessage;
+  async function sellPlayer(playerId, userId) {
+    try {
+      const response = await axiosInstance.get(
+        `constract/checkPlayerInLiveRosters/${userId}/${playerId}`
+      );
+      const result = response.data.result;
 
-        // Проверка, есть ли ответ от сервера
-        if (error.response) {
-          // Если ответ от сервера содержит данные, используем их
-          errorMessage = error.response.data
-            ? error.response.data.message || error.response.data
-            : "Неизвестная ошибка"; // Добавляем сообщение по умолчанию
-        } else {
-          // Если ответа от сервера нет (например, сетевая ошибка)
-          errorMessage = error.message;
-        }
+      if (result === true) {
+        alert("Вы не можете продать игрока пока он участвует в турнирах");
+        console.log("Вы не можете продать игрока пока он участвует в турнирах");
+        return;
+      }
 
-        alert(`Произошла ошибка при продаже игрока. ${errorMessage}`);
-        console.error("Ошибка при продаже игрока:", error);
-      });
+      const sellResponse = await axiosInstance.post(
+        `/players/sell/${playerId}/${userId}`
+      );
+      console.log(sellResponse.data);
+      updateUserCoins(sellResponse.data);
+      alert(`Вы продали игрока`);
+    } catch (error) {
+      let errorMessage;
+
+      if (error.response) {
+        errorMessage = error.response.data
+          ? error.response.data.message || error.response.data
+          : "Неизвестная ошибка";
+      } else {
+        errorMessage = error.message;
+      }
+
+      alert(`Произошла ошибка при продаже игрока. ${errorMessage}`);
+      console.error("Ошибка при продаже игрока:", error);
+    }
   }
 
   return (
