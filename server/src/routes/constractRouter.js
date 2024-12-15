@@ -1,51 +1,97 @@
 const { Router } = require('express');
-const { Tournament, Player, Team, Roster } = require('../../db/models');
+const {
+  Tournament,
+  Player,
+  Team,
+  Roster,
+  User,
+  Transaction,
+} = require('../../db/models');
 const constractRouter = Router();
 
 const verifyAccessToken = require('../middlewares/verifyAccessToken');
 
-// constractRouter.get('/getrosters/:tournamentId', async (req, res) => {
-//   try {
-//     const { tournamentId } = req.params;
-//     const rosters = await Roster.findAll({
-//       where: { tournamentId },
-//     });
-//     res.json(rosters);
-//   } catch (error) {
-//     res.status(500).json({ error: `Ошибка при выгрузке ростеров: ${error.message}` });
-//   }
-// });
+constractRouter.get('/rosters/:tournamentId', async (req, res) => {
+  const { tournamentId } = req.params;
+
+  try {
+    const rosters = await Roster.findAll({
+      where: { tournamentId },
+      attributes: [
+        'id',
+        'userId',
+        'tournamentId',
+        'rosterPlayers',
+        'teamPlayers',
+        'isClose',
+        'isOver',
+        'profitCoins',
+        'profitGems',
+        'profitItems',
+        'place',
+        'perpCount',
+        'averagePlace',
+        'isTakeProfit',
+      ],
+    });
+
+    res.json(rosters);
+  } catch (error) {
+    console.error('Error retrieving rosters:', error);
+    res.status(500).json({ error: 'Ошибка при получении ростеров' });
+  }
+});
 
 constractRouter.get('/getrosters/:tournamentId', async (req, res) => {
   try {
     const { tournamentId } = req.params;
     const rosters = await Roster.findAll({
       where: { tournamentId },
+      attributes: [
+        'id',
+        'userId',
+        'tournamentId',
+        'rosterPlayers',
+        'teamPlayers',
+        'isClose',
+        'isOver',
+        'profitCoins',
+        'profitGems',
+        'profitItems',
+        'place',
+        'perpCount',
+        'averagePlace',
+        'isTakeProfit',
+      ],
     });
 
-    // Для каждого ростера извлечём и добавим игроков
-    const rostersWithPlayers = await Promise.all(
+    const rostersWithDetails = await Promise.all(
       rosters.map(async (roster) => {
-        // Парсим строку с ID игроков
         const playerIds = JSON.parse(roster.rosterPlayers);
 
-        // Получаем данные игроков из базы данных
         const players = await Player.findAll({
           where: {
             id: playerIds,
           },
         });
 
-        // Возвращаем ростер с вложенными данными игроков
+        const user = await User.findByPk(roster.userId, {
+          attributes: ['name'], // извлекаем только имя
+        });
+
+        // Включаем id в результаты
         return {
+          id: roster.id, // убедимся, что id включен
           ...roster.toJSON(),
-          players, // добавляем массив объектов игроков
+          players,
+          userName: user ? user.name : null,
         };
       }),
     );
 
-    res.json(rostersWithPlayers);
+    res.json(rostersWithDetails);
   } catch (error) {
+    console.error('Error retrieving rosters:', error);
     res.status(500).json({ error: `Ошибка при выгрузке ростеров: ${error.message}` });
   }
 });
@@ -208,6 +254,7 @@ constractRouter.patch('/setProfitAndPlaces/:tournamentId', async (req, res) => {
           'place',
           'perpCount',
           'averagePlace',
+          'isTakeProfit',
         ],
       });
     } catch (error) {
@@ -335,6 +382,52 @@ constractRouter.get('/checkPlayerInLiveRosters/:userId/:number', async (req, res
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while checking the roster' });
+  }
+});
+
+constractRouter.patch('/takeProfit/:rosterId', async (req, res) => {
+  const { rosterId } = req.params;
+  console.log(`Looking for roster with ID: ${rosterId}`);
+
+  try {
+    const roster = await Roster.findOne({
+      where: {
+        id: rosterId,
+      },
+    });
+
+    if (!roster) {
+      return res.status(404).json({ error: 'Roster not found' });
+    }
+
+    if (roster.isTakeProfit) {
+      return res.status(400).json({ error: 'The profit has already been taken' });
+    }
+
+    const user = await User.findByPk(roster.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Обновляем количество монет у пользователя
+    user.coins += roster.profitCoins;
+    await user.save();
+
+    // Обновляем статус ростера
+    roster.isTakeProfit = true;
+    await roster.save(); // Сохраняем обновленный ростер
+
+    // Создаем транзакцию получения профита
+    const transaction = await Transaction.create({
+      userId: user.id,
+      amount: roster.profitCoins,
+      type: 'takeProfit',
+    });
+
+    res.json(roster); // Возвращаем обновленный объект ростера
+  } catch (error) {
+    console.error('Error updating roster:', error);
+    res.status(500).json({ error: 'An error occurred while updating the roster' });
   }
 });
 

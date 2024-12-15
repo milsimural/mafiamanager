@@ -1,5 +1,5 @@
-.results {
-
+table td {
+    padding: 10px;
 }
 
 .resultRow {
@@ -7,3 +7,11 @@
     flex-direction: row;
     width: 100%
 }
+
+.highlight {
+    font-weight: bold;
+  }
+
+  .normal {
+    font-weight: normal;
+  }
