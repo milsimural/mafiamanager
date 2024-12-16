@@ -385,6 +385,17 @@ constractRouter.get('/checkPlayerInLiveRosters/:userId/:number', async (req, res
   }
 });
 
+// Найти все ростеры по id турнира и изменить isOver на true
+constractRouter.patch('/overRosters/:tournamentId', async (req, res) => {
+  try {
+    const { tournamentId } = req.params;
+    const rosters = await Roster.update({ isOver: true }, { where: { tournamentId } });
+    res.json(rosters);
+  } catch (error) {
+    res.status(500).json({ error: `Ошибка при закрытии ростеров: ${error.message}` });
+  }
+});
+
 constractRouter.patch('/takeProfit/:rosterId', async (req, res) => {
   const { rosterId } = req.params;
   console.log(`Looking for roster with ID: ${rosterId}`);

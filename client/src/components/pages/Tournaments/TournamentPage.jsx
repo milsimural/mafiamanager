@@ -175,7 +175,7 @@ function TournamentDetails({ user, logoutHandler }) {
       roster.length === 0 ||
       roster === null ||
       roster[0] === undefined ||
-      roster[0] === null && roster.length === 1
+      (roster[0] === null && roster.length === 1)
     ) {
       let newRoster = [];
       const captain = sortedPlayers.find((player) => player.id === playerId);
@@ -521,6 +521,18 @@ function TournamentDetails({ user, logoutHandler }) {
     }
   }
 
+  async function overRosters() {
+    try {
+      const response = await axiosInstance.patch(
+        `constract/overRosters/${tournamentId}`
+      );
+      console.log("Response:", response.data);
+      alert("Ростерам поставлен флаг - over");
+    } catch (error) {
+      console.error("Error close tournament:", error);
+    }
+  }
+
   function ShowTournamentUI() {
     if (!user) {
       // Если пользователь не определён, отображаем предложение залогиниться
@@ -722,6 +734,7 @@ function TournamentDetails({ user, logoutHandler }) {
               <button onClick={() => getResults()}>
                 Получить результаты турнира
               </button>
+              <button onClick={() => overRosters()}>Закончить турнир</button>
             </div>
             {players && (
               <>
