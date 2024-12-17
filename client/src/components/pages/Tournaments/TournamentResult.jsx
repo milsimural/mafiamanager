@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styles from "./TournamentResult.module.css";
 import axiosInstance from "src/axiosInstance";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 export default function TournamentResult({ user, logoutHandler }) {
   const [resultData, setResultData] = useState({});
@@ -60,6 +61,7 @@ export default function TournamentResult({ user, logoutHandler }) {
   return (
     <>
       <h1>Результаты</h1>
+      <Link to="/tournaments">Назад</Link>
       <div>Мой доход:</div>
       <div className={StyleSheet.results}>{userCoinsProfit}</div>
       <div>userRosterId: {userRosterId}</div>

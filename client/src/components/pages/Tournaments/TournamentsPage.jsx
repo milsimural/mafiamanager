@@ -25,6 +25,26 @@ export default function TournamentsPage({ user, logoutHandler }) {
       });
   }, []);
 
+  async function addCoinsAll() {
+    try {
+      const res = await axiosInstance.post("/auth/addCoinsAll");
+      console.log(res.data);
+      alert("Успешно добавлено");
+    } catch (error) {
+      console.error("Error adding coins:", error);
+    }
+  }
+
+  async function substractCoinsAll() {
+    try {
+      const res = await axiosInstance.post("/auth/substractCoinsAll");
+      console.log(res.data);
+      alert("Успешно убавлено");
+    } catch (error) {
+      console.error("Error adding coins:", error);
+    }
+  }
+
   const handleTournamentNavigation = (id) => {
     navigate(`/tournaments/${id}`);
   };
@@ -124,6 +144,10 @@ export default function TournamentsPage({ user, logoutHandler }) {
             {(user?.isAdmin || user?.isModerator) && (
               <div>
                 <h2>Добавить Турнир</h2>
+                <br />
+                <br />
+                <button onClick={addCoinsAll}>Добавить монетки</button>
+                <button onClick={substractCoinsAll}>Убавить монетки</button>
                 <form onSubmit={handleFormSubmit}>
                   <div className={styles.formGroup}>
                     <label>Название турнира *</label>

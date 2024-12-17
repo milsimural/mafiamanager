@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axiosInstance from "src/axiosInstance";
 
 export default function Rating() {
@@ -48,6 +49,7 @@ export default function Rating() {
   return (
     <div>
       <h1 style={styles.h1}>Рейтинг сезона 2024</h1>
+      <Link to="/tournaments">Назад</Link>
       <table style={styles.table}>
         <thead>
           <tr>

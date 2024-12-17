@@ -90,4 +90,36 @@ authRouter.get('/logout', (req, res) => {
   res.clearCookie('refreshToken').status(200).send('Вы успешно вышли');
 });
 
+// Всем юзерам начислить 50000 coins
+authRouter.post('/addCoinsAll', async (req, res) => {
+  try {
+    const users = await User.findAll();
+
+    await Promise.all(users.map(async (user) => {
+      await user.increment('coins', { by: 50000 });
+    }));
+
+    res.status(200).json({ message: 'Coins added successfully' });
+  } catch (error) {
+    console.error('Error adding coins:', error);
+    res.status(500).json({ error: 'Failed to add coins' });
+  }
+});
+
+authRouter.post('/subtractCoinsAll', async (req, res) => {
+  try {
+    const users = await User.findAll();
+
+    await Promise.all(users.map(async (user) => {
+      await user.decrement('coins', { by: 50000 });
+    }));
+
+    res.status(200).json({ message: 'Coins subtracted successfully' });
+  } catch (error) {
+    console.error('Error subtracting coins:', error);
+    res.status(500).json({ error: 'Failed to subtract coins' });
+  }
+});
+
+
 module.exports = authRouter;
