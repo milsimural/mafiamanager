@@ -96,6 +96,8 @@ export default function TournamentResult({ user, logoutHandler }) {
                   <td>{item.userName}</td>
                   <td>{item.profitCoins}</td>
                   <td>
+                    {console.log(item.players)}
+                    {console.log(item.players.map((player) => player.nickname))}
                     {item.players.map((player) => player.nickname).join(", ")}
                   </td>
                 </tr>

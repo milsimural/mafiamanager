@@ -12,6 +12,7 @@ import TournamentPage from "./components/pages/Tournaments/TournamentPage";
 import TeamPage from "./components/pages/Account/TeamPage";
 import MagazinePage from "./components/pages/Magazine/MagazinePage";
 import TournamentResult from "./components/pages/Tournaments/TournamentResult";
+import Rating from "./components/pages/Tournaments/Rating";
 
 function App() {
   const [user, setUser] = useState();
@@ -92,6 +93,14 @@ function App() {
               updateUserCoins={updateUserCoins}
             />
           ),
+        },
+        {
+          path: "/rating",
+          element: <Rating />,
+        },
+        {
+          path: "*",
+          element: <div>404</div>,
         },
       ],
     },

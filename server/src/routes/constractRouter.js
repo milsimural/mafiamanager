@@ -75,6 +75,11 @@ constractRouter.get('/getrosters/:tournamentId', async (req, res) => {
           },
         });
 
+        const playerMap = new Map(players.map((player) => [player.id, player]));
+
+        // Сортируем игроков в соответствии с порядком playerIds
+        const sortedPlayers = playerIds.map((id) => playerMap.get(id));
+
         const user = await User.findByPk(roster.userId, {
           attributes: ['name'], // извлекаем только имя
         });
@@ -83,7 +88,7 @@ constractRouter.get('/getrosters/:tournamentId', async (req, res) => {
         return {
           id: roster.id, // убедимся, что id включен
           ...roster.toJSON(),
-          players,
+          players: sortedPlayers.map((player) => player || { nickname: 'КАПИТАНА НЕТ' }), // используем отсортированный массив игроков
           userName: user ? user.name : null,
         };
       }),
@@ -337,7 +342,10 @@ constractRouter.patch('/setProfitAndPlaces/:tournamentId', async (req, res) => {
     });
 
     // Сортируем составы по их среднему месту
-    updatedRosters.sort((a, b) => a.averagePlace - b.averagePlace);
+    // updatedRosters.sort((a, b) => a.averagePlace - b.averagePlace);
+
+    // Сортируем составы по количеству заработанных денег
+    updatedRosters.sort((a, b) => b.profitCoins - a.profitCoins);
 
     // Создаем массив промисов для сохранения изменений
     const savePromises = updatedRosters.map((roster, index) => {
@@ -441,5 +449,58 @@ constractRouter.patch('/takeProfit/:rosterId', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while updating the roster' });
   }
 });
+
+// Найти все ростеры игрока и сумировать их profitCoins
+constractRouter.get('/playerRosters/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const rosters = await Roster.findAll({ where: { userId } });
+    const totalProfit = rosters.reduce((total, roster) => total + roster.profitCoins, 0);
+    res.json({ totalProfit });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while getting player rosters' });
+  }
+})
+
+// Найти все ростеры каждого игрока и суммировать их profitCoins, создать новый массив где будет user.id, user.name и сумма profitCoins ростеров этого userId
+constractRouter.get('/rating', async (req, res) => {
+  try {
+    const rosters = await Roster.findAll();
+    const playerRosters = await Promise.all(
+      rosters.map(async (roster) => {
+        const user = await User.findByPk(roster.userId);
+        return {
+          userId: user.id,
+          userName: user.name,
+          profitCoins: roster.profitCoins,
+        };
+      })
+    );
+    
+    const allUsers = await User.findAll();
+
+    const rating = [];
+    for (let i = 0; i < allUsers.length; i++) {
+      let totalProfit = 0;
+      for (let j = 0; j < playerRosters.length; j++) {
+        if (playerRosters[j].userId === allUsers[i].id) {
+          totalProfit += playerRosters[j].profitCoins;
+        }
+      }
+      rating.push({
+        userId: allUsers[i].id,
+        userName: allUsers[i].name,
+        totalProfit
+      });
+    }
+    const ratingSort = rating.sort((a, b) => b.totalProfit - a.totalProfit);
+    res.json(ratingSort);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while getting player rosters' });
+  }
+})
+
 
 module.exports = constractRouter;
