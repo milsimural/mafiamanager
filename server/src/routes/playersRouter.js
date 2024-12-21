@@ -1,11 +1,34 @@
 const { Router } = require('express');
 const { Op } = require('sequelize');
 
-const { Player, User, Club, Team, Transaction, Tournament } = require('../../db/models');
+const {
+  Player,
+  User,
+  Club,
+  Team,
+  Transaction,
+  Tournament,
+  Roster,
+} = require('../../db/models');
 
 const playerRouter = Router();
 
 const verifyAccessToken = require('../middlewares/verifyAccessToken');
+
+function countDuplicates(arr) {
+  const arrWithoutNulls = arr.filter(Boolean);
+
+  const count = {};
+
+  arrWithoutNulls.forEach((item) => {
+    count[item] = (count[item] || 0) + 1;
+  });
+
+  return Object.entries(count).map(([key, value]) => ({
+    value: key,
+    count: value,
+  }));
+}
 
 playerRouter.get('/', async (req, res) => {
   try {
@@ -85,7 +108,6 @@ playerRouter.post('/sell/:playerId/:userId', verifyAccessToken, async (req, res)
     res.status(500).send('Произошла ошибка при продаже игрока');
   }
 });
-
 
 playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) => {
   try {
@@ -264,6 +286,54 @@ playerRouter.get('/getTournamentPlayersAll/:tournamentId', async (req, res) => {
     }
 
     res.json(tournamentPlayers);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: `Ошибка при получении списка игроков турнира: ${error.message}` });
+  }
+});
+
+// Найти все ростеры турнира и занести в массив игроков всех игроков каждого ростера
+playerRouter.get('/getRosresPlayersArrayWithSum/:tournamentId', async (req, res) => {
+  try {
+    const { tournamentId } = req.params;
+    const tournament = await Tournament.findByPk(tournamentId);
+
+    if (!tournament) {
+      return res.status(404).send('Турнир не найден');
+    }
+
+    const rosters = await Roster.findAll({
+      where: { tournamentId },
+    });
+
+    if (rosters.length === 0) {
+      return res.status(404).send('Ростеры турнира не найдены');
+    }
+
+    const playersArray = rosters.flatMap((roster) => JSON.parse(roster.rosterPlayers));
+    const sumPlayers = countDuplicates(playersArray);
+
+    const promises = sumPlayers.map(async (playerData) => {
+      const id = Number(playerData.value);
+      if (isNaN(id)) {
+        throw new Error(
+          `Неверное значение id игрока - ${id}, из ${JSON.stringify(playerData)}`,
+        );
+      }
+
+      const player = await Player.findByPk(id);
+      const updatedPlayerData = { ...playerData };
+
+      if (player && player.nickname) {
+        updatedPlayerData.nickname = player.nickname;
+      }
+
+      return updatedPlayerData;
+    });
+
+    const updatedPlayers = await Promise.all(promises);
+    res.json(updatedPlayers);
   } catch (error) {
     res
       .status(500)

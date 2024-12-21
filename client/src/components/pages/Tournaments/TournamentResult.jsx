@@ -11,6 +11,8 @@ export default function TournamentResult({ user, logoutHandler }) {
   const [userRosterId, setUserRosterId] = useState(null);
   const [userIsTakeProfit, setUserIsTakeProfit] = useState(false);
   const { tournamentId } = useParams();
+  const [leaders, setLeaders] = useState([]);
+  const [sum, setSum] = useState(0);
 
   useEffect(() => {
     if (!tournamentId) return;
@@ -27,7 +29,6 @@ export default function TournamentResult({ user, logoutHandler }) {
         const sortedData = data.sort((a, b) => a.place - b.place);
 
         setResultData(sortedData);
-        console.log(sortedData);
 
         const userData = sortedData.find((item) => item.userId === user.id);
         if (userData) {
@@ -42,6 +43,37 @@ export default function TournamentResult({ user, logoutHandler }) {
 
     getResultData();
   }, [tournamentId, user]);
+
+  useEffect(() => {
+    if (!user) return;
+    if (!tournamentId) return;
+
+    async function getLeaders() {
+      try {
+        const leadersRaw = await axiosInstance.get(
+          `players/getRosresPlayersArrayWithSum/${tournamentId}`
+        );
+
+        // Сортировка массива по свойству count от большего к меньшему
+        const sortedLeaders = leadersRaw.data.sort((a, b) => b.count - a.count);
+
+        setLeaders(sortedLeaders);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getLeaders();
+  }, [tournamentId, user]);
+
+  useEffect(() => {
+    if (!leaders.length) return;
+    let sumPlayers = 0;
+    for (let i = 0; i < leaders.length; i++) {
+      sumPlayers += leaders[i].count;
+    }
+    setSum(sumPlayers);
+  }, [leaders]);
 
   async function takeProfit() {
     if (userIsTakeProfit) return;
@@ -98,8 +130,6 @@ export default function TournamentResult({ user, logoutHandler }) {
                   <td>{item.userName}</td>
                   <td>{item.profitCoins}</td>
                   <td>
-                    {console.log(item.players)}
-                    {console.log(item.players.map((player) => player.nickname))}
                     {item.players.map((player) => player.nickname).join(", ")}
                   </td>
                 </tr>
@@ -109,6 +139,32 @@ export default function TournamentResult({ user, logoutHandler }) {
                 <td colSpan="4">Loading...</td>
               </tr>
             )}
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h2>Больше всего в командах:</h2>
+        <table>
+          <tbody>
+            <tr>
+              <td>Ник</td>
+              <td>Ростеры</td>
+              <td>Sum</td>
+            </tr>
+            {leaders?.map((leader) => {
+              return (
+                <tr key={leader.value}>
+                  <td>{leader.nickname}</td>
+                  <td>{leader.count}</td>
+                  <td>
+                    <div
+                      className={styles.procent}
+                      style={{ width: sum ? (leader.count / sum) * 100 : 0 }}
+                    ></div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
