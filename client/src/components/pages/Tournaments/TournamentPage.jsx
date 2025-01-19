@@ -264,7 +264,8 @@ function TournamentDetails({ user, logoutHandler }) {
       rawData.props.pageProps.serverData.tournamentResultWithoutFinal;
 
     // Получение первых 10 объектов
-    const selectedFromWithFinal = tournamentResultWithFinal.slice(0, 10);
+    // const selectedFromWithFinal = tournamentResultWithFinal.slice(0, 10);
+    const selectedFromWithFinal = tournamentResultWithFinal;
 
     // Собираем логины из выбранных 10 объектов
     const existingLogins = new Set(
@@ -272,9 +273,13 @@ function TournamentDetails({ user, logoutHandler }) {
     );
 
     // Добавляем объекты из WithoutFinal, логины которых уникальны
-    const uniqueFromWithoutFinal = tournamentResultWithoutFinal.filter(
-      (item) => !existingLogins.has(item.login)
-    );
+    let uniqueFromWithoutFinal = [];
+
+    if (tournamentResultWithoutFinal !== null) {
+      uniqueFromWithoutFinal = tournamentResultWithoutFinal.filter(
+        (item) => !existingLogins.has(item.login)
+      );
+    }
 
     // Результирующий массив
     const resultArray = [...selectedFromWithFinal, ...uniqueFromWithoutFinal];
