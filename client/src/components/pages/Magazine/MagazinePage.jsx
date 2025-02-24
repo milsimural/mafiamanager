@@ -4,23 +4,24 @@ import styles from "src/components/pages/Magazine/MagazinePage.module.css";
 import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
 import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
-import ShopCard from "src/components/ui/Cards/ShopCard";
+import ShopCard2 from "src/components/ui/Cards/ShopCard2";
 import axiosInstance from "src/axiosInstance";
 
 export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   const [players, setPlayers] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
+  const [selectedClubId, setSelectedClubId] = useState(null); // Хранит выбранный юзером клуб в фильтре
 
   useEffect(() => {
     axiosInstance
-      .get("/players")
+      .get(`/players/byClub/${selectedClubId}`)
       .then((res) => {
         setPlayers(res.data);
       })
       .catch((error) => {
         console.error("Ошибка при получении списка игроков:", error);
       });
-  }, []);
+  }, [selectedClubId]);
 
   useEffect(() => {
     if (user && user.id) {
@@ -35,7 +36,42 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
     }
   }, [user]);
 
-  console.log(user);
+  // Настройка local storage для хранения выбранного фильтра игроков
+
+  const clubs = [
+    { id: 32, image: "logo-32.jpg", name: "RE" },
+    { id: 33, image: "logo-33.jpg", name: "PSG" },
+    { id: 34, image: "logo-34.jpg", name: "FCB" },
+    { id: 35, image: "logo-35.jpg", name: "BAR" },
+  ];
+
+  // Сохранить в локал настройки фильтра
+  function saveSettings(filter) {
+    localStorage.setItem("userFilter", JSON.stringify(filter));
+    console.log("Settings saved:", filter);
+  }
+
+  // Читаем сохраненные настройки
+  function readSettings() {
+    const savedFilter = localStorage.getItem("userFilter");
+    if (savedFilter) {
+      setSelectedClubId(JSON.parse(savedFilter).clubId);
+    } else {
+      setSelectedClubId(32);
+      saveSettings({ clubId: 32 });
+    }
+  }
+
+  // Пользователь изменяет настройки фильтра
+  const handleClubClick = (clubId) => {
+    setSelectedClubId(clubId);
+    saveSettings({ clubId: clubId });
+  };
+
+  // Один раз считываем прошлые настройки при загрузке страницы
+  useEffect(() => {
+    readSettings();
+  });
 
   function buyPlayer(playerId, userId, playercostcoins) {
     if (user.coins < playercostcoins) {
@@ -78,16 +114,27 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
           <div className={styles.subNavigation}>
             <h2>Спортсмены</h2>
           </div>
-          {/* <div className={styles.form}>
-            <form className={styles.searchForm}>
-              <input
-                type="text"
-                placeholder="Введите ник игрока..."
-                className={styles.searchInput}
-                onChange={(event) => {console.log(event.target.value)}}
-              />
-            </form>
-          </div> */}
+          <div>
+            <div>
+              <div className={styles.filter}>
+                {clubs.map((club) => (
+                  <img
+                    key={club.id}
+                    src={club.image}
+                    alt={club.name}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      border:
+                        selectedClubId === club.id ? "3px solid blue" : "none",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleClubClick(club.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
 
           <div className={styles.players}>
             {players.map((player) => {
@@ -99,7 +146,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
               return (
                 <div className={styles.playerWrapper} key={player.nickname}>
                   <div className={styles.player}>
-                    <ShopCard
+                    <ShopCard2
                       user={user}
                       player={player}
                       shop={true}

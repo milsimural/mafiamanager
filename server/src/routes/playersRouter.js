@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { Op } = require('sequelize');
+const { Op, where } = require('sequelize');
 
 const {
   Player,
@@ -33,6 +33,23 @@ function countDuplicates(arr) {
 playerRouter.get('/', async (req, res) => {
   try {
     const players = await Player.findAll({
+      include: {
+        model: Club,
+        as: 'Club',
+        attributes: ['ticker'],
+      },
+    });
+    res.json(players);
+  } catch (error) {
+    res.status(500).json({ error: `Ошибка при получении всех игроков ${error.message}` });
+  }
+});
+
+playerRouter.get('/byClub/:clubId', async (req, res) => {
+  const { clubId } = req.params;
+  try {
+    const players = await Player.findAll({
+      where: { clubId },
       include: {
         model: Club,
         as: 'Club',

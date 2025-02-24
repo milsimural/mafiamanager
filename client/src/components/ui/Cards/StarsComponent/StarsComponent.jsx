@@ -1,6 +1,6 @@
 import React from "react";
-import starFullImage from "src/components/ui/Cards/StarsComponent/starFull.svg";
-import starEmptyImage from "src/components/ui/Cards/StarsComponent/starEmpty.svg";
+import starFullImage from "src/components/ui/Cards/StarsComponent/star2.svg";
+import starEmptyImage from "src/components/ui/Cards/StarsComponent/emptystar2.svg";
 
 export default function StarsComponent({ stars }) {
   function setStarsConfig(stars) {
@@ -11,7 +11,9 @@ export default function StarsComponent({ stars }) {
           key={`full-${i}`}
           src={starFullImage}
           alt="star"
-          style={{ marginRight: "5px" }}
+          style={{ marginRight: "1px" }}
+          width="8px"
+          height="8px"
         />
       );
     }
@@ -21,7 +23,9 @@ export default function StarsComponent({ stars }) {
           key={`empty-${i}`}
           src={starEmptyImage}
           alt="star"
-          style={{ marginRight: "5px" }}
+          style={{ marginRight: "1px" }}
+          width="8px"
+          height="8px"
         />
       );
     }

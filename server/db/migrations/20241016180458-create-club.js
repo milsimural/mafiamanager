@@ -47,6 +47,9 @@ module.exports = {
       ticker: {
         type: Sequelize.STRING,
       },
+      isPublic: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

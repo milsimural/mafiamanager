@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       playersCount: DataTypes.INTEGER,
       avrElo: DataTypes.INTEGER,
       ticker: DataTypes.STRING,
+      isPublic: DataTypes.BOOLEAN
     },
     {
       sequelize,

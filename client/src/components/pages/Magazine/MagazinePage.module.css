@@ -90,15 +90,12 @@ body {
 }
 
 .playerWrapper {
-  width: calc(
-    300px * 0.5
-  ); /* jтот размер определяется фактическим размером блока */
-  height: calc(585px * 0.5); /* Замените на фактические размеры каждого блока */
+  width: 144px;
+  height: 265px;
   overflow: hidden; /* предотвращаем выход за пределы */
 }
 
 .player {
-  transform: scale(0.5);
   transform-origin: top left;
 }
 
@@ -133,3 +130,22 @@ body {
     margin-bottom: 26px;
   }
 }
+
+
+/* ФИЛЬТРЫ */
+
+.filter {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter .element {
+  width: 100px;
+  height: 100px;
+  background-color: #1d1a1d;
+}
+

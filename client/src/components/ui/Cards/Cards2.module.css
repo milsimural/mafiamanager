@@ -1,0 +1,143 @@
+.face {
+  width: 144px;
+  height: 215px;
+  position: relative;
+}
+
+.space10 {
+  width: 100%;
+  height: 6px;
+}
+
+.fotoCont {
+  width: 132px;
+  height: 173px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+}
+
+.infoCont {
+  height: 19px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 13px;
+}
+
+.flag {
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+}
+
+.flag img {
+  width: 100%;
+  height: 100%;
+}
+
+.powerCont {
+  display: flex;
+  height: 19px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.powerText {
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+}
+
+.energy {
+  width: 9px;
+  height: 19px;
+}
+
+.energy img {
+  width: 100%;
+  height: 100%;
+}
+
+.name {
+  color: #fff;
+  font-size: 9px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-left: 18px;
+  margin-top: 5px;
+  font-family: "Montserrat", sans-serif;
+  width: 77px;
+  height: 14px;
+  overflow: hidden;
+}
+
+.stars {
+  width: 77px;
+  height: 10px;
+  margin-left: 18px;
+}
+
+.shield {
+  position: absolute;
+  background-size: cover;
+  width: 28px;
+  height: 34px;
+  z-index: 2;
+  right: 14px;
+  bottom: 9px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.shield img {
+  margin-bottom: 6px;
+}
+
+.buy img {
+  width: 10px;
+  height: 10px;
+  margin-right: 3px;
+  margin-bottom: 10px;
+}
+
+.buttonText {
+  margin-bottom: 11px;
+}
+
+.buy {
+  width: 144px;
+  height: 40px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.buy button {
+  width: 91px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: "Montserrat", sans-serif;
+}
