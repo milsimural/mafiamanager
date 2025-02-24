@@ -14,9 +14,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      winrate: {
-        type: Sequelize.INTEGER,
-      },
       picture: {
         type: Sequelize.STRING,
       },
@@ -61,9 +58,6 @@ module.exports = {
       skills: {
         type: Sequelize.STRING,
       },
-      elo: {
-        type: Sequelize.FLOAT,
-      },
       transfers: {
         type: Sequelize.INTEGER,
       },
@@ -95,6 +89,12 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+      },
+      lastTournamentDate: {
+        type: Sequelize.DATE,
+      },
+      lastResults: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

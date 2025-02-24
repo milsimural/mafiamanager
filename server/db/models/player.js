@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
   Player.init(
     {
       nickname: DataTypes.STRING,
-      winrate: DataTypes.INTEGER,
       picture: DataTypes.STRING,
       stars: DataTypes.INTEGER,
       power: DataTypes.INTEGER,
@@ -38,13 +37,14 @@ module.exports = (sequelize, DataTypes) => {
       ismarket: DataTypes.BOOLEAN,
       clubId: DataTypes.INTEGER,
       skills: DataTypes.STRING,
-      elo: DataTypes.FLOAT,
       transfers: DataTypes.INTEGER,
       dismissals: DataTypes.INTEGER,
       gomafiaId: DataTypes.INTEGER,
       countryId: DataTypes.INTEGER,
       cityId: DataTypes.INTEGER,
       isOpen: DataTypes.BOOLEAN,
+      lastTournamentDate: DataTypes.DATEONLY,
+      lastResults: DataTypes.STRING,
     },
     {
       sequelize,
