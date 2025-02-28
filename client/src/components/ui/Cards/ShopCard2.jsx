@@ -61,7 +61,9 @@ export default function ShopCard2({
         <div className={styles.space10}></div>
         <div
           className={styles.fotoCont}
-          style={{ backgroundImage: `url(ketty.png)` }}
+          style={{
+            backgroundImage: `url(${player.picture})`,
+          }}
         >
           <div className={styles.infoCont}>
             <div className={styles.flag}>

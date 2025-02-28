@@ -10,6 +10,8 @@ const adminRouter = require('./routes/adminRouter');
 const minicupRouter = require('./routes/minicupRouter');
 const playersRouter = require('./routes/playersRouter');
 const constractRouter = require('./routes/constractRouter');
+const itemRouter = require('./routes/itemRouter');
+const item = require('../db/models/item');
 
 const app = express();
 
@@ -25,6 +27,7 @@ app.use('/api/tokens', tokensRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/minicup', minicupRouter);
 app.use('/api/constract', constractRouter);
+app.use('/api/itemInstance', itemRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '..', 'dist')));

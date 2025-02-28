@@ -49,16 +49,25 @@ playerRouter.get('/byClub/:clubId', async (req, res) => {
   const { clubId } = req.params;
   try {
     const players = await Player.findAll({
-      where: { clubId },
+      where: {
+        [Op.and]: [
+          // Используем Op.and для объединения условий
+          { clubId }, // Условие по clubId
+          { ismarket: true }, // Условие по isMarket
+        ],
+      },
       include: {
         model: Club,
         as: 'Club',
         attributes: ['ticker'],
       },
+      order: [['costcoins', 'DESC']], // Сортировка по costcoins от большего к меньшему
     });
     res.json(players);
   } catch (error) {
-    res.status(500).json({ error: `Ошибка при получении всех игроков ${error.message}` });
+    res
+      .status(500)
+      .json({ error: `Ошибка при получении всех игроков: ${error.message}` });
   }
 });
 

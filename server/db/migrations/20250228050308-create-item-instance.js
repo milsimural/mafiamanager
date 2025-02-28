@@ -3,39 +3,22 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Items', {
+    await queryInterface.createTable('ItemInstances', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      type: {
-        type: Sequelize.STRING,
-      },
-      costcoins: {
+      itemId: {
         type: Sequelize.INTEGER,
-      },
-      costgems: {
-        type: Sequelize.INTEGER,
-      },
-      name: {
-        type: Sequelize.STRING,
-      },
-      effect: {
-        type: Sequelize.STRING,
-      },
-      picture: {
-        type: Sequelize.STRING,
-      },
-      actionName: {
-        type: Sequelize.STRING,
-      },
-      timeAdd: {
-        type: Sequelize.INTEGER,
-      },
-      duration: {
-        type: Sequelize.INTEGER,
+        references: {
+          model: 'Items',
+          key: 'id',
+        },
+        allowNull: false,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       playerId: {
         type: Sequelize.INTEGER,
@@ -43,8 +26,21 @@ module.exports = {
           model: 'Players',
           key: 'id',
         },
+        allowNull: false,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
+      },
+      isActivated: {
+        type: Sequelize.BOOLEAN,
+      },
+      isBlocked: {
+        type: Sequelize.BOOLEAN,
+      },
+      activationStart: {
+        type: Sequelize.DATE,
+      },
+      expiredAt: {
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,
@@ -57,6 +53,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Items');
+    await queryInterface.dropTable('ItemInstances');
   },
 };
