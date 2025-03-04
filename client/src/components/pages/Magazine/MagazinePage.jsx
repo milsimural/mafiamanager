@@ -16,24 +16,33 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   function getSelectedPosts() {
-    if (selectedSort)
-      return setPlayers(
-        [...players].sort((a, b) =>
-          a[selectedSort].localCompare(b[selectedSort])
-        )
-      );
-    else return players;
+    if (selectedSort) {
+      const sortedArray = [...players].sort((a, b) => {
+        if (selectedSort === "nickname") {
+          return a[selectedSort].localeCompare(b[selectedSort]);
+        } else {
+          return b[selectedSort] - a[selectedSort];
+        }
+      });
+      console.log(sortedArray);
+      console.log(selectedSort);
+      return sortedArray;
+    } else {
+      return players;
+    }
   }
 
   useEffect(() => {
-    axiosInstance
-      .get(`/players/byClub/${selectedClubId}`)
-      .then((res) => {
-        setPlayers(res.data);
-      })
-      .catch((error) => {
-        console.error("Ошибка при получении списка игроков:", error);
-      });
+    if (selectedClubId) {
+      axiosInstance
+        .get(`/players/byClub/${selectedClubId}`)
+        .then((res) => {
+          setPlayers(res.data);
+        })
+        .catch((error) => {
+          console.error("Ошибка при получении списка игроков:", error);
+        });
+    }
   }, [selectedClubId]);
 
   useEffect(() => {
@@ -70,8 +79,9 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
     if (savedFilter) {
       setSelectedClubId(JSON.parse(savedFilter).clubId);
     } else {
-      setSelectedClubId(32);
-      saveSettings({ clubId: 32 });
+      console.log("В LocalStorage нет сохранённых настроек");
+      setSelectedClubId(196);
+      saveSettings({ clubId: 196 });
     }
   }
 
@@ -153,7 +163,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
             </div>
           </div>
 
-          <div className="styles.sort">
+          <div className={styles.sort}>
             <SelectComp
               value={selectedSort}
               onChangeFunc={sortPosts}
@@ -167,7 +177,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
             />
           </div>
 
-          <div className="styles.search">
+          <div className={styles.search}>
             <input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -175,7 +185,6 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
             ></input>
           </div>
 
-          {/* Заменил массив player на функцию */}
           <div className={styles.players}>
             {getSelectedPosts().map((player) => {
               // Проверяем, входит ли player.id в teamMembers

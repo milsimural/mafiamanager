@@ -20,10 +20,10 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
-      playerId: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Players',
+          model: 'Users',
           key: 'id',
         },
         allowNull: false,

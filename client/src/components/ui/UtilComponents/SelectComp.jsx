@@ -15,7 +15,7 @@ export default function SelectComp({
         {defaultValue}
       </option>
       {options.map((option) => (
-        <option key={option.value} value="{option.value}">
+        <option key={option.value} value={option.value}>
           {option.name}
         </option>
       ))}
@@ -23,7 +23,7 @@ export default function SelectComp({
   );
 }
 
-SelectComp.PropTypes = {
+SelectComp.propTypes = {
   options: PropTypes.array,
   defaultValue: PropTypes.string,
   value: PropTypes.string,
