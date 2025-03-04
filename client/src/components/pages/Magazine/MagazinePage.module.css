@@ -131,7 +131,6 @@ body {
   }
 }
 
-
 /* ФИЛЬТРЫ */
 
 .filter {
@@ -149,3 +148,6 @@ body {
   background-color: #1d1a1d;
 }
 
+.sort {
+  margin: 20px 0;
+}

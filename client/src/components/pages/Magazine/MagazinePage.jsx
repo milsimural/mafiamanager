@@ -6,11 +6,24 @@ import NavigationComp from "src/components/ui/Nav/NavigationComp";
 import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
 import ShopCard2 from "src/components/ui/Cards/ShopCard2";
 import axiosInstance from "src/axiosInstance";
+import SelectComp from "src/components/ui/UtilComponents/SelectComp";
 
 export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   const [players, setPlayers] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [selectedClubId, setSelectedClubId] = useState(null); // Хранит выбранный юзером клуб в фильтре
+  const [selectedSort, setSelectedSort] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  function getSelectedPosts() {
+    if (selectedSort)
+      return setPlayers(
+        [...players].sort((a, b) =>
+          a[selectedSort].localCompare(b[selectedSort])
+        )
+      );
+    else return players;
+  }
 
   useEffect(() => {
     axiosInstance
@@ -95,6 +108,10 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
       });
   }
 
+  const sortPosts = (sort) => {
+    setSelectedSort(sort);
+  };
+
   return (
     <>
       <div
@@ -136,8 +153,31 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
             </div>
           </div>
 
+          <div className="styles.sort">
+            <SelectComp
+              value={selectedSort}
+              onChangeFunc={sortPosts}
+              defaultValue={"Сортировка по:"}
+              options={[
+                { value: "stars", name: "по звездности" },
+                { value: "nickname", name: "по имени" },
+                { value: "coinscost", name: "по цене" },
+                { value: "power", name: "по power" },
+              ]}
+            />
+          </div>
+
+          <div className="styles.search">
+            <input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Поиск..."
+            ></input>
+          </div>
+
+          {/* Заменил массив player на функцию */}
           <div className={styles.players}>
-            {players.map((player) => {
+            {getSelectedPosts().map((player) => {
               // Проверяем, входит ли player.id в teamMembers
               const isInTeam = teamMembers.some(
                 (member) => member.playerid === player.id
