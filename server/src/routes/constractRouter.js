@@ -303,7 +303,10 @@ constractRouter.patch('/setProfitAndPlaces/:tournamentId', async (req, res) => {
         });
 
         if (count > 0) {
-          updatedRoster.averagePlace = totalPlaceSum / count;
+          // Ранее я делил места на кол-во участников в ростере, но это не правильно
+          // updatedRoster.averagePlace = totalPlaceSum / count;
+          // Сейчас я делю на максимальное кол-во участников в ростере т.е. 7
+          updatedRoster.averagePlace = totalPlaceSum / 7;
           updatedRoster.profitCoins = Math.floor(profitCoins);
         }
 
@@ -461,7 +464,7 @@ constractRouter.get('/playerRosters/:userId', async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while getting player rosters' });
   }
-})
+});
 
 // Найти все ростеры каждого игрока и суммировать их profitCoins, создать новый массив где будет user.id, user.name и сумма profitCoins ростеров этого userId
 constractRouter.get('/rating', async (req, res) => {
@@ -475,9 +478,9 @@ constractRouter.get('/rating', async (req, res) => {
           userName: user.name,
           profitCoins: roster.profitCoins,
         };
-      })
+      }),
     );
-    
+
     const allUsers = await User.findAll();
 
     const rating = [];
@@ -491,7 +494,7 @@ constractRouter.get('/rating', async (req, res) => {
       rating.push({
         userId: allUsers[i].id,
         userName: allUsers[i].name,
-        totalProfit
+        totalProfit,
       });
     }
     const ratingSort = rating.sort((a, b) => b.totalProfit - a.totalProfit);
@@ -500,7 +503,6 @@ constractRouter.get('/rating', async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while getting player rosters' });
   }
-})
-
+});
 
 module.exports = constractRouter;
