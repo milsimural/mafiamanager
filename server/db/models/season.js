@@ -17,7 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     start: DataTypes.DATE,
     end: DataTypes.DATE,
-    picture: DataTypes.STRING
+    picture: DataTypes.STRING,
+    giftConfigs: DataTypes.TEXT, // Массив конфигов подарков с 1 по 100 место
+    endRatingUserIds: DataTypes.TEXT, // Массив id пользователей с первого по последнее место кроме юзеров с ноль монет за сезон
   }, {
     sequelize,
     modelName: 'Season',

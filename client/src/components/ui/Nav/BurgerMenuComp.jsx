@@ -28,16 +28,6 @@ export default function BurgerMenuComp() {
           </Link>
         </li>
         <li>
-          <Link className={styles.menuItem} to="/login">
-            Вход
-          </Link>
-        </li>
-        <li>
-          <Link className={styles.menuItem} to="/registration">
-            Регистрация
-          </Link>
-        </li>
-        <li>
           <Link className={styles.menuItem} to="/tournaments">
             Турниры
           </Link>

@@ -58,7 +58,6 @@ h2 {
   font-weight: bold;
 }
 
-
 .twoCol {
   display: flex;
   flex-direction: row;
@@ -110,13 +109,6 @@ h2 {
   width: 30px;
 }
 
-.listElement .tournamentName {
-  color: #fff;
-  padding: 8px 16px 8px 8px;
-  flex: 0 0 70%;
-  width: 200px;
-}
-
 .listElement a {
   text-decoration: none;
 }
@@ -128,10 +120,8 @@ h2 {
 
 .listElement .tournamentLink {
   padding: 8px 16px 8px 8px;
-}
-
-.ready {
-  width: 120px;
+  width: 200px;
+  color: #fff;
 }
 
 .readyButton {
@@ -148,5 +138,114 @@ h2 {
   background-position: center;
   background-repeat: no-repeat;
   padding-bottom: 8px;
+  margin-right: 20px;
 }
 
+.formGroup {
+  width: 100%;
+}
+
+.formManage {
+  width: 320px;
+  align-items: start;
+  margin-bottom: 40px;
+}
+
+.formManage label {
+  display: block;
+  text-align: left;
+  line-height: 1;
+}
+
+.formManage input {
+  width: 100%;
+  height: 24px;
+  margin-bottom: 12px;
+}
+
+.formManage button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+@media (max-width: 767px) {
+  .wrapper {
+    flex-direction: column;
+    padding: 10px 40px;
+    max-width: 100%;
+  }
+  .nav {
+    margin-top: 32px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .burger {
+    margin-right: auto;
+    margin-bottom: 26px;
+  }
+
+  .listElement {
+    width: 100%;
+  }
+
+  .listElement .num {
+    width: 30px;
+    line-height: 1.2;
+    padding: 8px 0px 8px 8px;
+    font-size: 14px;
+  }
+
+  .tournamentName {
+    line-height: 1.2;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .listElement .date {
+    width: 40px;
+    line-height: 1.2;
+    font-size: 12px;
+    padding: 8px 0px 8px 8px;
+  }
+
+  .listElement .tournamentLink {
+    padding: 8px 8px 8px 8px;
+    width: 115px;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .ready {
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  .readyButton {
+    scale: 0.8;
+    margin: 0;
+  }
+
+  .leftCol {
+    flex: 1 1 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1286px) {
+  .wrapper {
+    flex-direction: column;
+    padding: 10px 40px;
+    max-width: 100%;
+  }
+}

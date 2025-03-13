@@ -5,7 +5,7 @@ import styles from "./TournamentsPage.module.css";
 import { Link } from "react-router-dom";
 import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
-import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
+import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
 import readyButtonImage from "src/components/pages/Tournaments/ready.png";
 import PropTypes from "prop-types";
 
@@ -24,26 +24,6 @@ export default function TournamentsPage({ user, logoutHandler }) {
         console.error("Ошибка при получении списка турниров:", error);
       });
   }, []);
-
-  async function addCoinsAll() {
-    try {
-      const res = await axiosInstance.post("/auth/addCoinsAll");
-      console.log(res.data);
-      alert("Успешно добавлено");
-    } catch (error) {
-      console.error("Error adding coins:", error);
-    }
-  }
-
-  async function substractCoinsAll() {
-    try {
-      const res = await axiosInstance.post("/auth/substractCoinsAll");
-      console.log(res.data);
-      alert("Успешно убавлено");
-    } catch (error) {
-      console.error("Error adding coins:", error);
-    }
-  }
 
   const handleTournamentNavigation = (id) => {
     navigate(`/tournaments/${id}`);
@@ -81,23 +61,21 @@ export default function TournamentsPage({ user, logoutHandler }) {
           <NavigationComp user={user} logoutHandler={logoutHandler} />
         </div>
 
-        <h1>TournamentsPage</h1>
+        <h1>Турниры</h1>
         <div className={styles.twoCol}>
           <div className={styles.leftCol}>
             <h2>Сетка ФСМ</h2>
             <div className={styles.elementListContainer}>
               {tournamentsList.map((tournament) => (
                 <div key={tournament.id} className={styles.listElement}>
-                  <div className={styles.date}>{tournament.date_start}</div>
+                  <div className={styles.date}>{tournament.date_start.slice(5)}</div>
 
                   {tournament.isReady ? (
                     <Link
                       to={`/tournaments/${tournament.id}`}
                       className={styles.tournamentLink}
                     >
-                      <div className={styles.tournamentName}>
                         {tournament.name}
-                      </div>
                     </Link>
                   ) : (
                     <div className={styles.tournamentLink}>
@@ -144,11 +122,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
             {(user?.isAdmin || user?.isModerator) && (
               <div>
                 <h2>Добавить Турнир</h2>
-                <br />
-                <br />
-                <button onClick={addCoinsAll}>Добавить монетки</button>
-                <button onClick={substractCoinsAll}>Убавить монетки</button>
-                <form onSubmit={handleFormSubmit}>
+                <form onSubmit={handleFormSubmit} className={styles.formManage}>
                   <div className={styles.formGroup}>
                     <label>Название турнира *</label>
                     <input

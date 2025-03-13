@@ -21,6 +21,12 @@ module.exports = {
       picture: {
         type: Sequelize.STRING
       },
+      giftConfigs: {
+        type: Sequelize.TEXT
+      },
+      endRatingUserIds: {
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

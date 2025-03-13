@@ -1,0 +1,139 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  background-color: #1d1a1d;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+.background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    width: 100vw;
+    min-height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    display: flex;
+  }
+  
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1100px;
+    box-sizing: border-box;
+    margin: 0 auto; /* Центрирование блока */
+  }
+  
+  .nav {
+    margin-top: 68px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+  
+  .burger {
+    margin-right: auto;
+  }
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #1e1e1e; /* Темный фон таблицы */
+    color: #ffffff; /* Белый текст */
+    border-radius: 8px; /* Закругленные углы */
+    overflow: hidden; /* Скрываем углы за пределами таблицы */
+  }
+  
+  .headerCell {
+    padding: 12px 16px;
+    background-color: #333333; /* Темный фон заголовка */
+    color: #ffffff; /* Белый текст */
+    text-align: left;
+    font-weight: 600; /* Жирный шрифт для заголовков */
+    border-bottom: 2px solid #444444; /* Граница между заголовком и строками */
+    border-right: 1px solid #444444; /* Граница между столбцами */
+  }
+  
+  .headerCell:last-child {
+    border-right: none; /* Убираем границу у последнего столбца */
+  }
+  
+  .cell {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #444444; /* Граница между строками */
+    border-right: 1px solid #444444; /* Граница между столбцами */
+  }
+  
+  .cell:last-child {
+    border-right: none; /* Убираем границу у последнего столбца */
+  }
+  
+  .alternateRow {
+    background-color: #2a2a2a; /* Альтернативный цвет строк */
+  }
+
+  h1 {
+    color: #fff;
+    font-weight: bold;
+    font-size: 40px;
+    margin-bottom: 0;
+  }
+
+  h2 {
+    color: #18ffc9;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Стиль для ошибки */
+  .error {
+    color: #ff6b6b; /* Красный цвет для ошибки */
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* Стиль для центрированного текста */
+  .centerText {
+    text-align: center;
+  }
+
+  @media (max-width: 767px) {
+    .wrapper {
+      flex-direction: column;
+      padding: 10px 40px;
+      max-width: 100%;
+    }
+  
+    .nav {
+      margin-top: 32px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+  
+    .burger {
+      margin-right: auto;
+      margin-bottom: 26px;
+    }
+  }
+  
+  @media (min-width: 768px) and (max-width: 1286px) {
+    .wrapper {
+      flex-direction: column;
+      padding: 10px 40px;
+      max-width: 100%;
+    }
+  }

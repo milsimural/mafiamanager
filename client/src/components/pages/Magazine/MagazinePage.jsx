@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styles from "src/components/pages/Magazine/MagazinePage.module.css";
 import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
-import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
+import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
 import ShopCard2 from "src/components/ui/Cards/ShopCard2";
 import axiosInstance from "src/axiosInstance";
 import SelectComp from "src/components/ui/UtilComponents/SelectComp";

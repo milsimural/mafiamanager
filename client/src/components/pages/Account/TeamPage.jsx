@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import styles from "src/components/pages/Account/TeamPage.module.css";
 import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
-import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
+import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
 import bigCoinImage from "src/components/files/big-coin20.png";
-import ShopCard from "src/components/ui/Cards/ShopCard";
+import ShopCard from "src/components/ui/Cards/ShopCard2";
 import axiosInstance from "src/axiosInstance";
 
 export default function TeamPage({ user, logoutHandler, updateUserCoins }) {
@@ -86,7 +86,7 @@ export default function TeamPage({ user, logoutHandler, updateUserCoins }) {
           <div className={styles.twoColomns}>
             <div className={styles.leftColumn}>
               <div className={styles.teamCost}>
-                <div>Стоимость команды</div>
+                <div className={styles.teamCostText}>Стоимость команды</div>
                 <img src={bigCoinImage} alt="coin" width="20" height="20" />
                 <div className={styles.white}> {teamCost}</div>
               </div>

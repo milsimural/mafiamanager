@@ -85,6 +85,10 @@ h1 {
   align-items: center;
 }
 
+.teamCostText {
+  line-height: 1;
+}
+
 .teamCost img {
   margin: 0 10px 0 24px;
 }
@@ -106,16 +110,16 @@ h1 {
 }
 
 .playerWrapper {
-  width: calc(
+  /* width: calc(
     300px * 0.5
-  ); /* jтот размер определяется фактическим размером блока */
-  /* height: calc(445px * 0.5); */
-  height: calc(585px * 0.5);
+  ); */
+  width: 144px;
+  /* height: calc(585px * 0.5); */
+  height: 265px;
   overflow: hidden; /* предотвращаем выход за пределы */
 }
 
 .player {
-  transform: scale(0.5);
   transform-origin: top left;
 }
 

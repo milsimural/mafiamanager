@@ -13,6 +13,7 @@ import TeamPage from "./components/pages/Account/TeamPage";
 import MagazinePage from "./components/pages/Magazine/MagazinePage";
 import TournamentResult from "./components/pages/Tournaments/TournamentResult";
 import Rating from "./components/pages/Tournaments/Rating";
+import MainPage from "./components/pages/Main/MainPage";
 
 function App() {
   const [user, setUser] = useState();
@@ -44,7 +45,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <HomePage />,
+          element: <MainPage user={user} logoutHandler={logoutHandler} />,
         },
         {
           path: "/registration",
@@ -96,7 +97,7 @@ function App() {
         },
         {
           path: "/rating",
-          element: <Rating />,
+          element: <Rating user={user} logoutHandler={logoutHandler} />,
         },
         {
           path: "*",

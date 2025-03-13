@@ -1,78 +1,91 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axiosInstance from "src/axiosInstance";
+import styles from "./Rating.module.css";
+import fonImage from "src/components/files/fon-main.jpg";
+import NavigationComp from "src/components/ui/Nav/NavigationComp";
+import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
 
-export default function Rating() {
+export default function Rating({ user, logoutHandler }) {
   const [rating, setRating] = useState([]);
+  const [error, setError] = useState(null);
+  const [seasons, setSeasons] = useState([]);
 
   useEffect(() => {
     const fetchRating = async () => {
       try {
         const res = await axiosInstance.get("/constract/rating");
         setRating(res.data);
+        setError(null);
       } catch (error) {
         console.error("Failed to fetch data:", error);
-        // Можно добавить обработку UI для ошибки, например, показать уведомление
+        setError("Не удалось загрузить данные. Пожалуйста, попробуйте позже.");
       }
     };
 
     fetchRating();
   }, []);
 
-  const styles = {
-    table: {
-      width: "100%",
-      borderCollapse: "collapse",
-      marginTop: "20px",
-    },
-    headerCell: {
-      border: "1px solid #ddd",
-      padding: "8px",
-      backgroundColor: "#f2f2f2",
-      color: "black",
-      textAlign: "left",
-    },
-    cell: {
-      border: "1px solid #ddd",
-      padding: "8px",
-      textAlign: "left",
-    },
-    alternateRow: {
-
-    },
-    h1: {
-      textAlign: "center",
-      marginTop: "20px",
-    },
+  useEffect(() => {
+   const fetchSeasons = async () => {
+    try {
+      const res = await axiosInstance.get("/seasons");
+      setSeasons(res.data);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
   };
 
+  fetchSeasons();
+  console.log(seasons);
+
+  }, [])
+
   return (
-    <div>
-      <h1 style={styles.h1}>Рейтинг сезона 2024</h1>
-      <Link to="/tournaments">Назад</Link>
-      <table style={styles.table}>
+    <div
+          className={styles.background}
+          style={{ backgroundImage: `url(${fonImage})` }}
+        >
+          <div className={styles.wrapper}>
+            <div className={styles.nav}>
+              <div className={styles.burger}>
+                <BurgerMenuComp />
+              </div>
+              <NavigationComp user={user} logoutHandler={logoutHandler} />
+            </div>
+      <h1>Рейтинг</h1>
+      {error && <div className={styles.error}>{error}</div>}
+      <table className={styles.table}>
         <thead>
           <tr>
-            <th style={styles.headerCell}>Место</th>
-            <th style={styles.headerCell}>Ник</th>
-            <th style={styles.headerCell}>Монеты</th>
+            <th className={styles.headerCell}>Место</th>
+            <th className={styles.headerCell}>Ник</th>
+            <th className={styles.headerCell}>Монеты</th>
           </tr>
         </thead>
         <tbody>
-          {rating?.map((item, index) => (
-            <tr
-              key={index}
-              style={index % 2 === 0 ? styles.alternateRow : undefined}
-            >
-              <td style={{ ...styles.cell, textAlign: "center" }}>
-                {index + 1}
+          {rating.length > 0 ? (
+            rating.map((item, index) => (
+              <tr
+                key={item.id} // Используйте уникальный идентификатор
+                className={index % 2 === 0 ? styles.alternateRow : undefined}
+              >
+                <td className={`${styles.cell} ${styles.centerText}`}>
+                  {index + 1}
+                </td>
+                <td className={styles.cell}>{item.userName}</td>
+                <td className={styles.cell}>{item.totalProfit}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3" className={styles.cell}>
+                Данные загружаются...
               </td>
-              <td style={styles.cell}>{item.userName}</td>
-              <td style={styles.cell}>{item.totalProfit}</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }
