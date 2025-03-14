@@ -58,6 +58,7 @@
     font-size: 18px;
     cursor: pointer;
     color: #333;
+    display: block
   }
   
   .menuItem:hover {
