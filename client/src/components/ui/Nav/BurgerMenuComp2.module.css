@@ -58,9 +58,13 @@
     font-size: 18px;
     cursor: pointer;
     color: #333;
-    display: block
   }
   
   .menuItem:hover {
     background-color: #3b3b3b;
+  }
+
+  .menuList li {
+    margin: 0;
+    padding: 0;
   }
