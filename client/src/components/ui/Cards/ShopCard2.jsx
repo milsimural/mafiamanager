@@ -5,7 +5,6 @@ import styles from "src/components/ui/Cards/Cards2.module.css";
 import russiaImage from "src/components/ui/Cards/countries/russiaFlagRound.svg";
 import StarsComponent from "src/components/ui/Cards/StarsComponent/StarsComponent";
 import powerImage from "src/components/ui/Cards/energy.svg";
-import shieldImage from "src/components/ui/Cards/herbus.svg";
 
 import faceGold from "src/components/ui/Cards/goldFace.svg";
 import faceGreen from "src/components/ui/Cards/greenFace.svg";
@@ -83,7 +82,6 @@ export default function ShopCard2({
         </div>
         <div
           className={styles.shield}
-          style={{ backgroundImage: `url(${shieldImage})` }}
         >
           <img src={`titan.png`} />
         </div>

@@ -8,6 +8,7 @@ body {
   font-family: "Montserrat", sans-serif;
   background-color: #1d1a1d;
   overflow-x: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .background {
@@ -22,6 +23,12 @@ body {
   z-index: -1;
   display: flex;
 }
+
+/* @media screen and (max-width: 767px) {
+  .background {
+    height: 100dvh;
+  }
+} */
 
 .wrapper {
   display: flex;
@@ -114,7 +121,8 @@ body {
     width: 100%;
     box-sizing: border-box;
     justify-content: flex-start;
-    gap: 40px;
+    justify-content: space-between;
+    gap: 0px;
   }
 
   .nav {
@@ -128,6 +136,26 @@ body {
   .burger {
     margin-right: auto;
     margin-bottom: 26px;
+  }
+
+  .playerWrapper {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 376px) {
+  .wrapper {
+    flex-direction: column; /* Может остаться таким же, если требуется */
+    padding: 10px 30px; /* Добавим отступы */
+    max-width: 100%; /* Чтобы максимально использовать ширину экрана смартфона */
+  }
+
+  .players {
+    gap: 0px;
+  }
+
+  .playerWrapper {
+    margin-bottom: 30px;
   }
 }
 
@@ -150,4 +178,9 @@ body {
 
 .sort {
   margin: 20px 0;
+}
+
+.footer {
+  width: 100%;
+  height: 40px;
 }

@@ -100,6 +100,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-image: url(/herbus.svg);
 }
 
 .shield img {

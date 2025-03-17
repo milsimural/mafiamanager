@@ -208,6 +208,8 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
             })}
           </div>
         </div>
+        {/* <div className={styles.footer}>
+          </div> */}
       </div>
     </>
   );
