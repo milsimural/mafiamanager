@@ -15,6 +15,9 @@ import TournamentResult from "./components/pages/Tournaments/TournamentResult";
 import Rating from "./components/pages/Tournaments/Rating";
 import MainPage from "./components/pages/Main/MainPage";
 
+// Импорт контекста
+import {UtilsProvider} from './context'
+
 function App() {
   const [user, setUser] = useState();
 
@@ -106,7 +109,7 @@ function App() {
       ],
     },
   ]);
-  return <RouterProvider router={router} />;
+  return <UtilsProvider><RouterProvider router={router} /></UtilsProvider>;
 }
 
 export default App;

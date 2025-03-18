@@ -40,7 +40,7 @@ html {
 }
 
 .loginHeader h1 {
-  font-size: 24px;
+  font-size: 40px;
   color: #fff;
   margin: 0 0 18px 0;
   letter-spacing: 1px;
@@ -149,10 +149,15 @@ form {
 }
 
 .register img {
-  margin-top: 16px;
+  margin-top: 10px;
+  scale: 1.2;
 }
 
 .register a:visited {
+  color: #16fcce;
+}
+
+.register a:link {
   color: #16fcce;
 }
 

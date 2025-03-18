@@ -15,6 +15,7 @@ const playerRouter = Router();
 
 const verifyAccessToken = require('../middlewares/verifyAccessToken');
 
+// Функция считает дубли
 function countDuplicates(arr) {
   const arrWithoutNulls = arr.filter(Boolean);
 
@@ -30,6 +31,8 @@ function countDuplicates(arr) {
   }));
 }
 
+// Роут отдает список всех спортсменов
+// И добавляет к ним еще данные о Тикере клуба
 playerRouter.get('/', async (req, res) => {
   try {
     const players = await Player.findAll({
@@ -45,6 +48,7 @@ playerRouter.get('/', async (req, res) => {
   }
 });
 
+// Роут отдает спортсменов по клубу
 playerRouter.get('/byClub/:clubId', async (req, res) => {
   const { clubId } = req.params;
   try {
@@ -71,6 +75,7 @@ playerRouter.get('/byClub/:clubId', async (req, res) => {
   }
 });
 
+// Роут отдает спортсменов юзера с тикерами клуба
 playerRouter.get('/myteam/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
@@ -94,6 +99,7 @@ playerRouter.get('/myteam/:userId', async (req, res) => {
   }
 });
 
+// Юзер продает игрока
 playerRouter.post('/sell/:playerId/:userId', verifyAccessToken, async (req, res) => {
   const { playerId, userId } = req.params;
 
@@ -128,6 +134,13 @@ playerRouter.post('/sell/:playerId/:userId', verifyAccessToken, async (req, res)
       amount: player.costcoins,
     });
 
+    if (player.dismissals == null) {
+      player.dismissals = 1;
+    } else {
+      player.dismissals += 1;
+    }
+    await player.save();
+
     res.status(200).json(user.coins);
   } catch (error) {
     console.error('Ошибка при продаже игрока:', error);
@@ -135,6 +148,114 @@ playerRouter.post('/sell/:playerId/:userId', verifyAccessToken, async (req, res)
   }
 });
 
+// Функция создания статов
+
+// Вспомогательная функция для генерации случайного числа в диапазоне
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generateObject() {
+  // Создаем массив, где каждая буква повторяется пропорционально её вероятности
+  const grades = [
+    ...Array(10).fill('S'), // 10% для S
+    ...Array(20).fill('A'), // 20% для A
+    ...Array(30).fill('B'), // 30% для B
+    ...Array(40).fill('C'), // 40% для C
+  ];
+
+  // Выбираем случайный элемент из массива
+  const grade = grades[Math.floor(Math.random() * grades.length)];
+
+  // Генерация Max параметров в зависимости от буквы
+  let redMax, blackMax, sherifMax, donMax, lhMax;
+
+  switch (grade) {
+    case 'C':
+      redMax = getRandomNumber(20, 80);
+      blackMax = getRandomNumber(20, 80);
+      sherifMax = getRandomNumber(20, 80);
+      donMax = getRandomNumber(20, 80);
+      lhMax = getRandomNumber(20, 80);
+      break;
+    case 'B':
+      redMax = getRandomNumber(60, 130);
+      blackMax = getRandomNumber(60, 130);
+      sherifMax = getRandomNumber(60, 130);
+      donMax = getRandomNumber(60, 130);
+      lhMax = getRandomNumber(60, 130);
+      break;
+    case 'A':
+      redMax = getRandomNumber(90, 210);
+      blackMax = getRandomNumber(90, 210);
+      sherifMax = getRandomNumber(90, 210);
+      donMax = getRandomNumber(90, 210);
+      lhMax = getRandomNumber(90, 210);
+      break;
+    case 'S':
+      redMax = getRandomNumber(120, 300);
+      blackMax = getRandomNumber(120, 300);
+      sherifMax = getRandomNumber(120, 300);
+      donMax = getRandomNumber(120, 300);
+      lhMax = getRandomNumber(120, 300);
+      break;
+    default:
+      throw new Error('Неизвестная буква');
+  }
+
+  // Генерация Cur параметров в зависимости от буквы
+  let redCur, blackCur, sherifCur, donCur, lhCur;
+
+  switch (grade) {
+    case 'C':
+      redCur = getRandomNumber(0, 10);
+      blackCur = getRandomNumber(0, 10);
+      sherifCur = getRandomNumber(0, 10);
+      donCur = getRandomNumber(0, 10);
+      lhCur = getRandomNumber(0, 10);
+      break;
+    case 'B':
+      redCur = getRandomNumber(0, 30);
+      blackCur = getRandomNumber(0, 30);
+      sherifCur = getRandomNumber(0, 30);
+      donCur = getRandomNumber(0, 30);
+      lhCur = getRandomNumber(0, 30);
+      break;
+    case 'A':
+      redCur = getRandomNumber(0, 50);
+      blackCur = getRandomNumber(0, 50);
+      sherifCur = getRandomNumber(0, 50);
+      donCur = getRandomNumber(0, 50);
+      lhCur = getRandomNumber(0, 50);
+      break;
+    case 'S':
+      redCur = getRandomNumber(0, 65);
+      blackCur = getRandomNumber(0, 65);
+      sherifCur = getRandomNumber(0, 65);
+      donCur = getRandomNumber(0, 65);
+      lhCur = getRandomNumber(0, 65);
+      break;
+    default:
+      throw new Error('Неизвестная буква');
+  }
+
+  // Возвращаем сгенерированный объект
+  return {
+    grade,
+    redMax,
+    redCur,
+    blackMax,
+    blackCur,
+    sherifMax,
+    sherifCur,
+    donMax,
+    donCur,
+    lhMax,
+    lhCur,
+  };
+}
+
+// Купить спортсмена
 playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) => {
   try {
     const { playerId } = req.params;
@@ -163,6 +284,8 @@ playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) 
     user.coins -= player.costcoins;
     await user.save();
 
+    // Создаем статы
+
     await Team.create({
       ownerid: userId,
       playerid: playerId,
@@ -172,7 +295,7 @@ playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) 
       pointsgain: 0,
       coinsprofit: 0,
       gemsprofit: 0,
-      stats: '[]',
+      stats: JSON.stringify(generateObject()),
     });
     await Transaction.create({
       userId,
@@ -180,6 +303,13 @@ playerRouter.post('/buy/:playerId/:userId', verifyAccessToken, async (req, res) 
       playerId,
       amount: player.costcoins,
     });
+
+    if (player.transfers == null) {
+      player.transfers = 1;
+    } else {
+      player.transfers += 1;
+    }
+    await player.save();
 
     res.status(200).json(user.coins);
   } catch (error) {
