@@ -24,12 +24,6 @@ body {
   display: flex;
 }
 
-/* @media screen and (max-width: 767px) {
-  .background {
-    height: 100dvh;
-  }
-} */
-
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -120,7 +114,6 @@ body {
     margin: 32px auto;
     width: 100%;
     box-sizing: border-box;
-    justify-content: flex-start;
     justify-content: space-between;
     gap: 0px;
   }
@@ -156,6 +149,25 @@ body {
 
   .playerWrapper {
     margin-bottom: 30px;
+  }
+}
+
+@media (min-width: 415px) and (max-width: 767px) {
+  .wrapper {
+    flex-direction: column;
+    padding: 10px 40px;
+    max-width: 100%;
+  }
+
+  .players {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 32px auto;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    gap: 40px;
   }
 }
 

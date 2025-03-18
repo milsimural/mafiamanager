@@ -137,8 +137,8 @@ h1 {
     margin: 32px auto;
     width: 100%;
     box-sizing: border-box;
-    justify-content: flex-start;
-    gap: 40px;
+    justify-content: space-between;
+    gap: 0px;
   }
 
   .nav {
@@ -156,6 +156,41 @@ h1 {
 }
 
 @media (min-width: 768px) and (max-width: 1286px) {
+  .wrapper {
+    flex-direction: column;
+    padding: 10px 40px;
+    max-width: 100%;
+  }
+
+  .players {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 32px auto;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 376px) {
+  .wrapper {
+    flex-direction: column; /* Может остаться таким же, если требуется */
+    padding: 10px 30px; /* Добавим отступы */
+    max-width: 100%; /* Чтобы максимально использовать ширину экрана смартфона */
+  }
+
+  .players {
+    gap: 0px;
+  }
+
+  .playerWrapper {
+    margin-bottom: 30px;
+  }
+}
+
+@media (min-width: 415px) and (max-width: 767px) {
   .wrapper {
     flex-direction: column;
     padding: 10px 40px;
