@@ -7,7 +7,7 @@ import axiosInstance from "src/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
-import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp";
+import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
 import offImage from "src/components/pages/Tournaments/off.png";
 import ShortPlayerBar from "src/components/ui/PlayerBars/ShortPlayerBarComp";
 import CaptainBarComp from "src/components/ui/PlayerBars/CaptainBarComp";
