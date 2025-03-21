@@ -112,6 +112,8 @@ h2 {
   padding: 8px 16px 8px 8px;
   width: 600px;
   color: #fff;
+  box-sizing: border-box;
+  display: block;
 }
 
 .readyButton {
@@ -194,11 +196,6 @@ h2 {
     font-size: 12px;
   }
 
-  .tournamentName {
-    line-height: 1.2;
-    font-size: 10px;
-    width: 100%;
-  }
 
   .listElement .date {
     width: 40px;
@@ -212,6 +209,8 @@ h2 {
     width: 115px;
     display: block;
     line-height: 1.2;
+    font-size: 10px;
+    box-sizing: border-box;
   }
 
   .ready {

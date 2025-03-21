@@ -17,6 +17,8 @@ module.exports = {
           model: 'Players',
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       effect: {
         type: Sequelize.STRING,
