@@ -31,6 +31,9 @@ module.exports = {
         onDelete: 'SET NULL',
         allowNull: true,
       },
+      cityName: {
+        type: Sequelize.STRING,
+      },
       countryId: {
         type: Sequelize.INTEGER,
         references: {
@@ -53,6 +56,9 @@ module.exports = {
         type: Sequelize.STRING,
       },
       projected_count_of_participants: {
+        type: Sequelize.INTEGER,
+      },
+      participants_count: {
         type: Sequelize.INTEGER,
       },
       isReady: {

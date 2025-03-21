@@ -13,6 +13,9 @@ module.exports = {
       type: {
         type: Sequelize.STRING,
       },
+      grade: {
+        type: Sequelize.INTEGER
+      },
       costcoins: {
         type: Sequelize.INTEGER,
       },

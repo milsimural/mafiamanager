@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   Item.init(
     {
       type: DataTypes.STRING,
+      grade: DataTypes.INTEGER,
       costcoins: DataTypes.INTEGER,
       costgems: DataTypes.INTEGER,
       name: DataTypes.STRING,

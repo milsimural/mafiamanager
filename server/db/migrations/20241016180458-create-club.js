@@ -38,6 +38,9 @@ module.exports = {
       logo: {
         type: Sequelize.STRING,
       },
+      icon: {
+        type: Sequelize.STRING,
+      },
       playersCount: {
         type: Sequelize.INTEGER,
       },

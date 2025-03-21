@@ -7,26 +7,22 @@ module.exports = {
       'Seasons',
       [
         {
-          title: "Прошлый сезон",
-          start: new Date(2024, 0, 1),
-          end: new Date(2024, 11, 31),
-          picture: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          title: "Время Титанов",
+          title: 'Время Титанов',
           start: new Date(2025, 0, 1),
           end: new Date(2025, 7, 4),
-          picture: null,
+          picturePC: 'main.jpg',
+          pictureMB: 'main-mob.jpg',
+          pictureShort: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          title: "Следующий сезон",
+          title: 'Битва на волге',
           start: new Date(2025, 7, 5),
           end: new Date(2025, 11, 15),
-          picture: null,
+          picturePC: null,
+          pictureMB: null,
+          pictureShort: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -39,4 +35,3 @@ module.exports = {
     await queryInterface.bulkDelete('Seasons', null, {});
   },
 };
-

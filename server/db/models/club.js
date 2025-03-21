@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       countryId: DataTypes.INTEGER,
       borndate: DataTypes.DATEONLY,
       logo: DataTypes.STRING,
+      icon: DataTypes.STRING,
       playersCount: DataTypes.INTEGER,
       avrElo: DataTypes.INTEGER,
       ticker: DataTypes.STRING,
