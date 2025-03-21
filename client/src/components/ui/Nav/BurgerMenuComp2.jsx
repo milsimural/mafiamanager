@@ -60,6 +60,7 @@ export default function BurgerMenuComp2() {
                   Рейтинг
                 </Link>
               </li>
+              
             </ul>
           </div>
         </div>

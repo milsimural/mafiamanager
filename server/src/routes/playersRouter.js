@@ -112,6 +112,19 @@ playerRouter.get('/myteam/:userId', async (req, res) => {
   }
 });
 
+// Админ обновляет спортсмена
+playerRouter.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedPlayer = await Player.update(req.body, {
+      where: { id },
+    });
+    res.json(updatedPlayer);
+  } catch (error) {
+    res.status(500).json({ error: `Ошибка при обновлении игрока: ${error.message}` });
+  }
+});
+
 // Юзер продает игрока
 playerRouter.post('/sell/:playerId/:userId', verifyAccessToken, async (req, res) => {
   const { playerId, userId } = req.params;
