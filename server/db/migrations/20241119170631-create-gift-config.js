@@ -10,6 +10,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      name: { 
+        type: Sequelize.STRING
+      },
       coins: {
         type: Sequelize.STRING
       },
@@ -17,6 +20,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       items: {
+        type: Sequelize.STRING
+      },
+      randomItems: {
         type: Sequelize.STRING
       },
       createdAt: {

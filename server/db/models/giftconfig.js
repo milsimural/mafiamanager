@@ -14,9 +14,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   GiftConfig.init(
     {
+      name: DataTypes.STRING,
       coins: DataTypes.STRING,
       gems: DataTypes.STRING,
       items: DataTypes.STRING,
+      randomItems: DataTypes.STRING,
     },
     {
       sequelize,

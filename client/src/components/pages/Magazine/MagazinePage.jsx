@@ -61,8 +61,8 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   // Настройка local storage для хранения выбранного фильтра игроков
 
   const clubs = [
-    { id: 196, image: "logo-32.jpg", name: "RE" },
-    { id: 33, image: "logo-33.jpg", name: "PSG" },
+    { id: 196, image: "logo-32.jpg", name: "TITAN" },
+    { id: 32, image: "logo-33.jpg", name: "RE" },
     { id: 34, image: "logo-34.jpg", name: "FCB" },
     { id: 35, image: "logo-35.jpg", name: "BAR" },
   ];

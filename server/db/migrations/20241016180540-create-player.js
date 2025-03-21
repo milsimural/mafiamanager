@@ -43,7 +43,6 @@ module.exports = {
       },
       ismarket: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
         defaultValue: true,
       },
       clubId: {
@@ -87,8 +86,7 @@ module.exports = {
       },
       isOpen: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
+        defaultValue: true,
       },
       lastTournamentDate: {
         type: Sequelize.DATE,
