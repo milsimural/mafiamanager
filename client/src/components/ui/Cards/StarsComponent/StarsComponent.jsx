@@ -1,4 +1,3 @@
-import React from "react";
 import starFullImage from "src/components/ui/Cards/StarsComponent/star2.svg";
 import starEmptyImage from "src/components/ui/Cards/StarsComponent/emptystar2.svg";
 
