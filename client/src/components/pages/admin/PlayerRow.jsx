@@ -25,6 +25,12 @@ export default function PlayerRow({ player, onUpdate }) {
     }
   };
 
+  // Обработчик отмены изменений
+  const handleCancel = () => {
+    setEditedPlayer({ ...player }); // Сбрасываем изменения
+    setIsEditing(false); // Выходим из режима редактирования
+  };
+
   return (
     <tr>
       <td>
@@ -122,11 +128,58 @@ export default function PlayerRow({ player, onUpdate }) {
         )}
       </td>
       <td>
-        {player.Club ? `${player.Club.ticker} (${player.Club.icon})` : 'Нет клуба'}
+        {isEditing ? (
+          <input
+            type="number"
+            name="cityId"
+            value={editedPlayer.cityId}
+            onChange={handleChange}
+          />
+        ) : (
+          player.cityId
+        )}
       </td>
       <td>
         {isEditing ? (
-          <button onClick={handleSubmit}>Сохранить</button>
+          <input
+            type="text"
+            name="picture"
+            value={editedPlayer.picture}
+            onChange={handleChange}
+          />
+        ) : (
+          player.picture
+        )}
+      </td>
+      <td>
+        {isEditing ? (
+          <input
+            type="number"
+            name="clubId"
+            value={editedPlayer.clubId}
+            onChange={handleChange}
+          />
+        ) : (
+          player.clubId
+        )}
+      </td>
+      <td>
+        {isEditing ? (
+          <textarea
+            name="bio"
+            value={editedPlayer.bio}
+            onChange={handleChange}
+          />
+        ) : (
+          player.bio
+        )}
+      </td>
+      <td>
+        {isEditing ? (
+          <>
+            <button onClick={handleSubmit}>Сохранить</button>
+            <button onClick={handleCancel}>Отменить</button>
+          </>
         ) : (
           <button onClick={() => setIsEditing(true)}>Редактировать</button>
         )}

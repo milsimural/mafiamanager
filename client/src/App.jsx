@@ -14,9 +14,10 @@ import MagazinePage from "./components/pages/Magazine/MagazinePage";
 import TournamentResult from "./components/pages/Tournaments/TournamentResult";
 import Rating from "./components/pages/Tournaments/Rating";
 import MainPage from "./components/pages/Main/MainPage";
+import PlayersManagment from "./components/pages/admin/PlayersManagment";
 
 // Импорт контекста
-import {UtilsProvider} from './context'
+import { UtilsProvider } from "./context";
 
 function App() {
   const [user, setUser] = useState();
@@ -60,7 +61,7 @@ function App() {
         },
         {
           path: "/users",
-          element: <UsersPage />,
+          element: <UsersPage user={user} />,
         },
         {
           path: "/tournaments",
@@ -103,13 +104,23 @@ function App() {
           element: <Rating user={user} logoutHandler={logoutHandler} />,
         },
         {
+          path: "/playersmanagment",
+          element: (
+            <PlayersManagment user={user} logoutHandler={logoutHandler} />
+          ),
+        },
+        {
           path: "*",
           element: <div>404</div>,
         },
       ],
     },
   ]);
-  return <UtilsProvider><RouterProvider router={router} /></UtilsProvider>;
+  return (
+    <UtilsProvider>
+      <RouterProvider router={router} />
+    </UtilsProvider>
+  );
 }
 
 export default App;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./BurgerMenuComp2.module.css"; // Подключите CSS-модуль
 
-export default function BurgerMenuComp2() {
+export default function BurgerMenuComp2({ user }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Функция для открытия/закрытия меню
@@ -60,7 +60,14 @@ export default function BurgerMenuComp2() {
                   Рейтинг
                 </Link>
               </li>
-              
+
+              {user?.isAdmin && (
+                <li>
+                  <Link className={styles.menuItem} to="/playersmanagment">
+                    Управление спортсменами
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

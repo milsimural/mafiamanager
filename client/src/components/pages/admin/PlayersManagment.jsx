@@ -46,7 +46,10 @@ export default function PlayersManagment() {
             <th>Cost Gems</th>
             <th>Is Market</th>
             <th>Is Open</th>
-            <th>Club</th>
+            <th>City ID</th>
+            <th>Picture</th>
+            <th>Club ID</th>
+            <th>Bio</th>
             <th>Действия</th>
           </tr>
         </thead>

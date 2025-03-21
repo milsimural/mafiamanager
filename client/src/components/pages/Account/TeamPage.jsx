@@ -78,7 +78,7 @@ export default function TeamPage({ user, logoutHandler, updateUserCoins }) {
         <div className={styles.wrapper}>
           <div className={styles.nav}>
             <div className={styles.burger}>
-              <BurgerMenuComp />
+              <BurgerMenuComp user={user}/>
             </div>
             <NavigationComp user={user} logoutHandler={logoutHandler} />
           </div>
