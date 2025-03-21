@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
-import classNames from "classnames";
-import PropTypes, { element } from "prop-types";
+import PropTypes from "prop-types";
 import styles from "src/components/ui/Cards/Cards2.module.css";
 
 import russiaImage from "src/components/ui/Cards/countries/russiaFlagRound.svg";

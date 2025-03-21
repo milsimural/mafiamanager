@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "src/components/pages/Magazine/MagazinePage.module.css";
 import fonImage from "src/components/files/fon-main.jpg";
@@ -15,7 +15,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   const [selectedSort, setSelectedSort] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  function getSelectedPosts() {
+  const playersSorted = useMemo(() => {
     if (selectedSort) {
       const sortedArray = [...players].sort((a, b) => {
         if (selectedSort === "nickname") {
@@ -30,7 +30,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
     } else {
       return players;
     }
-  }
+  }, [players, selectedSort]);
 
   useEffect(() => {
     if (selectedClubId) {
@@ -186,7 +186,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
           </div>
 
           <div className={styles.players}>
-            {getSelectedPosts().map((player) => {
+            {playersSorted.map((player) => {
               // Проверяем, входит ли player.id в teamMembers
               const isInTeam = teamMembers.some(
                 (member) => member.playerid === player.id
