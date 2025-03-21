@@ -1,4 +1,4 @@
-import {useState, useContext} from 'react';
+import { useState, useContext } from "react";
 import classNames from "classnames";
 import PropTypes, { element } from "prop-types";
 import styles from "src/components/ui/Cards/Cards2.module.css";
@@ -17,7 +17,7 @@ import buyImage from "src/components/ui/Cards/buy2x.png";
 import closeBuyImage from "src/components/ui/Cards/close2x.png";
 import coinsImage from "src/components/ui/Nav/coins.png";
 
-import { UtilsContext } from 'src/context';
+import { UtilsContext } from "src/context";
 
 export default function ShopCard2({
   user,
@@ -27,10 +27,10 @@ export default function ShopCard2({
   isInTeam,
   sellPlayer,
 }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   //Подключение utils из контекста
-  const {formatNumberWithSpaces} = useContext(UtilsContext);
+  const { formatNumberWithSpaces } = useContext(UtilsContext);
 
   const handleClickOutside = (event) => {
     if (event.target.classList.contains(styles.overlay)) {
@@ -40,14 +40,14 @@ export default function ShopCard2({
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    console.log(`Меню изменило состояние, сейчас оно ${isMenuOpen}`)
+    console.log(`Меню изменило состояние, сейчас оно ${isMenuOpen}`);
   };
 
   const sellHandler = () => {
     sellPlayer(player.id, user.id);
     toggleMenu();
-  }
-  
+  };
+
   const getColorByStars = (stars) => {
     switch (stars) {
       case 1:
@@ -104,17 +104,16 @@ export default function ShopCard2({
         <div className={styles.stars}>
           <StarsComponent stars={player.stars} />
         </div>
-        <div
-          className={styles.shield}
-        >
-          <img src={`titan.png`} />
+        <div className={styles.shield}>
+          <img src={`titan.png`} title={player.gomafiaId} />
         </div>
       </div>
 
       {shop && (
         <div className={styles.buy}>
           {!isInTeam ? (
-            <button className={styles.buyButton}
+            <button
+              className={styles.buyButton}
               onClick={() => buyPlayer(player.id, user.id, player.costcoins)}
               style={{
                 backgroundImage: `url(${buyImage})`,
@@ -128,7 +127,8 @@ export default function ShopCard2({
               <div className={styles.buttonText}>{player.costcoins}</div>
             </button>
           ) : (
-            <button className={styles.buyButton}
+            <button
+              className={styles.buyButton}
               style={{
                 backgroundImage: `url(${closeBuyImage})`,
                 backgroundSize: "cover",
@@ -146,36 +146,48 @@ export default function ShopCard2({
 
       {!shop && (
         <>
-        <div className={styles.sell}>
-          <button
-            className={styles.sellButton}
-            onClick={toggleMenu}
-          >
-            <div style={{ paddingRight: "10px" }}>Продать:</div>
-            <img
-              src={coinsImage}
-              alt={`${player.nickname}: ${player.costcoins}`}
-              style={{ marginTop: "12px" }}
-            />
-            <div className={styles.buttonText} style={{ marginTop: "12px" }}>
-              {formatNumberWithSpaces(Math.ceil(player.costcoins))}
-            </div>
-          </button>
-        </div>
-        {isMenuOpen && (
-          <div className={styles.overlay} onClick={handleClickOutside}>
-          <div className={styles.menu}>
-            <h3>Внимание!</h3>
-            <p>Вы подтверждаете продажу игрока <b>{player.nickname}</b>?</p>
-            <p>Коммисия за продажу составит 2% — {formatNumberWithSpaces(Math.ceil(player.costcoins / 100 * 2))} монет</p>
-            <div className={styles.centerMode}>
-              <button className={styles.menuButtonYes} onClick={sellHandler}>Да</button>
-              <button className={styles.menuButtonNo} onClick={toggleMenu}>Нет</button>
-            </div>
+          <div className={styles.sell}>
+            <button className={styles.sellButton} onClick={toggleMenu}>
+              <div style={{ paddingRight: "10px" }}>Продать:</div>
+              <img
+                src={coinsImage}
+                alt={`${player.nickname}: ${player.costcoins}`}
+                style={{ marginTop: "12px" }}
+              />
+              <div className={styles.buttonText} style={{ marginTop: "12px" }}>
+                {formatNumberWithSpaces(Math.ceil(player.costcoins))}
+              </div>
+            </button>
           </div>
-          </div>
-        )}
-</>
+          {isMenuOpen && (
+            <div className={styles.overlay} onClick={handleClickOutside}>
+              <div className={styles.menu}>
+                <h3>Внимание!</h3>
+                <p>
+                  Вы подтверждаете продажу игрока <b>{player.nickname}</b>?
+                </p>
+                <p>
+                  Коммисия за продажу составит 2% —{" "}
+                  {formatNumberWithSpaces(
+                    Math.ceil((player.costcoins / 100) * 2)
+                  )}{" "}
+                  монет
+                </p>
+                <div className={styles.centerMode}>
+                  <button
+                    className={styles.menuButtonYes}
+                    onClick={sellHandler}
+                  >
+                    Да
+                  </button>
+                  <button className={styles.menuButtonNo} onClick={toggleMenu}>
+                    Нет
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </>
   );

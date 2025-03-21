@@ -39,15 +39,28 @@ playerRouter.get('/', async (req, res) => {
       include: {
         model: Club,
         as: 'Club',
-        attributes: ['ticker'],
+        attributes: ['ticker', 'icon'],
       },
     });
-    res.json(players);
+
+    // Если игроков нет, возвращаем пустой массив
+    if (!players || players.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    // Возвращаем данные об игроках
+    res.status(200).json(players);
   } catch (error) {
-    res.status(500).json({ error: `Ошибка при получении всех игроков ${error.message}` });
+    // Логируем ошибку для отладки
+    console.error('Ошибка при получении игроков:', error);
+
+    // Возвращаем более информативное сообщение об ошибке
+    res.status(500).json({
+      error: 'Ошибка при получении данных об игроках',
+      details: error.message,
+    });
   }
 });
-
 // Роут отдает спортсменов по клубу
 playerRouter.get('/byClub/:clubId', async (req, res) => {
   const { clubId } = req.params;
@@ -168,7 +181,11 @@ function generateObject() {
   const grade = grades[Math.floor(Math.random() * grades.length)];
 
   // Генерация Max параметров в зависимости от буквы
-  let redMax, blackMax, sherifMax, donMax, lhMax;
+  let redMax;
+  let blackMax;
+  let sherifMax;
+  let donMax;
+  let lhMax;
 
   switch (grade) {
     case 'C':
@@ -204,7 +221,11 @@ function generateObject() {
   }
 
   // Генерация Cur параметров в зависимости от буквы
-  let redCur, blackCur, sherifCur, donCur, lhCur;
+  let redCur;
+  let blackCur;
+  let sherifCur;
+  let donCur;
+  let lhCur;
 
   switch (grade) {
     case 'C':

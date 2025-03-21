@@ -62,14 +62,15 @@ export default function TournamentsPage({ user, logoutHandler }) {
         </div>
 
         <h1>Турниры</h1>
-        <div className={styles.twoCol}>
-          <div className={styles.leftCol}>
+        <div className={styles.mainInfo}>
+          
             <h2>Сетка ФСМ</h2>
             <div className={styles.elementListContainer}>
               {tournamentsList.map((tournament) => (
                 <div key={tournament.id} className={styles.listElement}>
                   <div className={styles.date}>{tournament.date_start.slice(5)}</div>
 
+<div>
                   {tournament.isReady ? (
                     <Link
                       to={`/tournaments/${tournament.id}`}
@@ -84,9 +85,13 @@ export default function TournamentsPage({ user, logoutHandler }) {
                       </div>
                     </div>
                   )}
-
+</div>
                   <div className={styles.num}>
-                    {tournament.projected_count_of_participants}
+                    {tournament.projected_count_of_participants ? (
+                      tournament.projected_count_of_participants
+                    ) : (
+                      "???"
+                    )}
                   </div>
                   {tournament.isReady && (
                     <div className={styles.ready}>
@@ -251,8 +256,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
                 </form>
               </div>
             )}
-          </div>
-          <div className={styles.rightCol}></div>
+          
         </div>
       </div>
     </div>

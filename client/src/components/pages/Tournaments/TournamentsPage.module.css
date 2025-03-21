@@ -58,18 +58,8 @@ h2 {
   font-weight: bold;
 }
 
-.twoCol {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  color: #fff;
-}
+.mainInfo {
 
-.leftCol {
-  flex: 0 0 45%;
-}
-
-.rigthCol {
 }
 
 /* Нормальные стили элементов */
@@ -120,7 +110,7 @@ h2 {
 
 .listElement .tournamentLink {
   padding: 8px 16px 8px 8px;
-  width: 200px;
+  width: 600px;
   color: #fff;
 }
 
@@ -201,12 +191,12 @@ h2 {
     width: 30px;
     line-height: 1.2;
     padding: 8px 0px 8px 8px;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .tournamentName {
     line-height: 1.2;
-    font-size: 14px;
+    font-size: 10px;
     width: 100%;
   }
 
@@ -235,10 +225,6 @@ h2 {
   .readyButton {
     scale: 0.8;
     margin: 0;
-  }
-
-  .leftCol {
-    flex: 1 1 100%;
   }
 }
 
