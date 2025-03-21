@@ -35,4 +35,17 @@ itemRouter.delete('/delete/:id', verifyAccessToken, async (req, res) => {
   }
 });
 
+// Создаем инстанс предмета
+itemRouter.post('/add/:userId', verifyAccessToken, async (req, res) => {
+  try {
+    await ItemInstance.create({
+      userId: req.params.userId,
+      ...req.body,
+    });
+    res.status(200).json({ message: 'Item added successfully' });
+  } catch (error) {
+    res.status(500).json({ error: `Ошибка при добавлении предмета ${error.message}` });
+  }
+});
+
 module.exports = itemRouter;

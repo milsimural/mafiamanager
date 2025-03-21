@@ -1,4 +1,5 @@
 import React from 'react'
+import axiosInstance from 'src/axiosInstance'
 
 export default function PlayersManagment() {
   return (
@@ -7,9 +8,15 @@ export default function PlayersManagment() {
         <table>
             <thead>
                 <tr>
-                    <td>Т</td>
-                    <td>Ник</td>
-                    <td></td>
+                    <td>stars</td>
+                    <td>nickname</td>
+                    <td>power</td>
+                    <td>power</td>
+                    <td>costcoins</td>
+                    <td>costgems</td>
+                    <td>ismarket</td>
+                    <td>isOpen</td>
+                    <td>clubId</td>
                 </tr>
             </thead>
             <tbody>
