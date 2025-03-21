@@ -1,4 +1,3 @@
-import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import styles from "src/components/ui/Cards/Cards2.module.css";
 
@@ -15,8 +14,7 @@ import faceGray from "src/components/ui/Cards/grayFace.svg";
 import buyImage from "src/components/ui/Cards/buy2x.png";
 import closeBuyImage from "src/components/ui/Cards/close2x.png";
 import coinsImage from "src/components/ui/Nav/coins.png";
-
-import { UtilsContext } from "src/context";
+import { formatNumberWithSpaces } from 'src/utils';
 
 export default function ShopCard2({
   user,
@@ -24,29 +22,8 @@ export default function ShopCard2({
   shop,
   buyPlayer,
   isInTeam,
-  sellPlayer,
+  openSellMenu,
 }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  //Подключение utils из контекста
-  const { formatNumberWithSpaces } = useContext(UtilsContext);
-
-  const handleClickOutside = (event) => {
-    if (event.target.classList.contains(styles.overlay)) {
-      setIsMenuOpen(false);
-    }
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-    console.log(`Меню изменило состояние, сейчас оно ${isMenuOpen}`);
-  };
-
-  const sellHandler = () => {
-    sellPlayer(player.id, user.id);
-    toggleMenu();
-  };
-
   const getColorByStars = (stars) => {
     switch (stars) {
       case 1:
@@ -146,7 +123,7 @@ export default function ShopCard2({
       {!shop && (
         <>
           <div className={styles.sell}>
-            <button className={styles.sellButton} onClick={toggleMenu}>
+            <button className={styles.sellButton} onClick={() => openSellMenu(player)}>
               <div style={{ paddingRight: "10px" }}>Продать:</div>
               <img
                 src={coinsImage}
@@ -158,34 +135,6 @@ export default function ShopCard2({
               </div>
             </button>
           </div>
-          {isMenuOpen && (
-            <div className={styles.overlay} onClick={handleClickOutside}>
-              <div className={styles.menu}>
-                <h3>Внимание!</h3>
-                <p>
-                  Вы подтверждаете продажу игрока <b>{player.nickname}</b>?
-                </p>
-                <p>
-                  Коммисия за продажу составит 2% —{" "}
-                  {formatNumberWithSpaces(
-                    Math.ceil((player.costcoins / 100) * 2)
-                  )}{" "}
-                  монет
-                </p>
-                <div className={styles.centerMode}>
-                  <button
-                    className={styles.menuButtonYes}
-                    onClick={sellHandler}
-                  >
-                    Да
-                  </button>
-                  <button className={styles.menuButtonNo} onClick={toggleMenu}>
-                    Нет
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </>
       )}
     </>
@@ -199,4 +148,5 @@ ShopCard2.propTypes = {
   buyPlayer: PropTypes.func,
   isInTeam: PropTypes.bool,
   sellPlayer: PropTypes.func,
+  openSellMenu: PropTypes.func
 };
