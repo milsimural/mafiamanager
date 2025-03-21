@@ -76,7 +76,7 @@ playerRouter.get('/byClub/:clubId', async (req, res) => {
       include: {
         model: Club,
         as: 'Club',
-        attributes: ['ticker'],
+        attributes: ['ticker', 'icon'],
       },
       order: [['costcoins', 'DESC']], // Сортировка по costcoins от большего к меньшему
     });
