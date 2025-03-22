@@ -10,7 +10,7 @@ module.exports = {
       {
         name: 'Admin',
         password: await bcrypt.hash(process.env.PASS, 10),
-        coins: 18000,
+        coins: 100000,
         gems: 100,
         email: 'qwerty@revanta.ru',
         isAdmin: true,
@@ -24,7 +24,7 @@ module.exports = {
       {
         name: 'Moderator',
         password: await bcrypt.hash(process.env.PASS, 10),
-        coins: 18000,
+        coins: 100000,
         gems: 100,
         email: 'reinekelis@mail.ru',
         isAdmin: false,
@@ -38,7 +38,7 @@ module.exports = {
       {
         name: 'User',
         password: await bcrypt.hash(process.env.PASS, 10),
-        coins: 18000,
+        coins: 100000,
         gems: 100,
         email: 'trafic1ru@gmail.com',
         isAdmin: false,
