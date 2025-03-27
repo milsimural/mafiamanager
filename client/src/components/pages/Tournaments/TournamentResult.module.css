@@ -1,11 +1,159 @@
-table td {
-    padding: 10px;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  font-family: "Montserrat", sans-serif;
+  overflow-x: hidden;
 }
 
-.resultRow {
+.backgroundImage {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  width: 100vw;
+  min-height: 100vh;
+  /* height: 100vh; */
+  top: 0;
+  left: 0;
+  z-index: -1;
+  display: flex;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 1100px;
+  width: 100%;
+  z-index: 1;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.nav {
+  margin-top: 68px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.burger {
+  margin-right: auto;
+}
+
+.thin {
+  font-weight:normal;
+  line-height: 1.2;
+}
+
+@media (max-width: 767px) {
+  .wrapper {
+    flex-direction: column;
+    padding: 10px 40px;
+    max-width: 100%;
+  }
+
+  .players {
     display: flex;
     flex-direction: row;
-    width: 100%
+    flex-wrap: wrap;
+    margin: 32px auto;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    gap: 0px;
+  }
+
+  .nav {
+    margin-top: 32px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .burger {
+    margin-right: auto;
+    margin-bottom: 26px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1286px) {
+  .wrapper {
+    flex-direction: column;
+    padding: 10px 40px;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 376px) {
+  .wrapper {
+    flex-direction: column; /* Может остаться таким же, если требуется */
+    padding: 10px 30px; /* Добавим отступы */
+    max-width: 100%; /* Чтобы максимально использовать ширину экрана смартфона */
+  }
+
+  
+}
+
+@media (min-width: 415px) and (max-width: 767px) {
+  .wrapper {
+    flex-direction: column;
+    padding: 10px 40px;
+    max-width: 100%;
+  }
+
+  
+}
+
+h1 {
+  color: #fff;
+  font-weight: bold;
+  font-size: 40px;
+  margin-bottom: 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #1e1e1e; /* Темный фон таблицы */
+  color: #ffffff; /* Белый текст */
+  border-radius: 8px; /* Закругленные углы */
+  overflow: hidden; /* Скрываем углы за пределами таблицы */
+}
+
+.headerCell {
+  padding: 12px 16px;
+  background-color: #333333; /* Темный фон заголовка */
+  color: #ffffff; /* Белый текст */
+  text-align: left;
+  font-weight: 600; /* Жирный шрифт для заголовков */
+  border-bottom: 2px solid #444444; /* Граница между заголовком и строками */
+  border-right: 1px solid #444444; /* Граница между столбцами */
+}
+
+.headerCell:last-child {
+  border-right: none; /* Убираем границу у последнего столбца */
+}
+
+.cell {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #444444; /* Граница между строками */
+  border-right: 1px solid #444444; /* Граница между столбцами */
+}
+
+.cell:last-child {
+  border-right: none; /* Убираем границу у последнего столбца */
+}
+
+.alternateRow {
+  background-color: #2a2a2a; /* Альтернативный цвет строк */
 }
 
 .highlight {
@@ -21,3 +169,140 @@ table td {
     height: 12px;
     width: 100%;
   }
+
+  
+
+  .resultRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    height: 30px;
+  }
+
+  .results {
+    font-size: 18px;
+    margin-left: 6px;
+    width: 100px;
+    height: 30px;
+    margin-bottom: 6px;
+    
+  }
+
+.coins {
+  width: 20px;
+  height:20px;
+  margin-left: 20px;
+  margin-bottom: 2px;
+}
+
+  .coins img {
+    width: 20x;
+    height: 20px;
+  }
+
+  .takeButton {
+    width: calc(128px * 1.4);
+    height: calc(31px * 1.6);
+    padding-bottom: 8px;
+    color: #fff;
+    background-color: transparent;
+    border: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    line-height: 1;
+    font-family: "Montserrat", sans-serif;
+  }
+
+
+/* Лидеры ростеров */
+
+.leadersGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+.leaderCard {
+  /* background: #a0a0a0; */
+  background-color: transparent;
+  /* border: 1px solid #e0e0e0; */
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.nickname {
+  font-weight: 600;
+  /* color: #333333; */
+  color: #ccc;
+}
+
+.count {
+  color: #666666;
+  font-weight: 500;
+}
+
+.progressContainer {
+  width: 100%;
+  height: 8px;
+  background: #f0f0f0;
+  /* border-radius: 4px; */
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  background: #333333;
+}
+
+/* Темная тема */
+.dark .leaderCard {
+  background: #2a2a2a;
+  border-color: #444;
+}
+
+.dark .nickname {
+  color: #f0f0f0;
+}
+
+.dark .count {
+  color: #aaaaaa;
+}
+
+.dark .progressContainer {
+  background: #444;
+}
+
+.dark .progressBar {
+  background: #666;
+}
+
+/* Планшет (768px и больше) */
+@media (min-width: 768px) {
+  .leadersGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Десктоп (1024px и больше) */
+@media (min-width: 1024px) {
+  .leadersGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.leaders {
+  margin-bottom: 40px;
+}

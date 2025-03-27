@@ -39,3 +39,28 @@
     align-items: center;
     justify-content: space-between;
   }
+
+  @media (max-width: 767px) {
+
+.playersListElement {
+  justify-content: flex-start;
+}
+
+    .playersListElement .num {
+      padding: 8px 8px 8px 16px;
+      color: #16fcce;
+      flex: initial;
+    }
+    
+    .playersListElement .nickname {
+      color: #fff;
+      padding: 8px 16px 8px 8px;
+      flex: initial;
+    }
+    
+    .playersListElement .sign {
+      padding: 8px 19px 8px 8px;
+      flex: initial;
+      margin-left: auto;
+    }
+  }

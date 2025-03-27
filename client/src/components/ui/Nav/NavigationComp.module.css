@@ -75,4 +75,20 @@ nav img {
     padding: 0 10px; /* Уменьшаем отступы */
     box-sizing: border-box; /* Обеспечивает учет отступов в макете */
   }
+
+  .gems {
+    margin-left: 10px;
+  }
+
+  nav img {
+    margin-right: 4px;
+  }
+
+  .gems img {
+    margin-top: 2px;
+  }
+
+  .coins img {
+    margin-bottom: 2px;
+  }
 }

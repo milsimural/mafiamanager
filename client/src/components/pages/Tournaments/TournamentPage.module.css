@@ -41,11 +41,16 @@ body {
   justify-content: flex-end;
 }
 
+.burger {
+  margin-right: auto;
+}
+
 h1 {
   color: #fff;
   font-weight: bold;
   font-size: 40px;
   margin-bottom: 0;
+  line-height: 1.2;
 }
 
 h2 {
@@ -108,23 +113,9 @@ a:visited {
   max-width: 400px;
 }
 
-.playersListElement {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  font-size: 16px;
-  height: 62px;
+.playersListElementNone {
   border: 3px solid transparent;
   border-bottom: 0;
-  border-image: linear-gradient(to right, #482832, #fff 50%, #1c3d43) 1;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.playersListElementNone {
   font-size: 16px;
   height: 62px;
   box-sizing: border-box;
@@ -133,12 +124,6 @@ a:visited {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-}
-
-.playersListElement .num {
-  padding: 8px 8px 8px 16px;
-  color: #16fcce;
-  flex: 0 0 10%;
 }
 
 .playersListElementNone .num {
@@ -147,21 +132,10 @@ a:visited {
   flex: 0 0 10%;
 }
 
-.playersListElement .nickname {
-  color: #fff;
-  padding: 8px 16px 8px 8px;
-  flex: 0 0 70%;
-}
-
 .playersListElementNone .nickname {
   color: #a9a9a9;
   padding: 8px 16px 8px 8px;
   flex: 0 0 70%;
-}
-
-.playersListElement .sign {
-  padding: 8px 16px 8px 8px;
-  display: flex;
 }
 
 .playersListElementNone .sign {
@@ -349,10 +323,61 @@ a:visited {
   cursor: pointer;
 }
 
+@media (max-width: 767px) {
+  .burger {
+    margin-right: auto;
+    margin-bottom: 26px;
+  }
+
+  .wrapper {
+    flex-direction: column;
+    padding: 10px 40px;
+    max-width: 100%;
+  }
+
+  .nav {
+    margin-top: 32px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .playersListElementNone {
+    justify-content: flex-start;
+  }
+
+  .playersListElementNone .num {
+    padding: 8px 8px 8px 16px;
+    color: #a9a9a9;
+    flex: initial;
+  }
+
+  .playersListElementNone .nickname {
+    color: #a9a9a9;
+    padding: 8px 16px 8px 8px;
+    flex: initial;
+  }
+
+  .playersListElementNone .sign {
+    padding: 8px 19px 8px 8px;
+    flex: initial;
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1286px) {
+  .wrapper {
+    flex-direction: column;
+    padding: 10px 40px;
+    max-width: 100%;
+  }
+}
+
 @media screen and (max-width: 954px) {
   .flexContainer {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
   }
 
   .leftColumn {
@@ -368,7 +393,7 @@ a:visited {
     flex-direction: column;
     align-items: center;
     position: static;
-    margin-top:20px;
+    margin-top: 20px;
     transform: scale(0.8);
   }
 
@@ -380,7 +405,6 @@ a:visited {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
   }
 
   .myteam::before,

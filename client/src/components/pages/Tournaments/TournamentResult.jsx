@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./TournamentResult.module.css";
+import fonImage from "src/components/files/fon-main.jpg";
 import axiosInstance from "src/axiosInstance";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import NavigationComp from "src/components/ui/Nav/NavigationComp";
+import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
+import classNames from "classnames";
+import bigCoinImage from "src/components/files/big-coin20.png";
+import takeImg from "src/components/pages/Tournaments/take.png";
 
 export default function TournamentResult({ user, logoutHandler }) {
   const [resultData, setResultData] = useState({});
@@ -21,7 +27,9 @@ export default function TournamentResult({ user, logoutHandler }) {
 
     async function TourInfo() {
       try {
-        const response = await axiosInstance.get(`constract/getroster/${user.id}/${tournamentId}`);
+        const response = await axiosInstance.get(
+          `constract/getroster/${user.id}/${tournamentId}`
+        );
         const data = response.data;
         if (data.isOver) setIsOver(true);
       } catch (error) {
@@ -30,7 +38,7 @@ export default function TournamentResult({ user, logoutHandler }) {
     }
 
     TourInfo();
-  }, [tournamentId, user])
+  }, [tournamentId, user]);
 
   useEffect(() => {
     if (!tournamentId) return;
@@ -110,82 +118,112 @@ export default function TournamentResult({ user, logoutHandler }) {
   // Выводем рейтинг и ростеры юзеров
   return (
     <>
-      <h1>Результаты</h1>
-      <Link to="/tournaments">Назад</Link>
-      <div>Мой доход:</div>
-      <div className={StyleSheet.results}>{userCoinsProfit}</div>
-      <div>userRosterId: {userRosterId}</div>
-      <div>
-        {userIsTakeProfit ? (
-          <>Вы забрали приз</>
-        ) : (
-          <>
-            <br />
-            {isOver ? (<button onClick={takeProfit}>Забрать приз</button>) : (<p>Призы еще не готовы к выдаче</p>)}
-            
-            <br />
-            <br />
-          </>
-        )}
-      </div>
-      <div>
-        <table>
-          <tbody>
-            <tr>
-              <td>Место</td>
-              <td>Ник</td>
-              <td>Монеты</td>
-              <td>Состав</td>
-            </tr>
-            {resultData && resultData.length > 0 ? (
-              resultData.map((item) => (
-                <tr
-                  key={item.id}
-                  className={
-                    item.userId === user.id ? styles.highlight : styles.normal
-                  }
-                >
-                  <td>{item.place}</td>
-                  <td>{item.userName}</td>
-                  <td>{item.profitCoins}</td>
-                  <td>
-                    {item.players.map((player) => player.nickname).join(", ")}
-                  </td>
-                </tr>
-              ))
+      <div
+        className={styles.backgroundImage}
+        style={{ backgroundImage: `url(${fonImage})` }}
+      >
+        <div className={styles.wrapper}>
+          <div className={styles.nav}>
+            <div className={styles.burger}>
+              <BurgerMenuComp user={user} />
+            </div>
+            <NavigationComp user={user} logoutHandler={logoutHandler} />
+          </div>
+          <h1>Результаты</h1>
+          <div className={styles.resultRow}>
+            <h2 className={styles.thin}>Доход:</h2>
+            <div className={styles.coins}>
+              <img src={bigCoinImage} alt="coin" />
+            </div>
+            <div className={styles.results}>{userCoinsProfit}</div>
+          </div>
+
+          <div>
+            {userIsTakeProfit ? (
+              <>Вы забрали приз</>
             ) : (
-              <tr>
-                <td colSpan="4">Loading...</td>
-              </tr>
+              <>
+                <br />
+                {isOver ? (
+                  <button
+                    style={{ backgroundImage: `url(${takeImg})` }}
+                    className={styles.takeButton}
+                    onClick={takeProfit}
+                  >
+                    Забрать приз
+                  </button>
+                ) : (
+                  <p>Призы еще не готовы к выдаче</p>
+                )}
+
+                <br />
+                <br />
+              </>
             )}
-          </tbody>
-        </table>
-      </div>
-      <div>
-        <h2>Больше всего в командах:</h2>
-        <table>
-          <tbody>
-            <tr>
-              <td>Ник</td>
-              <td>Ростеры</td>
-              <td>Sum</td>
-            </tr>
-            {leaders?.map((leader) => {
-              return (
-                <tr key={leader.value}>
-                  <td>{leader.nickname}</td>
-                  <td>{leader.count}</td>
-                  <td>
-                    <div
-                      className={styles.procent}
-                      style={{ width: sum ? (leader.count / sum) * 100 : 0 }}
-                    ></div>
-                  </td>
+          </div>
+          <div>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th className={styles.headerCell}>Место</th>
+                  <th className={styles.headerCell}>Ник</th>
+                  <th className={styles.headerCell}>Монеты</th>
+                  <th className={styles.headerCell}>Состав</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {resultData && resultData.length > 0 ? (
+                  resultData.map((item, index) => (
+                    <tr
+                      key={item.id}
+                      className={classNames({
+                        [styles.highlight]: item.userId === user.id,
+                        [styles.normal]: item.userId !== user.id,
+                        [styles.alternateRow]: index % 2 === 0,
+                      })}
+                    >
+                      <td className={`${styles.cell} ${styles.centerText}`}>
+                        {item.place}
+                      </td>
+                      <td className={styles.cell}>{item.userName}</td>
+                      <td className={styles.cell}>{item.profitCoins}</td>
+                      <td className={styles.cell}>
+                        {item.players
+                          .map((player) => player.nickname)
+                          .join(", ")}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4">Данные загружаются...</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div className={styles.leaders}>
+            <h2 style={{marginTop : "40px"}}>Фавориты:</h2>
+            <div className={styles.leadersGrid}>
+              {leaders?.map((leader) => (
+                <div key={leader.value} className={styles.leaderCard}>
+                  <div className={styles.cardHeader}>
+                    <span className={styles.nickname}>{leader.nickname}</span>
+                    <span className={styles.count}>{leader.count}</span>
+                  </div>
+                  <div className={styles.progressContainer}>
+                    <div
+                      className={styles.progressBar}
+                      style={{
+                        width: sum ? `${(leader.count / sum) * 100}%` : "0%",
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
