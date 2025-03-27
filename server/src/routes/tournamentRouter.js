@@ -96,4 +96,76 @@ tournamentRouter.get('/cities', async (req, res) => {
 // Турниры где stars = 2 устновить x на 60
 // Турниры где stars = 0 установить x на 40
 
+tournamentRouter.patch('/update-x-by-stars', async (req, res) => {
+  try {
+    // Правила обновления
+    const updateRules = {
+      6: 140,
+      5: 120,
+      4: 100,
+      3: 80,
+      2: 60,
+      0: 40,
+    };
+
+    // Статистика
+    const stats = {};
+
+    // Используем транзакцию для надежности
+    const transaction = await Tournament.sequelize.transaction();
+
+    try {
+      // 1. Получаем все турниры, которые нужно обновить
+      const tournamentsToUpdate = await Tournament.findAll({
+        where: {
+          star: Object.keys(updateRules).map(Number),
+        },
+        transaction,
+      });
+
+      // 2. Группируем турниры по новым значениям X
+      const groupedUpdates = {};
+      tournamentsToUpdate.forEach((tournament) => {
+        const newX = updateRules[tournament.star];
+        if (!groupedUpdates[newX]) {
+          groupedUpdates[newX] = [];
+        }
+        groupedUpdates[newX].push(tournament.id);
+      });
+
+      // 3. Выполняем массовые обновления для каждой группы
+      const updatePromises = Object.entries(groupedUpdates).map(([xValue, ids]) => {
+        stats[xValue] = ids.length;
+        return Tournament.update(
+          { x: xValue },
+          {
+            where: { id: ids },
+            transaction,
+          },
+        );
+      });
+
+      // 4. Ждем выполнения всех обновлений
+      await Promise.all(updatePromises);
+
+      // 5. Фиксируем транзакцию
+      await transaction.commit();
+
+      res.json({
+        message: `Значения X успешно обновлены для ${tournamentsToUpdate.length} турниров`,
+        stats,
+      });
+    } catch (error) {
+      // Откатываем транзакцию при ошибке
+      await transaction.rollback();
+      throw error;
+    }
+  } catch (error) {
+    console.error('Ошибка при обновлении турниров:', error);
+    res.status(500).json({
+      error: `Ошибка при обновлении турниров: ${error.message}`,
+    });
+  }
+});
+
 module.exports = tournamentRouter;

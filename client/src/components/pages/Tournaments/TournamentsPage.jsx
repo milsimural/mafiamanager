@@ -13,6 +13,25 @@ export default function TournamentsPage({ user, logoutHandler }) {
   const [tournamentsList, setTournamentsList] = useState([]);
   const [newTournament, setNewTournament] = useState({});
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleUpdateXByStars = () => {
+    setIsLoading(true);
+
+    axiosInstance
+      .patch("/tournaments/update-x-by-stars")
+      .then((response) => {
+        console.log("Статистика обновлений:", response.data.stats);
+        alert("X успешно обновлен! Проверьте консоль для статистики.");
+      })
+      .catch((error) => {
+        console.error("Ошибка при обновлении:", error);
+        alert("Произошла ошибка при обновлении");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   useEffect(() => {
     axiosInstance
@@ -24,7 +43,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
           const dateB = new Date(b.date_start);
           return dateA - dateB; // Сортировка по возрастанию даты
         });
-  
+
         // Устанавливаем отсортированный список турниров
         setTournamentsList(sortedTournaments);
       })
@@ -255,6 +274,14 @@ export default function TournamentsPage({ user, logoutHandler }) {
                 </div>
                 <button type="submit">Добавить</button>
               </form>
+
+              <button
+                onClick={handleUpdateXByStars}
+                disabled={isLoading}
+                style={{ padding: "10px 20px", cursor: "pointer" }}
+              >
+                {isLoading ? "Идет обновление..." : "Обновить X по Stars"}
+              </button>
             </div>
           )}
         </div>
