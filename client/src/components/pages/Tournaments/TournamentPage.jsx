@@ -28,12 +28,18 @@ function TournamentDetails({ user, logoutHandler }) {
   const [rosterData, setRosterData] = useState({});
   const [isOld, setIsOld] = useState(false);
   const [rawData, setRawData] = useState();
+    // Состояние для хранения текущего значения инпута
+    const [valuex, setValuex] = useState();
+    // Состояние для хранения сохраненного значения
+    const [savedValuex, setSavedValuex] = useState();
 
   useEffect(() => {
     axiosInstance
       .get(`/tournaments/details/${tournamentId}`)
       .then((res) => {
         setTournament(res.data);
+        setValuex(res.data.x);
+        setSavedValuex(res.data.x);
         if (res.data.rawData) {
           setRawData(JSON.parse(res.data.rawData)); // Обновляем состояние rawData
         }
@@ -136,6 +142,35 @@ function TournamentDetails({ user, logoutHandler }) {
       alert("Error adding roster: " + error.message);
     }
   }
+
+// Обработчик изменения Х
+
+const handleChangex = (e) => {
+  setValuex(e.target.value);
+};
+
+// Обработчик сохранения Х
+
+async function updateXinTournament(value) {
+  try {
+    const response = await axiosInstance.patch(
+      `tournaments/update/${tournamentId}`,
+      {
+        x: value,
+      }
+    );
+    console.log("Response:", response.data);
+    setTournament(response.data);
+  } catch (error) {
+    console.error("Error update X:", error);
+  }
+}
+
+const handleSavex = () => {
+  setSavedValuex(valuex);
+  updateXinTournament(valuex)
+  alert(`Значение сохранено: ${valuex}`);
+};
 
   // ОБНОВЛЕНИЕ РОСТЕРА
   async function updateRoster() {
@@ -285,7 +320,7 @@ function TournamentDetails({ user, logoutHandler }) {
     const resultArray = [...selectedFromWithFinal, ...uniqueFromWithoutFinal];
 
     // Теперь нам нужно сопоставить логины с игроками из БД
-
+// ВНИМАНИЕ! ТУТ ИДЕТ УМНОЖЕНИЕ НА Х
     const plainPlayers = resultArray.map((item) => ({
       login: item.login.toLowerCase(),
       sum: Number(item.sum) * Number(tournament.x),
@@ -434,13 +469,6 @@ function TournamentDetails({ user, logoutHandler }) {
           </b>
         </p>
         <div>
-          {/* <ul>
-    {tournament?.playersList.map((player) => (
-      <li key={player.id}>
-        {player.id}: {player.nickname}
-      </li>
-    ))}
-  </ul> */}
         </div>
       </>
     );
@@ -696,6 +724,20 @@ function TournamentDetails({ user, logoutHandler }) {
           Вы вошли как {user?.email} - у вас есть право редактировать турнир.{" "}
           <button onClick={() => logoutHandler()}>Выйти из аккаунта</button>
         </p>
+        <hr></hr>
+        {/* Поле где можно изменить X турнира */}
+        <h3 className={styles.adminH3}>Значение X (На сколько умножаются баллы спортсменов)</h3>
+      <input
+        type="text"
+        value={valuex} // Управляемое значение
+        onChange={handleChangex} // Обработчик изменений
+      />
+      <button onClick={handleSavex}>Сохранить</button>
+      <div>
+        <p>Текущее значение: {valuex}</p>
+        <p>Сохраненное значение: {savedValuex}</p>
+      </div>
+        <hr></hr>
         <div>{TournamentInfo(tournament)}</div>
         {(user?.isAdmin === true || user?.isModerator === true) && (
           <div className={styles.adminPanel}>
@@ -713,7 +755,7 @@ function TournamentDetails({ user, logoutHandler }) {
               она отраболтала. Она будет обновлять связи между игроками гоумафии
               и игроками в системе.
             </p>
-            <h3>Сначала загрузи сырые данные JSON</h3>
+            <h3 className={styles.adminH3}>Сначала загрузи сырые данные JSON</h3>
             <Getter
               setRawData={setRawData}
               tournamentId={tournamentId}
@@ -737,9 +779,9 @@ function TournamentDetails({ user, logoutHandler }) {
                 Открыть ростеры обратно
               </button>
               <button onClick={() => getResults()}>
-                Получить результаты турнира
+                Получить результаты турнира - определить доход
               </button>
-              <button onClick={() => overRosters()}>Закончить турнир</button>
+              <button onClick={() => overRosters()}>Закончить турнир (Rosters Over)</button>
             </div>
             {players && (
               <>

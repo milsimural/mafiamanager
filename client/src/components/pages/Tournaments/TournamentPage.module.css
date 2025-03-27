@@ -407,3 +407,8 @@ a:visited {
     bottom: 0; /* Расположение снизу */
   }
 }
+
+.adminH3 {
+  text-align: left;
+  font-size: 18px;
+}

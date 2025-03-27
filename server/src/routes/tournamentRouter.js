@@ -88,6 +88,12 @@ tournamentRouter.get('/cities', async (req, res) => {
   }
 });
 
-
+// Найти все турниры
+// Турниры где stars = 6 установть x на 140
+// Турниры где stars = 5 установить x на 120
+// Турниры где stars = 4 установить x на 100
+// Турниры где stars = 3 установить x на 80
+// Турниры где stars = 2 устновить x на 60
+// Турниры где stars = 0 установить x на 40
 
 module.exports = tournamentRouter;

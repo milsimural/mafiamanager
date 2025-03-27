@@ -13,6 +13,24 @@ export default function TournamentResult({ user, logoutHandler }) {
   const { tournamentId } = useParams();
   const [leaders, setLeaders] = useState([]);
   const [sum, setSum] = useState(0);
+  const [isOver, setIsOver] = useState(false);
+
+  useEffect(() => {
+    if (!tournamentId) return;
+    if (!user) return;
+
+    async function TourInfo() {
+      try {
+        const response = await axiosInstance.get(`constract/getroster/${user.id}/${tournamentId}`);
+        const data = response.data;
+        if (data.isOver) setIsOver(true);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    TourInfo();
+  }, [tournamentId, user])
 
   useEffect(() => {
     if (!tournamentId) return;
@@ -103,7 +121,8 @@ export default function TournamentResult({ user, logoutHandler }) {
         ) : (
           <>
             <br />
-            <button onClick={takeProfit}>Забрать приз</button>
+            {isOver ? (<button onClick={takeProfit}>Забрать приз</button>) : (<p>Призы еще не готовы к выдаче</p>)}
+            
             <br />
             <br />
           </>
