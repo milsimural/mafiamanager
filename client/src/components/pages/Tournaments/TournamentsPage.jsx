@@ -7,6 +7,7 @@ import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
 import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
 import readyButtonImage from "src/components/pages/Tournaments/ready.png";
+import grayImage from "src/components/pages/Tournaments/over.png";
 import PropTypes from "prop-types";
 
 export default function TournamentsPage({ user, logoutHandler }) {
@@ -117,7 +118,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
                     ? tournament.projected_count_of_participants
                     : "???"}
                 </div>
-                {tournament.isReady && (
+                {tournament.isReady && tournament.status !== "over" && (
                   <div className={styles.ready}>
                     <button
                       className={styles.readyButton}
@@ -125,6 +126,18 @@ export default function TournamentsPage({ user, logoutHandler }) {
                       style={{ backgroundImage: `url(${readyButtonImage})` }}
                     >
                       Ready
+                    </button>
+                  </div>
+                )}
+
+{tournament.isReady && tournament.status === "over" && (
+                  <div className={styles.ready}>
+                    <button
+                      className={styles.readyButton}
+                      onClick={() => handleTournamentNavigation(tournament.id)}
+                      style={{ backgroundImage: `url(${grayImage})` }}
+                    >
+                      Over
                     </button>
                   </div>
                 )}

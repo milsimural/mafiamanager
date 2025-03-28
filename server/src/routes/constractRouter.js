@@ -396,14 +396,31 @@ constractRouter.get('/checkPlayerInLiveRosters/:userId/:number', async (req, res
   }
 });
 
-// Найти все ростеры по id турнира и изменить isOver на true
+// Найти все ростеры по id турнира и изменить isOver на true и меняем статус турнира на over
 constractRouter.patch('/overRosters/:tournamentId', async (req, res) => {
   try {
     const { tournamentId } = req.params;
-    const rosters = await Roster.update({ isOver: true }, { where: { tournamentId } });
-    res.json(rosters);
+
+    // Закрываем ростеры турнира
+    const updatedRosters = await Roster.update(
+      { isOver: true },
+      { where: { tournamentId } },
+    );
+
+    // Меняем статус турнира на 'over'
+    const updatedTournament = await Tournament.update(
+      { status: 'over' },
+      { where: { id: tournamentId } },
+    );
+
+    res.json({
+      rosters: updatedRosters,
+      tournament: updatedTournament,
+    });
   } catch (error) {
-    res.status(500).json({ error: `Ошибка при закрытии ростеров: ${error.message}` });
+    res.status(500).json({
+      error: `Ошибка при закрытии турнира: ${error.message}`,
+    });
   }
 });
 

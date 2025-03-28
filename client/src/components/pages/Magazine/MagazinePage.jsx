@@ -63,8 +63,19 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   const clubs = [
     { id: 196, image: "logo-32.jpg", name: "TITAN" },
     { id: 32, image: "logo-33.jpg", name: "RE" },
-    { id: 34, image: "logo-34.jpg", name: "FCB" },
-    { id: 35, image: "logo-35.jpg", name: "BAR" },
+    { id: 92, image: "logo-34.jpg", name: "INK" },
+    { id: 121, image: "logo-35.jpg", name: "LEG" },
+    { id: 49, image: "logo-35.jpg", name: "PRSP" },
+    { id: 99, image: "logo-35.jpg", name: "DOMUS" },
+    { id: 94, image: "logo-35.jpg", name: "TITANSPB" },
+    { id: 201, image: "logo-35.jpg", name: "LEGION" },
+    { id: 348, image: "logo-35.jpg", name: "VERS" },
+    { id: 117, image: "logo-35.jpg", name: "ONORE" },
+    { id: 130, image: "logo-35.jpg", name: "POLEMSPB" },
+    { id: 66, image: "logo-35.jpg", name: "BLACKL" },
+    { id: 286, image: "logo-35.jpg", name: "HSMSK" },
+    { id: 50, image: "logo-35.jpg", name: "IMPEKB" },
+    { id: 106, image: "logo-35.jpg", name: "RBF" },
   ];
 
   // Сохранить в локал настройки фильтра
@@ -145,19 +156,22 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
             <div>
               <div className={styles.filter}>
                 {clubs.map((club) => (
-                  <img
-                    key={club.id}
-                    src={club.image}
-                    alt={club.name}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      border:
-                        selectedClubId === club.id ? "3px solid blue" : "none",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleClubClick(club.id)}
-                  />
+                  // <img
+                  //   key={club.id}
+                  //   src={club.image}
+                  //   alt={club.name}
+                  //   style={{
+                  //     width: "100px",
+                  //     height: "100px",
+                  //     border:
+                  //       selectedClubId === club.id ? "3px solid blue" : "none",
+                  //     cursor: "pointer",
+                  //   }}
+                  //   onClick={() => handleClubClick(club.id)}
+                  // />
+                  <div className={styles.clubContainer} key={club.id} onClick={() => handleClubClick(club.id)}>
+                    {club.name}
+                  </div>
                 ))}
               </div>
             </div>
