@@ -13,13 +13,13 @@ export default function ShortPlayerBarComp({ num, player, remover }) {
     >
       <div className={styles.slotNum}>{num ? num : 0}</div>
       <div className={styles.teamListElement}>
-        <div className={styles.square}>
+        {/* <div className={styles.square}>
           <img src={basicFoto} className={styles.image} alt="Image" />
           <div
             className={styles.frame}
             style={{ backgroundImage: `url(${frameImage})` }}
           ></div>
-        </div>
+        </div> */}
         <div className={styles.playerInfoContainer}>
           <div className={styles.stars}>
             <StarsComp stars={player.stars} />

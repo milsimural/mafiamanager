@@ -16,9 +16,9 @@ export default function CaptainBarComp({ captain, removeCaptainFromRoster }) {
         <div className={styles.captainName}>{captain?.nickname}</div>
       </div>
       <div className={styles.captainRole}>Капитан</div>
-      <div className={styles.captainFotoCont}>
+      {/* <div className={styles.captainFotoCont}>
         <img src={basicCaptainImage} alt="" />
-      </div>
+      </div> */}
     </div>
   );
 }

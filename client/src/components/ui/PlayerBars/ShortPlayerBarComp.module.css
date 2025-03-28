@@ -10,15 +10,18 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  width: 240px;
+  /* width: 240px; */
   margin-bottom: 5px;
+  width: 220px;
 }
 
 .teamElementWrapper {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: start;
+  /* align-items: center;
+  justify-content: start; */
+  align-items: flex-start;
+    justify-content: space-between;
   width: 100%;
 }
 
@@ -90,4 +93,15 @@
   padding: 0;
   line-height: 0;
   margin-bottom: 8px;
+}
+
+@media (max-width: 767px) {
+  .teamListElement {
+    width: 220px;
+  }
+
+  .teamElementWrapper {
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 }

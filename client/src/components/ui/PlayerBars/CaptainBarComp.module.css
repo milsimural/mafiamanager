@@ -78,3 +78,18 @@
 .none {
     width: 168px;
 }
+
+@media (max-width: 767px) {
+
+  .captain {
+    margin-left: 8px;
+  }
+  .captainRole {
+    margin-left: 33px;
+  }
+
+  .captainName {
+    margin-left: 25px;
+  }
+
+ }
