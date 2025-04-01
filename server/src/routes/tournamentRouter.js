@@ -100,12 +100,12 @@ tournamentRouter.patch('/update-x-by-stars', async (req, res) => {
   try {
     // Правила обновления
     const updateRules = {
-      6: 140,
-      5: 120,
-      4: 100,
-      3: 80,
-      2: 60,
-      0: 40,
+      6: 80,
+      5: 60,
+      4: 50,
+      3: 30,
+      2: 20,
+      0: 10,
     };
 
     // Статистика
