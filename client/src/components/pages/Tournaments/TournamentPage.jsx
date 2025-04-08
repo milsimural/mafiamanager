@@ -8,15 +8,16 @@ import { useNavigate } from "react-router-dom";
 import fonImage from "src/components/files/fon-main.jpg";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
 import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
-import offImage from "src/components/pages/Tournaments/off.png";
+
 import ShortPlayerBar from "src/components/ui/PlayerBars/ShortPlayerBarComp";
 import CaptainBarComp from "src/components/ui/PlayerBars/CaptainBarComp";
 import ListElementComp from "src/components/ui/PlayerBars/ListElementComp";
 import blueButtonImage from "src/components/pages/Tournaments/blueButton.png";
 import grayButtonImage from "src/components/pages/Tournaments/grayButton.png";
 import Getter from "src/components/pages/Tournaments/Getter.jsx";
+import PersonalCard from "src/components/ui/PersonalCard/PersonalCard";
 
-function TournamentDetails({ user, logoutHandler }) {
+function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
   const navigate = useNavigate();
   const { tournamentId } = useParams();
   // Обьект турнира со всеми полями
@@ -28,10 +29,10 @@ function TournamentDetails({ user, logoutHandler }) {
   const [rosterData, setRosterData] = useState({});
   const [isOld, setIsOld] = useState(false);
   const [rawData, setRawData] = useState();
-    // Состояние для хранения текущего значения инпута
-    const [valuex, setValuex] = useState();
-    // Состояние для хранения сохраненного значения
-    const [savedValuex, setSavedValuex] = useState();
+  // Состояние для хранения текущего значения инпута
+  const [valuex, setValuex] = useState();
+  // Состояние для хранения сохраненного значения
+  const [savedValuex, setSavedValuex] = useState();
 
   useEffect(() => {
     axiosInstance
@@ -143,34 +144,34 @@ function TournamentDetails({ user, logoutHandler }) {
     }
   }
 
-// Обработчик изменения Х
+  // Обработчик изменения Х
 
-const handleChangex = (e) => {
-  setValuex(e.target.value);
-};
+  const handleChangex = (e) => {
+    setValuex(e.target.value);
+  };
 
-// Обработчик сохранения Х
+  // Обработчик сохранения Х
 
-async function updateXinTournament(value) {
-  try {
-    const response = await axiosInstance.patch(
-      `tournaments/update/${tournamentId}`,
-      {
-        x: value,
-      }
-    );
-    console.log("Response:", response.data);
-    setTournament(response.data);
-  } catch (error) {
-    console.error("Error update X:", error);
+  async function updateXinTournament(value) {
+    try {
+      const response = await axiosInstance.patch(
+        `tournaments/update/${tournamentId}`,
+        {
+          x: value,
+        }
+      );
+      console.log("Response:", response.data);
+      setTournament(response.data);
+    } catch (error) {
+      console.error("Error update X:", error);
+    }
   }
-}
 
-const handleSavex = () => {
-  setSavedValuex(valuex);
-  updateXinTournament(valuex)
-  alert(`Значение сохранено: ${valuex}`);
-};
+  const handleSavex = () => {
+    setSavedValuex(valuex);
+    updateXinTournament(valuex);
+    alert(`Значение сохранено: ${valuex}`);
+  };
 
   // ОБНОВЛЕНИЕ РОСТЕРА
   async function updateRoster() {
@@ -320,7 +321,7 @@ const handleSavex = () => {
     const resultArray = [...selectedFromWithFinal, ...uniqueFromWithoutFinal];
 
     // Теперь нам нужно сопоставить логины с игроками из БД
-// ВНИМАНИЕ! ТУТ ИДЕТ УМНОЖЕНИЕ НА Х
+    // ВНИМАНИЕ! ТУТ ИДЕТ УМНОЖЕНИЕ НА Х
     const plainPlayers = resultArray.map((item) => ({
       login: item.login.toLowerCase(),
       sum: Number(item.sum) * Number(tournament.x),
@@ -452,8 +453,7 @@ const handleSavex = () => {
     return (
       <>
         <p>
-          Сейчас в турнир добавленно {playersCount} игроков из{" "}
-          {tournament?.projected_count_of_participants}
+          Сейчас в турнир добавленно {playersCount} игроков
         </p>
         <p>Название турнира: {tournament?.name}</p>
         <p>
@@ -468,8 +468,7 @@ const handleSavex = () => {
             {tournament?.rosterFinish ? "заблокированы" : "открыты"}
           </b>
         </p>
-        <div>
-        </div>
+        <div></div>
       </>
     );
   }
@@ -593,10 +592,6 @@ const handleSavex = () => {
       return <div>На данный момент данных о турнире нет.</div>;
     }
 
-    // Далее нужно отобразить количество "Неизвестных участников"
-    const uncknownPlayersCount =
-      tournament.projected_count_of_participants - sortedPlayers.length;
-
     return (
       <>
         <div className={styles.flexContainer}>
@@ -638,25 +633,18 @@ const handleSavex = () => {
                   }
 
                   return playersNotInTeam.map((player, index) => (
-                    <div
-                      className={styles.playersListElementNone}
+                    <PersonalCard
+                      player={player}
+                      user={user}
+                      updateUserCoins={updateUserCoins}
                       key={player.id || index}
-                    >
-                      <div className={styles.num}>
-                        {String(startNumber + index).padStart(2, "0")}
-                      </div>
-                      <div className={styles.nickname}>{player.nickname}</div>
-                      <div className={styles.sign}>
-                        <img src={offImage} alt="Status" />
-                      </div>
-                    </div>
+                      numberEl={String(startNumber + index).padStart(2, "0")}
+                    />
                   ));
                 })()}
               </div>
 
-              <div className={styles.uncknownPlayersCount}>
-                {uncknownPlayersCount} неизвестных системе участников...
-              </div>
+              
             </div>
           </div>
           <div className={styles.rightColumn}>
@@ -726,17 +714,19 @@ const handleSavex = () => {
         </p>
         <hr></hr>
         {/* Поле где можно изменить X турнира */}
-        <h3 className={styles.adminH3}>Значение X (На сколько умножаются баллы спортсменов)</h3>
-      <input
-        type="text"
-        value={valuex} // Управляемое значение
-        onChange={handleChangex} // Обработчик изменений
-      />
-      <button onClick={handleSavex}>Сохранить</button>
-      <div>
-        <p>Текущее значение: {valuex}</p>
-        <p>Сохраненное значение: {savedValuex}</p>
-      </div>
+        <h3 className={styles.adminH3}>
+          Значение X (На сколько умножаются баллы спортсменов)
+        </h3>
+        <input
+          type="text"
+          value={valuex} // Управляемое значение
+          onChange={handleChangex} // Обработчик изменений
+        />
+        <button onClick={handleSavex}>Сохранить</button>
+        <div>
+          <p>Текущее значение: {valuex}</p>
+          <p>Сохраненное значение: {savedValuex}</p>
+        </div>
         <hr></hr>
         <div>{TournamentInfo(tournament)}</div>
         {(user?.isAdmin === true || user?.isModerator === true) && (
@@ -755,7 +745,9 @@ const handleSavex = () => {
               она отраболтала. Она будет обновлять связи между игроками гоумафии
               и игроками в системе.
             </p>
-            <h3 className={styles.adminH3}>Сначала загрузи сырые данные JSON</h3>
+            <h3 className={styles.adminH3}>
+              Сначала загрузи сырые данные JSON
+            </h3>
             <Getter
               setRawData={setRawData}
               tournamentId={tournamentId}
@@ -781,7 +773,9 @@ const handleSavex = () => {
               <button onClick={() => getResults()}>
                 Получить результаты турнира - определить доход
               </button>
-              <button onClick={() => overRosters()}>Закончить турнир (Rosters Over)</button>
+              <button onClick={() => overRosters()}>
+                Закончить турнир (Rosters Over)
+              </button>
             </div>
             {players && (
               <>
@@ -806,12 +800,29 @@ const handleSavex = () => {
                   https://gomafia.pro/stats/1
                 </p>
                 <div className={styles.adminText}>
-                  {players.notFoundIds?.map((id) => (
-                    <span key={id}>{id}, </span>
-                  ))}
-                  <br />
-                  <br />
-                  ВСЕГО НЕ НАЙДЕННО: <b>{players.notFoundIds?.length}</b>
+                  {Array.isArray(players.notFoundIds) ? (
+                    <>
+                      {players.notFoundIds.length > 0 ? (
+                        <>
+                          {players.notFoundIds.map((id, index) => (
+                            <span key={id}>
+                              {id}
+                              {index < players.notFoundIds.length - 1
+                                ? ", "
+                                : ""}
+                            </span>
+                          ))}
+                          <br />
+                          <br />
+                          ВСЕГО НЕ НАЙДЕНО: <b>{players.notFoundIds.length}</b>
+                        </>
+                      ) : (
+                        <span>Не найдено игроков: 0</span>
+                      )}
+                    </>
+                  ) : (
+                    <span>Данные о не найденных игроках недоступны</span>
+                  )}
                 </div>
               </>
             )}
@@ -845,6 +856,7 @@ const handleSavex = () => {
 TournamentDetails.propTypes = {
   user: PropTypes.object,
   logoutHandler: PropTypes.func.isRequired,
+  updateUserCoins: PropTypes.func.isRequired,
 };
 
 export default TournamentDetails;

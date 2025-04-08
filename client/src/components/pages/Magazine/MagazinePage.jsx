@@ -16,21 +16,28 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const playersSorted = useMemo(() => {
+    let filteredPlayers = [...players];
+    
+    // Применяем поиск по нику, если есть запрос
+    if (searchQuery) {
+      filteredPlayers = filteredPlayers.filter(player => 
+        player.nickname.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    // Применяем сортировку, если выбрана
     if (selectedSort) {
-      const sortedArray = [...players].sort((a, b) => {
+      filteredPlayers.sort((a, b) => {
         if (selectedSort === "nickname") {
           return a[selectedSort].localeCompare(b[selectedSort]);
         } else {
           return b[selectedSort] - a[selectedSort];
         }
       });
-      console.log(sortedArray);
-      console.log(selectedSort);
-      return sortedArray;
-    } else {
-      return players;
     }
-  }, [players, selectedSort]);
+    
+    return filteredPlayers;
+  }, [players, selectedSort, searchQuery]);
 
   useEffect(() => {
     if (selectedClubId) {
@@ -63,7 +70,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
   const clubs = [
     { id: 196, image: "logo-32.jpg", name: "TITAN" },
     { id: 32, image: "logo-33.jpg", name: "RE" },
-    { id: 92, image: "logo-34.jpg", name: "INK" },
+    { id: 92, image: "logo-34.jpg", name: "INC" },
     { id: 121, image: "logo-35.jpg", name: "LEG" },
     { id: 49, image: "logo-35.jpg", name: "PRSP" },
     { id: 99, image: "logo-35.jpg", name: "DOMUS" },

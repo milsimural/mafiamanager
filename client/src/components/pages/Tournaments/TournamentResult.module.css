@@ -184,9 +184,8 @@ h1 {
     font-size: 18px;
     margin-left: 6px;
     width: 100px;
-    height: 30px;
-    margin-bottom: 6px;
     
+    margin-bottom: 0px;
   }
 
 .coins {
@@ -250,21 +249,21 @@ h1 {
 }
 
 .count {
-  color: #666666;
+  color: #f0f0f0;
   font-weight: 500;
 }
 
 .progressContainer {
   width: 100%;
   height: 8px;
-  background: #f0f0f0;
+  background: #333;
   /* border-radius: 4px; */
   overflow: hidden;
 }
 
 .progressBar {
   height: 100%;
-  background: #333333;
+  background: #666;
 }
 
 /* Темная тема */
@@ -282,11 +281,11 @@ h1 {
 }
 
 .dark .progressContainer {
-  background: #444;
+  background: #666;
 }
 
 .dark .progressBar {
-  background: #666;
+  background: #444;
 }
 
 /* Планшет (768px и больше) */

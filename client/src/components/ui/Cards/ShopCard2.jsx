@@ -14,7 +14,7 @@ import faceGray from "src/components/ui/Cards/grayFace.svg";
 import buyImage from "src/components/ui/Cards/buy2x.png";
 import closeBuyImage from "src/components/ui/Cards/close2x.png";
 import coinsImage from "src/components/ui/Nav/coins.png";
-import { formatNumberWithSpaces } from 'src/utils';
+import { formatNumberWithSpaces } from "src/utils";
 
 export default function ShopCard2({
   user,
@@ -41,6 +41,8 @@ export default function ShopCard2({
     }
   };
 
+  console.log(player.nickname);
+
   const color = getColorByStars(player.stars);
 
   const elementImages = {
@@ -61,7 +63,7 @@ export default function ShopCard2({
         <div
           className={styles.fotoCont}
           style={{
-            backgroundImage: `url(${player.picture})`,
+            backgroundImage: `url(/${player.picture})`,
           }}
         >
           <div className={styles.infoCont}>
@@ -81,7 +83,7 @@ export default function ShopCard2({
           <StarsComponent stars={player.stars} />
         </div>
         <div className={styles.shield}>
-          <img src={`titan.png`} title={player.gomafiaId} />
+          <img src={`/titan.png`} title={player.gomafiaId} />
         </div>
       </div>
 
@@ -123,7 +125,10 @@ export default function ShopCard2({
       {!shop && (
         <>
           <div className={styles.sell}>
-            <button className={styles.sellButton} onClick={() => openSellMenu(player)}>
+            <button
+              className={styles.sellButton}
+              onClick={() => openSellMenu(player)}
+            >
               <div style={{ paddingRight: "10px" }}>Продать:</div>
               <img
                 src={coinsImage}
@@ -148,5 +153,5 @@ ShopCard2.propTypes = {
   buyPlayer: PropTypes.func,
   isInTeam: PropTypes.bool,
   sellPlayer: PropTypes.func,
-  openSellMenu: PropTypes.func
+  openSellMenu: PropTypes.func,
 };

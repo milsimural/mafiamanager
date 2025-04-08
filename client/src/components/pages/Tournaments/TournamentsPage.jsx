@@ -39,7 +39,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
       .get("/tournaments")
       .then((res) => {
         // Сортируем турниры по дате начала (date_start)
-        const sortedTournaments = res.data.sort((a, b) => {
+        const sortedTournaments = res.data.tournaments.sort((a, b) => {
           const dateA = new Date(a.date_start);
           const dateB = new Date(b.date_start);
           return dateA - dateB; // Сортировка по возрастанию даты
@@ -114,9 +114,9 @@ export default function TournamentsPage({ user, logoutHandler }) {
                   )}
                 </div>
                 <div className={styles.num}>
-                  {tournament.projected_count_of_participants
-                    ? tournament.projected_count_of_participants
-                    : "???"}
+                  {tournament.participants_count
+                    ? tournament.participants_count
+                    : ""}
                 </div>
                 {tournament.isReady && tournament.status !== "over" && (
                   <div className={styles.ready}>
@@ -130,7 +130,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
                   </div>
                 )}
 
-{tournament.isReady && tournament.status === "over" && (
+                {tournament.isReady && tournament.status === "over" && (
                   <div className={styles.ready}>
                     <button
                       className={styles.readyButton}

@@ -157,7 +157,14 @@ constractRouter.post(
 
       const newRoster = await Roster.create(roster);
 
-      res.status(201).json(newRoster);
+      const old_participants_count = tournament.participants_count;
+
+      const updatedTournament = await Tournament.update(
+        { participants_count: old_participants_count + 1 },
+        { where: { id: tournamentId } },
+      );
+
+      res.status(201).json([newRoster, updatedTournament]);
     } catch (error) {
       res
         .status(500)

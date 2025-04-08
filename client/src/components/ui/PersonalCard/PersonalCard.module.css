@@ -1,0 +1,93 @@
+.centerdiv {
+  margin: 0 auto;
+  text-align: center;
+  width: 260px;
+  height: 260px;
+}
+
+/* Затемнение фона */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный чёрный */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Убедитесь, что меню поверх других элементов */
+}
+
+.playersListElementNone {
+  border: 3px solid transparent;
+  border-bottom: 0;
+  font-size: 16px;
+  height: 62px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.playersListElementNone .num {
+  padding: 8px 8px 8px 16px;
+  color: #a9a9a9;
+  flex: 0 0 10%;
+}
+
+.playersListElementNone .nickname {
+  color: #a9a9a9;
+  padding: 8px 16px 8px 8px;
+  flex: 0 0 70%;
+}
+
+.playersListElementNone .sign {
+  padding: 8px 19px 8px 8px;
+  display: flex;
+}
+
+@media (max-width: 767px) {
+  .burger {
+    margin-right: auto;
+    margin-bottom: 26px;
+  }
+
+  .wrapper {
+    flex-direction: column;
+    padding: 10px 40px;
+    max-width: 100%;
+  }
+
+  .nav {
+    margin-top: 32px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .playersListElementNone {
+    justify-content: flex-start;
+  }
+
+  .playersListElementNone .num {
+    padding: 8px 8px 8px 16px;
+    color: #a9a9a9;
+    flex: initial;
+  }
+
+  .playersListElementNone .nickname {
+    color: #a9a9a9;
+    padding: 8px 16px 8px 8px;
+    flex: initial;
+  }
+
+  .playersListElementNone .sign {
+    padding: 8px 19px 8px 8px;
+    flex: initial;
+    margin-left: auto;
+  }
+}

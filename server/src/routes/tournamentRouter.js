@@ -7,11 +7,15 @@ const tournamentRouter = Router();
 tournamentRouter.get('/', async (req, res) => {
   try {
     const tournaments = await Tournament.findAll();
-    res.json(tournaments);
+    res.json({
+      tournaments,
+      serverTime: new Date().toISOString(),
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: `Ошибка при получении всех турниров ${error.message}` });
+    res.status(500).json({
+      error: `Ошибка при получении всех турниров ${error.message}`,
+      serverTime: new Date().toISOString(),
+    });
   }
 });
 

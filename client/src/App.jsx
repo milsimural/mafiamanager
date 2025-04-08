@@ -71,7 +71,7 @@ function App() {
         },
         {
           path: "/tournaments/:tournamentId",
-          element: <TournamentPage user={user} logoutHandler={logoutHandler} />,
+          element: <TournamentPage user={user} logoutHandler={logoutHandler} updateUserCoins={updateUserCoins} />,
         },
         {
           path: "/tournaments/:tournamentId/result",
