@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "src/axiosInstance";
 import styles from "./TournamentsPage.module.css";
@@ -9,12 +9,29 @@ import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
 import readyButtonImage from "src/components/pages/Tournaments/ready.png";
 import grayImage from "src/components/pages/Tournaments/over.png";
 import PropTypes from "prop-types";
+import SelectComp from "src/components/ui/UtilComponents/SelectComp";
 
 export default function TournamentsPage({ user, logoutHandler }) {
   const [tournamentsList, setTournamentsList] = useState([]);
   const [newTournament, setNewTournament] = useState({});
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [sort, setSort] = useState("future");
+
+  const filterTournaments = useMemo(() => {
+    if (sort === "future") {
+      return tournamentsList.filter((tournament) => new Date(tournament.date_end) > new Date(Date.now() + 2 * 24 * 60 * 60 * 1000));
+    } else if (sort === "past") {
+      return tournamentsList.filter((tournament) => new Date(tournament.date_end) < new Date(Date.now() + 2 * 24 * 60 * 60 * 1000));
+    } else if (sort === "all") {
+      return tournamentsList;
+    }
+  }, [tournamentsList, sort]);
+
+  const startFilterTournaments = (sort) => {
+    setSort(sort);
+  };
+
 
   const handleUpdateXByStars = () => {
     setIsLoading(true);
@@ -92,8 +109,19 @@ export default function TournamentsPage({ user, logoutHandler }) {
         <h1>Турниры</h1>
         <div className={styles.mainInfo}>
           <h2>Сетка ФСМ</h2>
+          <div className={styles.sort}>
+          <SelectComp
+              value={sort}
+              onChangeFunc={startFilterTournaments}
+              defaultValue={"не завершенные"}
+              options={[
+                { value: "future", name: "не завершенные" },
+                { value: "past", name: "завершенные" },
+                { value: "all", name: "все" },
+              ]}
+            /></div>
           <div className={styles.elementListContainer}>
-            {tournamentsList.map((tournament) => (
+            {filterTournaments.map((tournament) => (
               <div key={tournament.id} className={styles.listElement}>
                 <div className={styles.date}>
                   {tournament.date_start.slice(5)}

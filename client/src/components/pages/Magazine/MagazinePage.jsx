@@ -17,14 +17,14 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
 
   const playersSorted = useMemo(() => {
     let filteredPlayers = [...players];
-    
+
     // Применяем поиск по нику, если есть запрос
     if (searchQuery) {
-      filteredPlayers = filteredPlayers.filter(player => 
+      filteredPlayers = filteredPlayers.filter((player) =>
         player.nickname.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-    
+
     // Применяем сортировку, если выбрана
     if (selectedSort) {
       filteredPlayers.sort((a, b) => {
@@ -35,7 +35,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
         }
       });
     }
-    
+
     return filteredPlayers;
   }, [players, selectedSort, searchQuery]);
 
@@ -149,7 +149,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
         <div className={styles.wrapper}>
           <div className={styles.nav}>
             <div className={styles.burger}>
-              <BurgerMenuComp user={user}/>
+              <BurgerMenuComp user={user} />
             </div>
             <NavigationComp user={user} logoutHandler={logoutHandler} />
           </div>
@@ -176,7 +176,11 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
                   //   }}
                   //   onClick={() => handleClubClick(club.id)}
                   // />
-                  <div className={styles.clubContainer} key={club.id} onClick={() => handleClubClick(club.id)}>
+                  <div
+                    className={styles.clubContainer}
+                    key={club.id}
+                    onClick={() => handleClubClick(club.id)}
+                  >
                     {club.name}
                   </div>
                 ))}

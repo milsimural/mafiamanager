@@ -234,3 +234,7 @@ h2 {
     max-width: 100%;
   }
 }
+
+.sort {
+  margin: 20px 0 10px 0;
+}

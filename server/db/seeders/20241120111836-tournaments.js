@@ -2528,7 +2528,7 @@ module.exports = {
         cityName: 'Нижний Новгород',
         cityId: null,
         isReady: false,
-        date_end: '2025-02-03',
+        date_end: '2025-11-03',
         date_start: '2025-11-02',
         gomafiaId: 1908,
         star: 3,
