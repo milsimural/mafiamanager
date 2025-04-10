@@ -20,9 +20,17 @@ export default function TournamentsPage({ user, logoutHandler }) {
 
   const filterTournaments = useMemo(() => {
     if (sort === "future") {
-      return tournamentsList.filter((tournament) => new Date(tournament.date_end) > new Date(Date.now() + 2 * 24 * 60 * 60 * 1000));
+      return tournamentsList.filter(
+        (tournament) =>
+          new Date(tournament.date_end) >
+          new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+      );
     } else if (sort === "past") {
-      return tournamentsList.filter((tournament) => new Date(tournament.date_end) < new Date(Date.now() + 2 * 24 * 60 * 60 * 1000));
+      return tournamentsList.filter(
+        (tournament) =>
+          new Date(tournament.date_end) <
+          new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+      );
     } else if (sort === "all") {
       return tournamentsList;
     }
@@ -31,7 +39,6 @@ export default function TournamentsPage({ user, logoutHandler }) {
   const startFilterTournaments = (sort) => {
     setSort(sort);
   };
-
 
   const handleUpdateXByStars = () => {
     setIsLoading(true);
@@ -110,7 +117,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
         <div className={styles.mainInfo}>
           <h2>Сетка ФСМ</h2>
           <div className={styles.sort}>
-          <SelectComp
+            <SelectComp
               value={sort}
               onChangeFunc={startFilterTournaments}
               defaultValue={"не завершенные"}
@@ -119,9 +126,10 @@ export default function TournamentsPage({ user, logoutHandler }) {
                 { value: "past", name: "завершенные" },
                 { value: "all", name: "все" },
               ]}
-            /></div>
+            />
+          </div>
           <div className={styles.elementListContainer}>
-            { .map((tournament) => (
+            {filterTournaments.map((tournament) => (
               <div key={tournament.id} className={styles.listElement}>
                 <div className={styles.date}>
                   {tournament.date_start.slice(5)}
