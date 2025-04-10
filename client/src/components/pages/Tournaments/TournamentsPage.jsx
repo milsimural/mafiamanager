@@ -121,7 +121,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
               ]}
             /></div>
           <div className={styles.elementListContainer}>
-            {filterTournaments.map((tournament) => (
+            { .map((tournament) => (
               <div key={tournament.id} className={styles.listElement}>
                 <div className={styles.date}>
                   {tournament.date_start.slice(5)}
