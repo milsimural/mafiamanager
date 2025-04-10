@@ -62,11 +62,19 @@ export default function BurgerMenuComp2({ user }) {
               </li>
 
               {user?.isAdmin && (
-                <li>
-                  <Link className={styles.menuItem} to="/playersmanagment">
-                    Управление спортсменами
-                  </Link>
-                </li>
+                <>
+                  <li>==============</li>
+                  <li>
+                    <Link className={styles.menuItem} to="/playersmanagment">
+                      Управление спортсменами
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className={styles.menuItem} to="/users">
+                      Управление пользователями
+                    </Link>
+                  </li>
+                </>
               )}
             </ul>
           </div>

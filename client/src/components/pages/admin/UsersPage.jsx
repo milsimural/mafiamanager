@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../axiosInstance";
+import UserCom from "./UserCom";
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -20,9 +21,7 @@ export default function UsersPage() {
       <h1>UsersPage</h1>
       <ul>
         {users.map((user) => (
-          <li key={user.id}>
-            {user.name} - {user.email}
-          </li>
+          <UserCom key={user.id} user={user} />
         ))}
       </ul>
     </div>

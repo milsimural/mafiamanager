@@ -1,0 +1,19 @@
+.user {
+  font-size: 9px;
+  margin-bottom: 4px;
+}
+
+.user span {
+  padding: 6px;
+}
+
+.user input {
+  font-size: 9px;
+  width: 40px;
+  display: inline;
+  margin-right: 10px;
+}
+
+.user button {
+  font-size: 9px;
+}
