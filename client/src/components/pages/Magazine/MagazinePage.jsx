@@ -83,6 +83,22 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
     { id: 286, image: "logo-35.jpg", name: "HSMSK" },
     { id: 50, image: "logo-35.jpg", name: "IMPEKB" },
     { id: 106, image: "logo-35.jpg", name: "RBF" },
+    { id: 68, image: "logo-35.jpg", name: "MSTYLE" },
+    { id: 81, image: "logo-35.jpg", name: "KULT" },
+    { id: 62, image: "logo-35.jpg", name: "CAM" },
+    { id: 57, image: "logo-35.jpg", name: "DS" },
+    { id: 59, image: "logo-35.jpg", name: "SHER" },
+    { id: 4, image: "logo-35.jpg", name: "BBB" },
+    { id: 125, image: "logo-35.jpg", name: "BULLET" },
+    { id: 185, image: "logo-35.jpg", name: "ГОРТЕН" },
+    { id: 354, image: "logo-35.jpg", name: "CHIPENZ" },
+    { id: 41, image: "logo-35.jpg", name: "CHI" },
+    { id: 187, image: "logo-35.jpg", name: "GAR" },
+    { id: 358, image: "logo-35.jpg", name: "CHITAM" },
+    { id: 303, image: "logo-35.jpg", name: "STPERM" },
+    { id: 67, image: "logo-35.jpg", name: "REDTR" },
+    { id: 66, image: "logo-35.jpg", name: "BLKLIST" },
+    { id: 309, image: "logo-35.jpg", name: "XCRAFT" },
   ];
 
   // Сохранить в локал настройки фильтра

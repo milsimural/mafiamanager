@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 import styles from "src/components/ui/Cards/Cards2.module.css";
 
 import russiaImage from "src/components/ui/Cards/countries/russiaFlagRound.svg";
-import StarsComponent from "src/components/ui/Cards/StarsComponent/StarsComponent";
+//import StarsComponent from "src/components/ui/Cards/StarsComponent/StarsComponent";
+import StarsComponent from "src/components/ui/Stars/StarsComp2";
 import powerImage from "src/components/ui/Cards/energy.svg";
 
 import faceGold from "src/components/ui/Cards/goldFace.svg";
