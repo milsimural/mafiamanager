@@ -23,7 +23,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
       return tournamentsList.filter(
         (tournament) =>
           new Date(tournament.date_end) >
-          new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+          new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
       );
     } else if (sort === "past") {
       return tournamentsList.filter(
