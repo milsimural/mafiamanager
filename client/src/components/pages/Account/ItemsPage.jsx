@@ -13,11 +13,10 @@ useEffect(() => {
 function async getUserItems() {
     try {
         const res = await axiosInstance.get(`/itemInstance${user.id}`);
-    setUserItems(res.data);
+        setUserItems(res.data);
     } catch (error) {
         console.log(`Ошибка загрузки Items пользователя ${error}`);
     }
-    
 }
 
   return (

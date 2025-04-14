@@ -50,6 +50,10 @@ html {
   line-height: 1.2;
 }
 
+.items {
+
+}
+
 @media (max-width: 767px) {
   .wrapper {
     flex-direction: column;
@@ -107,7 +111,15 @@ html {
     max-width: 100%;
   }
 
-  
+  .items img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.items img {
+  width: 40px;
+  height: 40px;
 }
 
 h1 {
@@ -196,6 +208,18 @@ h1 {
 }
 
   .coins img {
+    width: 20x;
+    height: 20px;
+  }
+
+  .gems {
+    width: 20px;
+  height:20px;
+  margin-left: 20px;
+  margin-bottom: 2px;
+  }
+
+  .gems img {
     width: 20x;
     height: 20px;
   }
@@ -304,4 +328,81 @@ h1 {
 
 .leaders {
   margin-bottom: 40px;
+}
+
+.top {
+  margin-bottom: 40px;
+}
+
+.h2top {
+  margin-top: 40px;
+}
+
+.topItems {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.topItemPlace {
+  margin-right: 16px;
+}
+
+.topItemName {
+  width: 100px;
+}
+
+/* Базовые стили для места */
+.topItemPlace {
+  font-size: 18px;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  /* другие общие стили */
+}
+
+/* Стили для золотого призёра (1 место) */
+.gold {
+  color: #1e1e1e;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  background-color: gold;
+  border: #1e1e1e;
+  border-radius: 15px;
+  
+}
+
+/* Стили для серебрянного призёра (2 место) */
+.silver {
+  color: #1e1e1e;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  background-color: silver;
+  border: #1e1e1e;
+  border-radius: 15px;
+}
+
+/* Стили для бронзового призёра (3 место) */
+.bronze {
+  color: #1e1e1e;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  background-color: #cd7f32;
+  border: #1e1e1e;
+  border-radius: 15px;
+}
+
+/* Дополнительные стили для текста */
+.goldText {
+  color: gold;
+  font-weight: bold;
+}
+
+.silverText {
+  color: silver;
+  font-weight: bold;
+}
+
+.bronzeText {
+  color: #cd7f32;
+  font-weight: bold;
 }

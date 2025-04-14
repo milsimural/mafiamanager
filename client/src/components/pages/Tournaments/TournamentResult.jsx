@@ -9,11 +9,16 @@ import NavigationComp from "src/components/ui/Nav/NavigationComp";
 import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
 import classNames from "classnames";
 import bigCoinImage from "src/components/files/big-coin20.png";
+import bigGemsImage from "src/components/files/gems.svg";
 import takeImg from "src/components/pages/Tournaments/take.png";
+import TopUserResultComp from "./TopUserResultComp"
 
 export default function TournamentResult({ user, logoutHandler }) {
   const [resultData, setResultData] = useState({});
+  const [topData, setTopData] = useState([]);
   const [userCoinsProfit, setUserCoinsProfit] = useState(0);
+  const [userGemsProfit, setUserGemsProfit] = useState(0);
+  const [userItemsProfit, setUserItemsProfit] = useState([]);
   const [userRosterId, setUserRosterId] = useState(null);
   const [userIsTakeProfit, setUserIsTakeProfit] = useState(false);
   const { tournamentId } = useParams();
@@ -45,6 +50,7 @@ export default function TournamentResult({ user, logoutHandler }) {
     if (!user) return;
 
     async function getResultData() {
+      let itemsList;
       try {
         const response = await axiosInstance.get(
           `constract/getrosters/${tournamentId}`
@@ -56,12 +62,21 @@ export default function TournamentResult({ user, logoutHandler }) {
 
         setResultData(sortedData);
 
+        const top = sortedData.filter((item) => item.profitCoins !== 0);
+        setTopData(top);
+
         const userData = sortedData.find((item) => item.userId === user.id);
         if (userData) {
           setUserCoinsProfit(userData.profitCoins);
+          setUserGemsProfit(userData.profitGems);
+          itemsList = userData.profitItems;
           setUserRosterId(userData.id);
           setUserIsTakeProfit(userData.isTakeProfit);
         }
+
+        const itemsObjects = await axiosInstance.post(`items/itemsList/`, {itemsList: itemsList});
+        setUserItemsProfit(itemsObjects.data);
+
       } catch (error) {
         console.error("Проблемы при загрузке данных турнира:", error);
       }
@@ -69,6 +84,27 @@ export default function TournamentResult({ user, logoutHandler }) {
 
     getResultData();
   }, [tournamentId, user]);
+
+  async function getUserGiftItems(userId) {
+    if (!topData) return;
+    try {
+    const tempData = topData.find((item) => item.userId === userId);
+    const userData = structuredClone(tempData);
+    const userObject = {};
+    userObject.coins = 0;
+    userObject.gems = userData.profitGems;
+    userObject.items = userData.profitItems;
+    userObject.tournamentId = userData.tournamentId;
+    userObject.place = userData.place;
+    const itemsObjects = await axiosInstance.post(`items/itemsList/`, {itemsList: userObject.items});
+    userObject.ItemsView = itemsObjects;
+    // console.log(userObject);
+    return userObject;
+     } catch(e) {
+      console.log(`error: ${e} - при парсинге данных для победителей`)
+      return;
+     }
+  }
 
   useEffect(() => {
     if (!user) return;
@@ -101,8 +137,10 @@ export default function TournamentResult({ user, logoutHandler }) {
     setSum(sumPlayers);
   }, [leaders]);
 
+
   async function takeProfit() {
     if (userIsTakeProfit) return;
+    if(!userItemsProfit) return;
     try {
       const response = await axiosInstance.patch(
         `constract/takeProfit/${userRosterId}`
@@ -135,7 +173,22 @@ export default function TournamentResult({ user, logoutHandler }) {
             <div className={styles.coins}>
               <img src={bigCoinImage} alt="coin" />
             </div>
-            <div className={styles.results}>{userCoinsProfit}</div>
+            <div className={styles.results}>{userCoinsProfit !== undefined ? userCoinsProfit : "Загрузка..."}</div>
+            <div className={styles.gems}>
+              {userGemsProfit !== undefined ? <img src={bigGemsImage} alt="gem" /> : ""}
+              </div>
+            <div className={styles.results}>{userGemsProfit !== undefined ? userGemsProfit : ""}</div>
+            <div className={styles.items}>
+            <div className={styles.itemsExample}>
+              {Array.isArray(userItemsProfit) ? (
+                  userItemsProfit.map((item, index) => (
+                  <div key={index}>{item.picture ? <img src={`/${item.picture}`} alt={item.type} /> : item.id}</div>
+                  ))
+                ) : (
+                <div></div>
+                )}
+            </div>
+              </div>
           </div>
 
           <div>
@@ -150,7 +203,7 @@ export default function TournamentResult({ user, logoutHandler }) {
                     className={styles.takeButton}
                     onClick={takeProfit}
                   >
-                    Забрать приз
+                    Забрать
                   </button>
                 ) : (
                   <p>Призы еще не готовы к выдаче</p>
@@ -161,7 +214,45 @@ export default function TournamentResult({ user, logoutHandler }) {
               </>
             )}
           </div>
+
+            {topData && topData.length > 0 ? (
+              <div>
+              <h2 className={styles.h2top}>Призы</h2>
+              <div className={styles.top}>
+  {topData.map((item, index) => (
+    <div className={styles.topItems} key={item.id}>
+      {/* Место - разные стили для 1-3 позиций */}
+      <div className={`
+        ${styles.topItemPlace} 
+        ${index === 0 ? styles.gold : ''}
+        ${index === 1 ? styles.silver : ''}
+        ${index === 2 ? styles.bronze : ''}
+      `}>
+        {item.place}
+      </div>
+      
+      {/* Имя - тоже можно стилизовать */}
+      <div className={`
+        ${styles.topItemName} 
+        ${index === 0 ? styles.goldText : ''}
+        ${index === 1 ? styles.silverText : ''}
+        ${index === 2 ? styles.bronzeText : ''}
+      `}>
+        {item.userName}
+      </div>
+      
+      <div>
+        <TopUserResultComp getItemFunc={getUserGiftItems} userId={item.userId} />
+      </div>
+    </div>
+  ))}
+</div>
+            </div>
+            ) : (<p>Призовой фонд не распределяется так как участников турнира Мафеменеджера менее 20 человек.</p>)}
+          
+
           <div>
+            <h2>Турнирная таблица</h2>
             <table className={styles.table}>
               <thead>
                 <tr>

@@ -6,8 +6,12 @@ const {
   Roster,
   User,
   Transaction,
+  Item,
+  GiftConfig
 } = require('../../db/models');
 const constractRouter = Router();
+
+const { Op } = require('sequelize');
 
 const verifyAccessToken = require('../middlewares/verifyAccessToken');
 
@@ -239,6 +243,7 @@ class RosterUpdateError extends Error {
 }
 
 // Обновление всех ростеров турнира
+// Сюда пришли данные: [{login: 'zhirektor', sum: 2332.4, place: 1, id: 104}, ...]
 constractRouter.patch('/setProfitAndPlaces/:tournamentId', async (req, res) => {
   try {
     const { tournamentId } = req.params;
@@ -455,8 +460,11 @@ constractRouter.patch('/takeProfit/:rosterId', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Обновляем количество монет у пользователя
+    // Обновляем количество монет и алмазов у пользователя
     user.coins += roster.profitCoins;
+    user.gems += roster.profitGems;
+
+    // Сохраянем все
     await user.save();
 
     // Обновляем статус ростера
@@ -469,6 +477,12 @@ constractRouter.patch('/takeProfit/:rosterId', async (req, res) => {
       amount: roster.profitCoins,
       type: 'takeProfit',
     });
+
+    const transactionGems = await Transaction.create({
+      userId: user.id,
+      amount: roster.profitGems,
+      type: 'takeProfitGems'
+    })
 
     res.json(roster); // Возвращаем обновленный объект ростера
   } catch (error) {
@@ -524,9 +538,146 @@ constractRouter.get('/rating', async (req, res) => {
     const ratingSort = rating.sort((a, b) => b.totalProfit - a.totalProfit);
     res.json(ratingSort);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred while getting player rosters' });
+    res.status(500).json({ error: 'An error occurred while getting player rosters', text: error.message });
   }
 });
+
+
+// Сделаем функцию случайной генерации
+function getRandomElementFromArray(arr) {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
+
+// Функция обновления ростеров
+async function updateRosters(filteredRosters, usersBounty) {
+  const result = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const roster of filteredRosters) {
+    const profitData = usersBounty.find((userB) => userB.userId === roster.userId);
+    // eslint-disable-next-line no-continue
+    if (!profitData) continue;
+
+    try {
+      // Обновляем coins и gems с проверкой на null/undefined
+      roster.profitCoins = (roster.profitCoins || 0) + (profitData.coins || 0);
+      roster.profitGems = profitData.gems || 0;
+
+      // Глубокая копия массива itemsArray
+      roster.profitItems = JSON.stringify(structuredClone(profitData.itemsArray) || []);
+
+      // Асинхронное сохранение с обработкой ошибок
+      // eslint-disable-next-line no-await-in-loop
+      await roster.save();
+      result.push(roster);
+    } catch (error) {
+      result.push(`ERROR: ${error.text} - ${roster.id}`);
+    }
+  }
+  return result;
+}
+
+// Найти все ростеры по id турнира, выбрать пользователей с местами от 1 до 10 и сгенерировать призы которые они получат и записать их в поле profitItems
+constractRouter.get('/setGifts/:tournamentId', async (req, res) => {
+  let resultOfUpdateRostersWithGifts;
+    const { tournamentId } = req.params;
+    // Найдем все ростеры турнира
+    const rosters = await Roster.findAll({ where: { tournamentId } });
+    if(!rosters) {
+      return res.status(404).json({ error: 'Rosters not found' });
+    }
+    // Теперь отфильтруем только тех кто занял с 1 по 10 место
+    const filteredRosters = rosters.filter(roster => roster.place <= 10);
+
+    // Проверка что в ростере уже есть предметы и тогда возврат (чтобы избежать двойного начисления)
+    const firstPlace = filteredRosters.find(roster => roster.place === 1);
+    if(firstPlace.profitItems) {
+      return res.status(400).json({ error: 'First place already has items' });
+    }
+
+    // Найдем все item в которых grade не равен null (так как нам нужны только те у которых есть значение 5, 10, 15 итп)
+    const items = await Item.findAll({where: 
+      {grade: 
+        {[Op.ne]: null}
+      }
+    })
+    if(!items) {
+      return res.status(404).json({ error: 'Items not found' });
+    }
+
+    // Теперь получим данные какой giftconfig у этого турнира (id)
+    const tournament = await Tournament.findByPk(tournamentId);
+    if(!tournament) {
+      return res.status(404).json({ error: 'Tournament not found' });
+    }
+    const {giftConfigId} = tournament;
+    // Найдем его
+    const giftConfig = await GiftConfig.findByPk(giftConfigId);
+    if(!giftConfig) {
+      return res.status(404).json({ error: 'GiftConfig not found' });
+    }
+
+    try { giftConfig.coins = typeof giftConfig.coins === 'string' ? JSON.parse(giftConfig.coins) : giftConfig.coins;
+      giftConfig.gems = typeof giftConfig.gems === 'string' ? JSON.parse(giftConfig.gems) : giftConfig.gems;
+      giftConfig.randomItems = typeof giftConfig.randomItems === 'string' ? JSON.parse(giftConfig.randomItems) : giftConfig.items; }
+    catch (error) {
+      return res.status(500).json({ error: 'Failed to parse giftConfig', text: error.message });
+    }
+    
+    // Создадим массив usersBounty из filteredRosters которые получат призы для отображения в фронте
+    const usersBounty = filteredRosters.map(roster => ({
+        userId: roster.userId,
+        coins: 0,
+        gems: 0,
+        itemsSumGrades: 0,
+        itemsArray: [],
+        place: roster.place
+    }));
+
+    // В этот массив мы запишем данные какому юзеры какие призы полагаются
+    try {
+      for (let i = 0; i < 10; i++) {
+        const user = usersBounty.find(item => item.place === i + 1);
+        if (!user) {;
+          // eslint-disable-next-line no-continue
+          continue; // Пропускаем итерацию
+        }
+        user.coins = giftConfig.coins[i];
+        user.gems = giftConfig.gems[i];
+        user.itemsSumGrades = giftConfig.randomItems[i];
+      }
+    } catch (error) {
+      return res.status(500).json({ error: 'Failed to assign prizes to users - первый фор не проходит', text: error.message, gc: giftConfig.coins[0], user: usersBounty.find(item => item.place === 1), arr: usersBounty } );
+    }
+    
+    // Теперь нужно записать в массив itemsArray - случайные предметы
+    try {
+      for(let i = 0; i < usersBounty.length; i++) {
+        const maxGrade = usersBounty[i].itemsSumGrades;
+        let currentGrade = maxGrade; 
+        const itemsArrayForGift = [];
+        while(currentGrade > 0) {
+          const randomItem = getRandomElementFromArray(items);
+          // eslint-disable-next-line no-continue
+          if (randomItem.grade > currentGrade) continue;
+          itemsArrayForGift.push(randomItem.id);
+          currentGrade -= randomItem.grade;
+        }
+        usersBounty[i].itemsArray = itemsArrayForGift;
+      }
+    } catch (error) {
+      return res.status(522).json({ error: 'Ошибка ген. сл. предметов', text: error.message });
+    }
+
+    try {
+      resultOfUpdateRostersWithGifts = await updateRosters(filteredRosters, usersBounty);
+    } catch (error) {
+      return res.status(500).json({ error: 'Ошибка при обновлении данных ростеров', text: error.message });
+    }
+    
+    // Отправляем на клиент эти данные
+    res.status(200).json({usersBounty, resultOfUpdateRostersWithGifts});
+})
+
 
 module.exports = constractRouter;

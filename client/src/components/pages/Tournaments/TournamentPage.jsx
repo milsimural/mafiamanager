@@ -173,6 +173,22 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
     alert(`Значение сохранено: ${valuex}`);
   };
 
+  // ОПРЕДЕЛЕНИЕ ПРИЗОВ
+
+    async function setGifts() {
+      try {
+        const gifts = await axiosInstance.get(
+          `constract/setGifts/${tournamentId}`
+        );
+        console.log(gifts.data);
+        alert("Призы установлены");
+      } catch (error) {
+        console.error(`${error.message} при установке призов`);
+        alert(`${error.message} при установке призов`);
+      }
+    }
+
+
   // ОБНОВЛЕНИЕ РОСТЕРА
   async function updateRoster() {
     if (tournament?.rosterFinish) return;
@@ -292,23 +308,22 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
     return gomafiaIds;
   }
 
+  // Тут мы расчитываем результат турнира - кнопка "Получить результаты турнира"
   async function getResults() {
     if (!rawData || !tournament) return;
+    // Загрузил json таблицы финала
     const tournamentResultWithFinal =
       rawData.props.pageProps.serverData.tournamentResultWithFinal;
+    // Загрузил json таблицы без финала
     const tournamentResultWithoutFinal =
       rawData.props.pageProps.serverData.tournamentResultWithoutFinal;
 
-    // Получение первых 10 объектов
-    // const selectedFromWithFinal = tournamentResultWithFinal.slice(0, 10);
-    const selectedFromWithFinal = tournamentResultWithFinal;
-
-    // Собираем логины из выбранных 10 объектов
+    // Собираем логины из выбранных 10 объектов, в Set потому что он хранит только уникальные значения
     const existingLogins = new Set(
-      selectedFromWithFinal.map((item) => item.login)
+      tournamentResultWithFinal.map((item) => item.login)
     );
 
-    // Добавляем объекты из WithoutFinal, логины которых уникальны
+    // Добавляем объекты из WithoutFinal, логины которых уникальны и их нет в Set
     let uniqueFromWithoutFinal = [];
 
     if (tournamentResultWithoutFinal !== null) {
@@ -317,11 +332,11 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
       );
     }
 
-    // Результирующий массив
-    const resultArray = [...selectedFromWithFinal, ...uniqueFromWithoutFinal];
+    // Результирующий массив - тут мы просто собираем данные из таблиц финала и отбора в одну, в таблице отбора финалист дублируется поэтому такой секс
+    const resultArray = [...tournamentResultWithFinal, ...uniqueFromWithoutFinal];
 
     // Теперь нам нужно сопоставить логины с игроками из БД
-    // ВНИМАНИЕ! ТУТ ИДЕТ УМНОЖЕНИЕ НА Х
+    // ВНИМАНИЕ! ТУТ ИДЕТ УМНОЖЕНИЕ НА Х .sum (баллы игрока) * x
     const plainPlayers = resultArray.map((item) => ({
       login: item.login.toLowerCase(),
       sum: Number(item.sum) * Number(tournament.x),
@@ -330,6 +345,7 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
     console.log("Получаем списочек");
     console.log(plainPlayers);
 
+    // Полаем игроков турнира из БД
     let players = [];
     try {
       const tournamentPlayers = await axiosInstance.get(
@@ -344,6 +360,7 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
       return;
     }
 
+    // Теперь нам нужно сопоставить логины с игроками из БД
     const resultTable = plainPlayers
       .map((item) => {
         const player = players.find(
@@ -770,9 +787,11 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
               <button onClick={() => openRosters()}>
                 Открыть ростеры обратно
               </button>
+              {/* Тут исходя из таблицы расчитываются результаты игроков по баллам */}
               <button onClick={() => getResults()}>
                 Получить результаты турнира - определить доход
               </button>
+              <button onClick={() => setGifts()}>Начислить призы</button>
               <button onClick={() => overRosters()}>
                 Закончить турнир (Rosters Over)
               </button>

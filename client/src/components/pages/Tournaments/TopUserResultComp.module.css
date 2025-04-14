@@ -1,0 +1,49 @@
+.itemsList {
+    display: flex;
+    flex-direction: row;
+}
+
+.itemsList img {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+}
+
+.item {
+    margin-right: 10px;
+}
+
+.gems {
+    width: 24px;
+}
+
+.gems img {
+    width: 20px;
+    height: 20px;
+  }
+
+.coins {
+    width: 24px;
+}
+
+.coins img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .rows {
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 10px;
+  }
+
+.gemsText {
+    width: 50px;
+}
+
+.coinsText {
+    width: 60px;
+}
+
