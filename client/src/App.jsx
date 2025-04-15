@@ -15,6 +15,7 @@ import TournamentResult from "./components/pages/Tournaments/TournamentResult";
 import Rating from "./components/pages/Tournaments/Rating";
 import MainPage from "./components/pages/Main/MainPage";
 import PlayersManagment from "./components/pages/admin/PlayersManagment";
+import ItemsPage from "./components/pages/Account/ItemsPage";
 
 // Импорт контекста
 import { UtilsProvider } from "./context";
@@ -108,6 +109,12 @@ function App() {
           element: (
             <PlayersManagment user={user} logoutHandler={logoutHandler} />
           ),
+        },
+        {
+          path: "/items",
+          element: (
+            <ItemsPage user={user} logoutHandler={logoutHandler} />
+          )
         },
         {
           path: "*",

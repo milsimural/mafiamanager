@@ -7,14 +7,37 @@ const itemRouter = Router();
 const verifyAccessToken = require('../middlewares/verifyAccessToken');
 
 // Получаем все предметы игрока
+// itemRouter.get('/:userId', verifyAccessToken, async (req, res) => {
+//   try {
+//     const items = await ItemInstance.findAll({
+//       where: {
+//         userId: req.params.userId,
+//       },
+//     });
+//     res.status(200).json(items);
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ error: `Ошибка при получении всех предметов ${error.message}` });
+//   }
+// });
+
 itemRouter.get('/:userId', verifyAccessToken, async (req, res) => {
   try {
     const items = await ItemInstance.findAll({
       where: {
         userId: req.params.userId,
       },
+      include: [{
+        model: Item,
+        as: 'prototype',
+        attributes: ['picture']
+      }],
+      raw: true, // Возвращает простые объекты вместо экземпляров модели
+      nest: true // Вложенные объекты для включенных моделей
     });
-    res.json(items);
+    
+    res.status(200).json(items);
   } catch (error) {
     res
       .status(500)
@@ -103,6 +126,43 @@ itemRouter.get('/giftInfo/:tournamentId/:place', async (req, res) => {
   res.status(200).json({coins: {curPlaceCoins}})
 }); 
 
+itemRouter.post('/add-multiple/:userId', verifyAccessToken, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { itemIds } = req.body; // Ожидаем массив ID предметов
 
+    // Валидация входных данных
+    if (!userId || !itemIds || !Array.isArray(itemIds) || itemIds.length === 0) {
+      return res.status(400).json({ error: 'Необходимо передать userId и массив itemIds' });
+    }
+
+    // Подготовка данных для массового создания
+    const itemsToCreate = itemIds.map(itemId => ({
+      userId,
+      itemId,
+      isActivated: false, // или другие значения по умолчанию
+      isBlocked: false,
+      activationStart: null,
+      expiredAt: null
+    }));
+
+    // Массовое создание экземпляров предметов
+    const createdItems = await ItemInstance.bulkCreate(itemsToCreate, {
+      returning: true // Возвращать созданные записи
+    });
+
+    res.status(201).json({ 
+      message: 'Items added successfully',
+      count: createdItems.length,
+      items: createdItems.map(item => item.id) // Возвращаем IDs созданных экземпляров
+    });
+
+  } catch (error) {
+    console.error('Error adding multiple items:', error);
+    res.status(500).json({ 
+      error: `Ошибка при добавлении предметов: ${error.message}` 
+    });
+  }
+});
 
 module.exports = itemRouter;

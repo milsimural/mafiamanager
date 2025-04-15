@@ -60,6 +60,11 @@ export default function BurgerMenuComp2({ user }) {
                   Рейтинг
                 </Link>
               </li>
+              <li>
+                <Link className={styles.menuItem} to="/items">
+                  Предметы
+                </Link>
+              </li>
 
               {user?.isAdmin && (
                 <>

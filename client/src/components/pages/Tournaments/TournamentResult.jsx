@@ -145,7 +145,16 @@ export default function TournamentResult({ user, logoutHandler }) {
       const response = await axiosInstance.patch(
         `constract/takeProfit/${userRosterId}`
       );
-      console.log(response.data);
+      
+      const itArray = userItemsProfit.map((item) => {
+        return item.id
+      })
+
+      const itemsResponse = await axiosInstance.post(`/items/add-multiple/${user.id}`, {
+        itemIds: itArray
+      });
+      console.log('Успешно создано предметов:', itemsResponse.data.count);
+      console.log('ID созданных экземпляров:', itemsResponse.data.items);
       alert("Приз успешно забран");
       setUserIsTakeProfit(true);
     } catch (error) {
@@ -190,7 +199,7 @@ export default function TournamentResult({ user, logoutHandler }) {
             </div>
               </div>
           </div>
-
+          
           <div>
             {userIsTakeProfit ? (
               <>Вы забрали приз</>
