@@ -154,7 +154,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
                     ? tournament.participants_count
                     : ""}
                 </div>
-                {tournament.isReady && tournament.status !== "over" && (
+                {tournament.isReady && tournament.status !== "over" && tournament.status !== "overG" && (
                   <div className={styles.ready}>
                     <button
                       className={styles.readyButton}
@@ -166,7 +166,7 @@ export default function TournamentsPage({ user, logoutHandler }) {
                   </div>
                 )}
 
-                {tournament.isReady && tournament.status === "over" && (
+                {tournament.isReady && (tournament.status === "over" || tournament.status === "overG") && (
                   <div className={styles.ready}>
                     <button
                       className={styles.readyButton}

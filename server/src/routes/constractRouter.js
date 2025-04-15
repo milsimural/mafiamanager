@@ -674,6 +674,13 @@ constractRouter.get('/setGifts/:tournamentId', async (req, res) => {
     } catch (error) {
       return res.status(500).json({ error: 'Ошибка при обновлении данных ростеров', text: error.message });
     }
+
+    try {
+      tournament.status = "overG";
+      tournament.save()
+    } catch(e) {
+      res.status(511).json({error: "НЕ поставился флаг overG", e})
+    }
     
     // Отправляем на клиент эти данные
     res.status(200).json({usersBounty, resultOfUpdateRostersWithGifts});

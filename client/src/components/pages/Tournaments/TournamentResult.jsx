@@ -25,6 +25,7 @@ export default function TournamentResult({ user, logoutHandler }) {
   const [leaders, setLeaders] = useState([]);
   const [sum, setSum] = useState(0);
   const [isOver, setIsOver] = useState(false);
+  const [tournament, setTournament] = useState();
 
   useEffect(() => {
     if (!tournamentId) return;
@@ -47,6 +48,17 @@ export default function TournamentResult({ user, logoutHandler }) {
 
   useEffect(() => {
     if (!tournamentId) return;
+
+    axiosInstance
+      .get(`/tournaments/details/${tournamentId}`)
+      .then((res) => {
+        setTournament(res.data);
+      })
+      .catch((error) => console.error("Ошибка при получении турнира:", error));
+  }, [tournamentId]);
+
+  useEffect(() => {
+    if (!tournamentId) return;
     if (!user) return;
 
     async function getResultData() {
@@ -62,7 +74,7 @@ export default function TournamentResult({ user, logoutHandler }) {
 
         setResultData(sortedData);
 
-        const top = sortedData.filter((item) => item.profitCoins !== 0);
+        const top = sortedData.filter((item) => item.place < 11);
         setTopData(top);
 
         const userData = sortedData.find((item) => item.userId === user.id);
@@ -141,6 +153,7 @@ export default function TournamentResult({ user, logoutHandler }) {
   async function takeProfit() {
     if (userIsTakeProfit) return;
     if(!userItemsProfit) return;
+    if(!tournament) return;
     try {
       const response = await axiosInstance.patch(
         `constract/takeProfit/${userRosterId}`
@@ -150,12 +163,16 @@ export default function TournamentResult({ user, logoutHandler }) {
         return item.id
       })
 
-      const itemsResponse = await axiosInstance.post(`/items/add-multiple/${user.id}`, {
-        itemIds: itArray
-      });
-      console.log('Успешно создано предметов:', itemsResponse.data.count);
-      console.log('ID созданных экземпляров:', itemsResponse.data.items);
+      if(tournament.status === "overG") {
+        const itemsResponse = await axiosInstance.post(`/items/add-multiple/${user.id}`, {
+          itemIds: itArray
+        });
+        console.log('Успешно создано предметов:', itemsResponse.data.count);
+        console.log('ID созданных экземпляров:', itemsResponse.data.items);
+      }
+      
       alert("Приз успешно забран");
+
       setUserIsTakeProfit(true);
     } catch (error) {
       console.error(error);
@@ -224,7 +241,7 @@ export default function TournamentResult({ user, logoutHandler }) {
             )}
           </div>
 
-            {topData && topData.length > 0 ? (
+            {tournament?.status === "overG" && topData && topData.length > 0 ? (
               <div>
               <h2 className={styles.h2top}>Призы</h2>
               <div className={styles.top}>
