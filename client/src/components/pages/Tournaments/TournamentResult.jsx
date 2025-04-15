@@ -150,30 +150,37 @@ export default function TournamentResult({ user, logoutHandler }) {
   }, [leaders]);
 
 
+  let isRunning = false;
   async function takeProfit() {
-    if (userIsTakeProfit) return;
+    if (isRunning) return;
+    if (userIsTakeProfit) {
+      alert("Доход уже был забран ранее");
+      return;
+    }
+
     if(!userItemsProfit) return;
     if(!tournament) return;
     try {
       const response = await axiosInstance.patch(
         `constract/takeProfit/${userRosterId}`
       );
+      alert("Доход от выступления игроков успешно забран");
       
-      const itArray = userItemsProfit.map((item) => {
-        return item.id
-      })
-
       if(tournament.status === "overG") {
+        const itArray = userItemsProfit.map((item) => {
+          return item.id
+        })
+
         const itemsResponse = await axiosInstance.post(`/items/add-multiple/${user.id}`, {
           itemIds: itArray
         });
         console.log('Успешно создано предметов:', itemsResponse.data.count);
         console.log('ID созданных экземпляров:', itemsResponse.data.items);
+        alert("Приз успешно забран");
       }
-      
-      alert("Приз успешно забран");
 
       setUserIsTakeProfit(true);
+      isRunning = false;
     } catch (error) {
       console.error(error);
     }
