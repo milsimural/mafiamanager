@@ -23,16 +23,24 @@ export default function TournamentsPage({ user, logoutHandler }) {
       return tournamentsList.filter(
         (tournament) =>
           new Date(tournament.date_end) >
-          new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+          new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
       );
     } else if (sort === "past") {
-      return tournamentsList.filter(
-        (tournament) =>
-          new Date(tournament.date_end) <
-          new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
-      );
+      return tournamentsList.filter((tournament) => {
+        const [year, month, day] = tournament.date_end.split("-");
+        const tournamentEndDate = new Date(year, month - 1, day, 23, 59, 59);
+        return tournamentEndDate < new Date();
+      });
     } else if (sort === "all") {
       return tournamentsList;
+    } else if (sort === "haveRosters") {
+      return tournamentsList.filter(
+        (tournament) => tournament.participants_count > 0
+      );
+    } else if (sort === "isReady") {
+      return tournamentsList.filter(
+        (tournament) => tournament.isReady === true
+      );
     }
   }, [tournamentsList, sort]);
 
@@ -124,6 +132,8 @@ export default function TournamentsPage({ user, logoutHandler }) {
               options={[
                 { value: "future", name: "не завершенные" },
                 { value: "past", name: "завершенные" },
+                { value: "haveRosters", name: "есть ростеры" },
+                { value: "isReady", name: "открытые" },
                 { value: "all", name: "все" },
               ]}
             />
@@ -154,29 +164,37 @@ export default function TournamentsPage({ user, logoutHandler }) {
                     ? tournament.participants_count
                     : ""}
                 </div>
-                {tournament.isReady && tournament.status !== "over" && tournament.status !== "overG" && (
-                  <div className={styles.ready}>
-                    <button
-                      className={styles.readyButton}
-                      onClick={() => handleTournamentNavigation(tournament.id)}
-                      style={{ backgroundImage: `url(${readyButtonImage})` }}
-                    >
-                      Ready
-                    </button>
-                  </div>
-                )}
+                {tournament.isReady &&
+                  tournament.status !== "over" &&
+                  tournament.status !== "overG" && (
+                    <div className={styles.ready}>
+                      <button
+                        className={styles.readyButton}
+                        onClick={() =>
+                          handleTournamentNavigation(tournament.id)
+                        }
+                        style={{ backgroundImage: `url(${readyButtonImage})` }}
+                      >
+                        Ready
+                      </button>
+                    </div>
+                  )}
 
-                {tournament.isReady && (tournament.status === "over" || tournament.status === "overG") && (
-                  <div className={styles.ready}>
-                    <button
-                      className={styles.readyButton}
-                      onClick={() => handleTournamentNavigation(tournament.id)}
-                      style={{ backgroundImage: `url(${grayImage})` }}
-                    >
-                      Over
-                    </button>
-                  </div>
-                )}
+                {tournament.isReady &&
+                  (tournament.status === "over" ||
+                    tournament.status === "overG") && (
+                    <div className={styles.ready}>
+                      <button
+                        className={styles.readyButton}
+                        onClick={() =>
+                          handleTournamentNavigation(tournament.id)
+                        }
+                        style={{ backgroundImage: `url(${grayImage})` }}
+                      >
+                        Over
+                      </button>
+                    </div>
+                  )}
 
                 {!tournament.isReady && user?.isAdmin && (
                   <div className={styles.ready}>

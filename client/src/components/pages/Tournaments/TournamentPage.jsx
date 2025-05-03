@@ -175,19 +175,18 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
 
   // ОПРЕДЕЛЕНИЕ ПРИЗОВ
 
-    async function setGifts() {
-      try {
-        const gifts = await axiosInstance.get(
-          `constract/setGifts/${tournamentId}`
-        );
-        console.log(gifts.data);
-        alert("Призы установлены");
-      } catch (error) {
-        console.error(`${error.message} при установке призов`);
-        alert(`${error.message} при установке призов`);
-      }
+  async function setGifts() {
+    try {
+      const gifts = await axiosInstance.get(
+        `constract/setGifts/${tournamentId}`
+      );
+      console.log(gifts.data);
+      alert("Призы установлены");
+    } catch (error) {
+      console.error(`${error.message} при установке призов`);
+      alert(`${error.message} при установке призов`);
     }
-
+  }
 
   // ОБНОВЛЕНИЕ РОСТЕРА
   async function updateRoster() {
@@ -333,7 +332,10 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
     }
 
     // Результирующий массив - тут мы просто собираем данные из таблиц финала и отбора в одну, в таблице отбора финалист дублируется поэтому такой секс
-    const resultArray = [...tournamentResultWithFinal, ...uniqueFromWithoutFinal];
+    const resultArray = [
+      ...tournamentResultWithFinal,
+      ...uniqueFromWithoutFinal,
+    ];
 
     // Теперь нам нужно сопоставить логины с игроками из БД
     // ВНИМАНИЕ! ТУТ ИДЕТ УМНОЖЕНИЕ НА Х .sum (баллы игрока) * x
@@ -469,9 +471,7 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
 
     return (
       <>
-        <p>
-          Сейчас в турнир добавленно {playersCount} игроков
-        </p>
+        <p>Сейчас в турнир добавленно {playersCount} игроков</p>
         <p>Название турнира: {tournament?.name}</p>
         <p>
           Турнир{" "}
@@ -484,6 +484,9 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
           <b style={{ color: tournament?.rosterFinish ? "red" : "green" }}>
             {tournament?.rosterFinish ? "заблокированы" : "открыты"}
           </b>
+        </p>
+        <p>
+          <b>ID турнира:</b> {tournament?.id}{" "}
         </p>
         <div></div>
       </>
@@ -660,8 +663,6 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
                   ));
                 })()}
               </div>
-
-              
             </div>
           </div>
           <div className={styles.rightColumn}>

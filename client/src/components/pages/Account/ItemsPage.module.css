@@ -1,11 +1,19 @@
 .row {
-    display: flex;
-    flex-direction: column;
-    height: 40px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.element {
+  padding: 14px;
+  transition: transform 0.3s ease;
+}
+
+.element:hover {
+  transform: scale(1.12); /* Увеличение на 12% */
 }
 
 .element img {
-    width: 40px;
-    height: 40px;
+  width: 80px;
+  height: 80px;
 }
-
