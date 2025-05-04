@@ -375,8 +375,9 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
         return null;
       })
       .filter((item) => item !== null);
-
-    console.log("Это отсылается на сервак в боди");
+    
+      const numberOfPlayers = plainPlayers.length;
+    console.log("Это отсылается на сервак в боди, всего игроков турнира: " + numberOfPlayers);
     console.log(resultTable);
 
     if (!Array.isArray(resultTable)) {

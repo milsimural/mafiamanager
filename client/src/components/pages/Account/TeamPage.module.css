@@ -16,6 +16,7 @@ html {
   background-attachment: fixed;
   width: 100vw;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   /* height: 100vh; */
   top: 0;
   left: 0;
@@ -139,6 +140,7 @@ h1 {
     box-sizing: border-box;
     justify-content: space-between;
     gap: 0px;
+    row-gap: 30px;
   }
 
   .nav {
@@ -153,6 +155,8 @@ h1 {
     margin-right: auto;
     margin-bottom: 26px;
   }
+
+  
 }
 
 @media (min-width: 768px) and (max-width: 1286px) {
@@ -172,6 +176,8 @@ h1 {
     justify-content: flex-start;
     gap: 40px;
   }
+
+  
 }
 
 @media (max-width: 376px) {
@@ -183,6 +189,7 @@ h1 {
 
   .players {
     gap: 0px;
+    row-gap: 30px;
   }
 
   .playerWrapper {

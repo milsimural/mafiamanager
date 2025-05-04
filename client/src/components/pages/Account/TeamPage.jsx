@@ -133,6 +133,7 @@ export default function TeamPage({ user, logoutHandler, updateUserCoins }) {
           </div>
         </div>
       </div>
+      
       {isMenuOpen && playerToSell && (
                <div className={styles.overlay} onClick={handleClickOutside}>
               <div className={styles.menu}>

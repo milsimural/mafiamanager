@@ -161,9 +161,11 @@ constractRouter.post(
 
       const newRoster = await Roster.create(roster);
 
+      // eslint-disable-next-line camelcase
       const old_participants_count = tournament.participants_count;
 
       const updatedTournament = await Tournament.update(
+        // eslint-disable-next-line camelcase
         { participants_count: old_participants_count + 1 },
         { where: { id: tournamentId } },
       );

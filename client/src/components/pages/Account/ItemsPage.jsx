@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "./ItemsPage.module.css";
 import NavigationComp from "src/components/ui/Nav/NavigationComp";
 import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
+import fonImage from "src/components/files/fon-main.jpg";
 import axiosInstance from "src/axiosInstance";
 
 export default function ItemsPage({ user, logoutHandler, updateUserCoins }) {
@@ -23,8 +24,14 @@ export default function ItemsPage({ user, logoutHandler, updateUserCoins }) {
   }
 
   return (
-    <div className="maincont">
-      <div className="wrap">
+    <div className="backgroundImage" style={{ backgroundImage: `url(${fonImage})` }}>
+      <div className="wrapper">
+        <div className="nav">
+                    <div className="burger">
+                      <BurgerMenuComp user={user}/>
+                    </div>
+                    <NavigationComp user={user} logoutHandler={logoutHandler} />
+                  </div>
         <h1>Предметы</h1>
       <div className={styles.row}>
         {userItems &&
@@ -45,3 +52,6 @@ export default function ItemsPage({ user, logoutHandler, updateUserCoins }) {
     </div>
   );
 }
+
+
+        

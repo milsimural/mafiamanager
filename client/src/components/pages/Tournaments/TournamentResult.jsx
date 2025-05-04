@@ -239,7 +239,7 @@ export default function TournamentResult({ user, logoutHandler }) {
                     Забрать
                   </button>
                 ) : (
-                  <p>Призы еще не готовы к выдаче</p>
+                  <p>Призы еще не готовы к выдаче или вы не принимали участия в турнире</p>
                 )}
 
                 <br />
@@ -250,7 +250,7 @@ export default function TournamentResult({ user, logoutHandler }) {
 
             {tournament?.status === "overG" && topData && topData.length > 0 ? (
               <div>
-              <h2 className={styles.h2top}>Призы</h2>
+              <h2 className={styles.h2top}>Распределение призового фонда</h2>
               <div className={styles.top}>
   {topData.map((item, index) => (
     <div className={styles.topItems} key={item.id}>
@@ -312,7 +312,7 @@ export default function TournamentResult({ user, logoutHandler }) {
                       <td className={styles.cell}>{item.userName}</td>
                       <td className={styles.cell}>{item.profitCoins}</td>
                       <td className={styles.cell}>
-                        {item.players
+                        {tournament?.rosterFinish && item.players
                           .map((player) => player.nickname)
                           .join(", ")}
                       </td>
