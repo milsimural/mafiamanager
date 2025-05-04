@@ -113,7 +113,7 @@ function App() {
         {
           path: "/items",
           element: (
-            <ItemsPage user={user} logoutHandler={logoutHandler} />
+            <ItemsPage user={user} logoutHandler={logoutHandler} updateUserCoins={updateUserCoins} />
           )
         },
         {

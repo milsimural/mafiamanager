@@ -1,9 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import styles from "./ItemsPage.module.css";
+import NavigationComp from "src/components/ui/Nav/NavigationComp";
+import BurgerMenuComp from "src/components/ui/Nav/BurgerMenuComp2";
 import axiosInstance from "src/axiosInstance";
 
-export default function ItemsPage({ user }) {
+export default function ItemsPage({ user, logoutHandler, updateUserCoins }) {
   const [userItems, setUserItems] = useState(null);
 
   useEffect(() => {
@@ -21,7 +23,9 @@ export default function ItemsPage({ user }) {
   }
 
   return (
-    <>
+    <div className="maincont">
+      <div className="wrap">
+        <h1>Предметы</h1>
       <div className={styles.row}>
         {userItems &&
           userItems.map((item, index) => (
@@ -37,6 +41,7 @@ export default function ItemsPage({ user }) {
           <div>У вас нет предметов или они еще загружаются...</div>
         )}
       </div>
-    </>
+      </div>
+    </div>
   );
 }
