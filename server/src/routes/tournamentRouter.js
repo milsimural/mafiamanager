@@ -66,6 +66,32 @@ tournamentRouter.patch('/update/:id', async (req, res) => {
   }
 });
 
+// На выход поступит образец {projected_count_of_participants: 170}
+tournamentRouter.patch(`/updateProjected_count_of_participants/:id`, async (req, res) => {
+    try {
+      const tournamentId = req.params.id;
+      // eslint-disable-next-line camelcase
+      const { projected_count_of_participants } = req.body;
+
+      // eslint-disable-next-line camelcase
+      if (projected_count_of_participants === undefined) {
+        return res.status(400).json({ error: 'Поле projected_count_of_participants обязательно' });
+      }
+
+      // eslint-disable-next-line camelcase
+      const [updatedCount] = await Tournament.update({ projected_count_of_participants }, {where: {id: tournamentId}})
+
+      if (updatedCount === 0) {
+        return res.status(404).json({ error: 'Турнир не найден' });
+      }
+
+      const updatedTournament = await Tournament.findByPk(tournamentId);
+      res.json(updatedTournament);
+    } catch (error) {
+      res.status(500).json({ error: `Ошибка при обновлении турнира: ${error.message}` });
+    }
+})
+
 tournamentRouter.delete('/delete/:id', async (req, res) => {
   try {
     const tournamentId = req.params.id;

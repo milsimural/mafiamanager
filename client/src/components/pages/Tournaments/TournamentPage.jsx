@@ -307,6 +307,19 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
     return gomafiaIds;
   }
 
+  // Это функция для расчета изменения power
+  function calculatePlayerPowerChanges(player, playersNum, s, a, b, c) {
+    const place = Number(player.place);
+    if (place === 1) {return 3;}
+    else if (place < s) { return 2;} 
+    else if (place > s && place < a) { return 1;} 
+    else if (place > a && place < b) {return 0;}
+    else if (place > b && place < c) { return -1;}
+    else if (place > c) {return -2;}
+
+    return 0;
+  } 
+
   // Тут мы расчитываем результат турнира - кнопка "Получить результаты турнира"
   async function getResults() {
     if (!rawData || !tournament) return;
@@ -344,8 +357,26 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
       sum: Number(item.sum) * Number(tournament.x),
       place: item.place,
     }));
-    console.log("Получаем списочек");
+    console.log("Получаем списочек с уже дельтой power");
     console.log(plainPlayers);
+
+    const playersNum = plainPlayers.length;
+
+    // Вот тут мы будем что то делать
+    // Но сначала опишем алгоритм изменения Power
+
+    const s = playersNum / 100 * 10;
+    const a = playersNum / 100 * 30;
+    const b = playersNum / 100 * 50;
+    const c = playersNum / 100 * 70;
+
+    for(let i = 0; i < plainPlayers.length; i++) {
+      plainPlayers[i].deltaPower = calculatePlayerPowerChanges(plainPlayers[i], playersNum, s, a, b, c);
+      // Это устанавливает дату последнего турнира
+      plainPlayers[i].lastTournamentDate = tournament.date_start;
+      // Это создает запись для добавления в bio результата турнира в формете [1/30,..]
+      plainPlayers[i].lastResults = `${plainPlayers[i].place}/${playersNum}`;
+    }
 
     // Полаем игроков турнира из БД
     let players = [];
@@ -355,12 +386,26 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
       );
       players = tournamentPlayers.data;
       console.log("Сейчас будет Players");
-      console.log(players);
+      console.log(players.length);
     } catch (error) {
       alert("Error getting players: " + error.message);
       console.log(error);
       return;
     }
+
+    // Отправим в турнир данные о том сколько участников было
+    try {
+      const response = await axiosInstance.patch(
+        `tournaments/updateProjected_count_of_participants/${tournamentId}`,
+        {
+          projected_count_of_participants: playersNum,
+        }
+      );
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error update projected_count_of_participants:", error);
+    }
+
 
     // Теперь нам нужно сопоставить логины с игроками из БД
     const resultTable = plainPlayers
@@ -376,8 +421,7 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
       })
       .filter((item) => item !== null);
     
-      const numberOfPlayers = plainPlayers.length;
-    console.log("Это отсылается на сервак в боди, всего игроков турнира: " + numberOfPlayers);
+    console.log("Это отсылается на сервак в боди, всего игроков турнира: " + playersNum);
     console.log(resultTable);
 
     if (!Array.isArray(resultTable)) {
@@ -385,6 +429,7 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
       return;
     }
 
+    // Обновляем данные по ростерам - кто сколько заработал, там же считается какое место кто занял.
     try {
       const response = await axiosInstance.patch(
         `/constract/setProfitAndPlaces/${tournament.id}`,

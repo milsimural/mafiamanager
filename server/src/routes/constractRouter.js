@@ -358,9 +358,6 @@ constractRouter.patch('/setProfitAndPlaces/:tournamentId', async (req, res) => {
       where: { tournamentId },
     });
 
-    // Сортируем составы по их среднему месту
-    // updatedRosters.sort((a, b) => a.averagePlace - b.averagePlace);
-
     // Сортируем составы по количеству заработанных денег
     updatedRosters.sort((a, b) => b.profitCoins - a.profitCoins);
 
