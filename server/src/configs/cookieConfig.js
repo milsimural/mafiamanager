@@ -1,9 +1,7 @@
-const jwtConfig = require("./jwtConfig");
-
+// Lifetime for refresh token cookie (12 hours)
 const cookieConfig = {
   httpOnly: true,
-  maxAge: jwtConfig.refresh.expiresIn,
-  // Поля ниже могут пригодиться, если браузер не выписывает куки
+  maxAge: 12 * 60 * 60 * 1000,
   // secure: true,
   // sameSite: 'strict',
 };

@@ -1,9 +1,11 @@
 const jwtConfig = {
+  // access token expires in 5 minutes
   access: {
-    expiresIn: `${5000}`,
+    expiresIn: '5m',
   },
+  // refresh token expires in 12 hours
   refresh: {
-    expiresIn: `${1000 * 60 * 60 * 12}`,
+    expiresIn: '12h',
   },
 };
 
