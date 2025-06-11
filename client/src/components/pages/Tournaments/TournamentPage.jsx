@@ -378,7 +378,7 @@ function TournamentDetails({ user, logoutHandler, updateUserCoins }) {
       plainPlayers[i].lastResults = `${plainPlayers[i].place}/${playersNum}`;
     }
 
-    // Полаем игроков турнира из БД
+    // Получаем игроков турнира из БД
     let players = [];
     try {
       const tournamentPlayers = await axiosInstance.get(

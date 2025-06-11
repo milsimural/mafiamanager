@@ -5,7 +5,7 @@ const jwtConfig = {
   },
   // refresh token expires in 12 hours
   refresh: {
-    expiresIn: '12h',
+    expiresIn: '8d',
   },
 };
 
