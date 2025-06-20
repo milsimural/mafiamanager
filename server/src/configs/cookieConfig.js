@@ -6,4 +6,9 @@ const cookieConfig = {
   // sameSite: 'strict',
 };
 
+if (process.env.NODE_ENV === 'production') {
+  cookieConfig.secure = true;
+  cookieConfig.sameSite = 'strict';
+}
+
 module.exports = cookieConfig;
