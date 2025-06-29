@@ -245,7 +245,7 @@ export default function MagazinePage({ user, logoutHandler, updateUserCoins }) {
                     />
                   </div>
                 </div>
-              );
+              ); 
             })}
           </div>
         </div>
